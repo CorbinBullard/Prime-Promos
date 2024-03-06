@@ -5,10 +5,9 @@ const bcrypt = require("bcryptjs");
 const crypto = require("crypto");
 const nodemailer = require("nodemailer");
 const Sequelize = require("sequelize");
-
+const { google } = require("googleapis");
+const { sendEmail } = require("../../utils/nodemailer");
 const { requireAuth, requireOwnerAuth } = require("../../utils/auth");
-const { link } = require("fs");
-// const { sendInvitationEmail } = require("../../utils/nodemailer");
 
 // Get all users TESTING ONLY
 router.get("/", requireOwnerAuth, async (req, res) => {
@@ -23,41 +22,24 @@ router.post("/invite", requireOwnerAuth, async (req, res) => {
   const invitationToken = crypto.randomBytes(20).toString("hex");
   const tokenExpiration = new Date(Date.now() + 48 * 3600000); // 48 hours from now
 
-  // Change this to a real smtp service with gmail
-  const transporter = nodemailer.createTransport({
-    host: "smtp.ethereal.email",
-    port: 587,
-    secure: false,
-    auth: {
-      user: "troy.roob@ethereal.email",
-      pass: "FNREzbEWVvnMg6GGhu",
-    },
+  const subject = "Register your Prime-Promos account";
+  const text = "This is a test email sent using OAuth2 authentication.";
+
+  const user = await User.create({
+    email,
+    validated: false,
+    invitationToken,
+    tokenExpiration,
   });
 
+  const link = `https://localhost:3000/register/${invitationToken}`;
+
   try {
-    await User.create({
-      email,
-      validated: false,
-      invitationToken,
-      tokenExpiration,
-    });
-
-    const link = `http://localhost:3000/register/${invitationToken}`;
-    // await sendInvitationEmail(email, link); // Implement this function based on your email service
-
-    const info = await transporter.sendMail({
-      from: "Prime-Promos", // sender address
-      to: email, // list of receivers
-      subject: "Create Account", // Subject line
-      text: invitationToken, // plain text body !! MUST CHANGE THIS LINE !!
-      html: `<b><a href="${link}">Link</a></b>`, // html body
-    });
-
-    console.log("Message sent: %s", info.messageId);
-
-    res.send("Invitation sent successfully.");
+    await sendEmail(email, subject, text, link);
+    res.json("Invitation sent successfully");
   } catch (error) {
-    res.status(500).send("Server error");
+    console.error(error);
+    res.status(500).json({ error: "Failed to send invitation email" });
   }
 });
 

@@ -1,30 +1,46 @@
+// utils/mailer.js
 const nodemailer = require("nodemailer");
+const { google } = require("googleapis");
+const {
+  CLIENT_ID,
+  CLIENT_SECRET,
+  REDIRECT_URI,
+  REFRESH_TOKEN,
+  SENDER_EMAIL,
+} = require("../config/oauth2Config");
 
+const oauth2Client = new google.auth.OAuth2(
+  CLIENT_ID,
+  CLIENT_SECRET,
+  REDIRECT_URI
+);
 
-// const transporter = nodemailer.createTransport({
-//   host: "smtp.ethereal.email",
-//   port: 587,
-//   secure: false,
-//   auth: {
-//     user: "troy.roob@ethereal.email",
-//     pass: "FNREzbEWVvnMg6GGhu",
-//   },
-// });
+oauth2Client.setCredentials({ refresh_token: REFRESH_TOKEN });
 
-// async function sendInvitationEmail(email, link) {
-//   console.log("email ", email);
+async function sendEmail(to, subject, text, link) {
+  const accessToken = await oauth2Client.getAccessToken();
 
-//   // send mail with defined transport object
-//   const info = await transporter.sendMail({
-//     from: '"Maddison Foo Koch 👻" <maddison53@ethereal.email>', // sender address
-//     to: email, // list of receivers
-//     subject: "Hello ✔", // Subject line
-//     text: "Hello world?", // plain text body
-//     html: "<b>Hello world?</b>", // html body
-//   });
-//   console.log("GOT HERE");
+  const transporter = nodemailer.createTransport({
+    service: "gmail",
+    auth: {
+      type: "OAuth2",
+      user: SENDER_EMAIL,
+      clientId: CLIENT_ID,
+      clientSecret: CLIENT_SECRET,
+      refreshToken: REFRESH_TOKEN,
+      accessToken: accessToken.token,
+    },
+  });
 
-//   console.log("Message sent: %s", info.messageId);
-//   //   Message sent: <d786aa62-4e0a-070a-47ed-0b0666549519@ethereal.email>
-// }
-// module.exports = { sendInvitationEmail };
+  const mailOptions = {
+    from: `Prime Promos <${SENDER_EMAIL}>`,
+    to,
+    subject,
+    text,
+    html: `<a href=${link}>Click here to register</a>`,
+  };
+
+  await transporter.sendMail(mailOptions);
+}
+
+module.exports = { sendEmail };
