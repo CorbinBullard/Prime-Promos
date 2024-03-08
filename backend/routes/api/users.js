@@ -7,12 +7,36 @@ const crypto = require("crypto");
 const Sequelize = require("sequelize");
 const { sendEmail } = require("../../utils/nodemailer");
 const { requireAuth, requireOwnerAuth } = require("../../utils/auth");
+
 // Get all users TESTING ONLY
+router.get("/unscoped", requireOwnerAuth, async (req, res) => {
+  const users = await User.unscoped().findAll();
+  res.json(users);
+});
+
+// Get all users
 router.get("/", requireOwnerAuth, async (req, res) => {
   const users = await User.findAll({
     where: { role: { [Sequelize.Op.not]: "owner" } },
   });
   res.json(users);
+});
+
+// Get pending user by token
+router.get("/register/:token", async (req, res) => {
+  const { token } = req.params;
+  const user = await User.findOne({
+    where: {
+      invitationToken: token,
+      tokenExpiration: {
+        [Sequelize.Op.gt]: new Date(),
+      },
+    },
+  });
+  if (!user) {
+    return res.status(400).json("Invalid or expired token");
+  }
+  return res.json(user);
 });
 
 // Invite new User
@@ -30,7 +54,8 @@ router.post("/invite", requireOwnerAuth, async (req, res) => {
   }
 
   // change this for production
-  const link = `http://localhost:3000/register/${invitationToken}`;
+  const baseUrl = process.env.BASE_URL || "http://localhost:3000";
+  const link = `${baseUrl}/register/${invitationToken}`;
 
   try {
     const user = await User.create({
