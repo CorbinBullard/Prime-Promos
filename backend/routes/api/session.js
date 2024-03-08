@@ -10,7 +10,7 @@ const { handleValidationErrors } = require("../../utils/validation");
 const router = express.Router();
 
 const validateLogin = [
-  check("credential")
+  check("email")
     .exists({ checkFalsy: true })
     .notEmpty()
     .withMessage("Please provide a valid email or username."),
@@ -39,27 +39,27 @@ router.get("/", (req, res) => {
 
 //LOGIN
 router.post("/", validateLogin, async (req, res, next) => {
-  const { credential, password } = req.body;
+  const { email, password } = req.body;
 
   const data = await User.unscoped().findOne({
     where: {
-      email: credential,
+      email,
     },
   });
-  const user = data.toJSON();
+  const user = data?.toJSON();
 
   if (!user || !bcrypt.compareSync(password, user.hashedPassword.toString())) {
     const err = new Error("Login failed");
     err.status = 401;
     err.title = "Login failed";
-    err.errors = { credential: "The provided credentials were invalid." };
+    err.errors = { message: "The provided emails were invalid." };
     return next(err);
   }
   if (!user.validated) {
     const err = new Error("Login failed");
     err.status = 401;
     err.title = "Login failed";
-    err.errors = { credential: "User not validated" };
+    err.errors = { message: "User not validated" };
     return next(err);
   }
 

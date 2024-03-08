@@ -1,17 +1,17 @@
 const express = require("express");
 const router = express.Router();
+require("dotenv").config();
 const { User } = require("../../db/models");
 const bcrypt = require("bcryptjs");
 const crypto = require("crypto");
-const nodemailer = require("nodemailer");
 const Sequelize = require("sequelize");
-const { google } = require("googleapis");
 const { sendEmail } = require("../../utils/nodemailer");
 const { requireAuth, requireOwnerAuth } = require("../../utils/auth");
-
 // Get all users TESTING ONLY
 router.get("/", requireOwnerAuth, async (req, res) => {
-  const users = await User.unscoped().findAll();
+  const users = await User.findAll({
+    where: { role: { [Sequelize.Op.not]: "owner" } },
+  });
   res.json(users);
 });
 
@@ -31,8 +31,8 @@ router.post("/invite", requireOwnerAuth, async (req, res) => {
     invitationToken,
     tokenExpiration,
   });
-
-  const link = `https://localhost:3000/register/${invitationToken}`;
+  // change this for production
+  const link = `localhost:3000/register/${invitationToken}`;
 
   try {
     await sendEmail(email, subject, text, link);
@@ -72,9 +72,6 @@ router.post("/register", async (req, res) => {
   });
 
   return res.json("User registered successfully");
-  // } catch (error) {
-  //   res.status(500).send("Server error");
-  // }
 });
 
 // Delete a user
@@ -82,6 +79,7 @@ router.delete("/:id", requireOwnerAuth, async (req, res, next) => {
   const { id } = req.params;
   const user = await User.findByPk(id);
   if (!user) {
+    return res.status(404).json({ message: "User not found" });
     const err = new Error("User not found");
     err.status = 404;
     err.title = "User not found";

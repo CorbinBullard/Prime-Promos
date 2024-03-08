@@ -60,7 +60,7 @@ const restoreUser = (req, res, next) => {
 
 const requireAuth = function (req, _res, next) {
   if (req.user) return next();
-  console.log("requireAuth middleware: no user found")
+  console.log("requireAuth middleware: no user found");
 
   const err = new Error("Authentication required");
   err.title = "Authentication required";
@@ -68,7 +68,25 @@ const requireAuth = function (req, _res, next) {
   err.status = 401;
   return next(err);
 };
-
+const requireAdminAuth = function (req, _res, next) {
+  if (!req.user) {
+    console.log("requireAuth middleware: no user found");
+    const err = new Error("Authentication required");
+    err.title = "Authentication required";
+    err.errors = { message: "Authentication required" };
+    err.status = 401;
+    return next(err);
+  }
+  if (req.user.role !== "admin" || req.user.role !== "owner") {
+    console.log("requireAuth middleware: User is not an admin or owner");
+    const err = new Error("Unauthorized");
+    err.title = "Unauthorized";
+    err.errors = { message: "Unauthorized" };
+    err.status = 401;
+    return next(err);
+  }
+  return next();
+};
 const requireOwnerAuth = function (req, _res, next) {
   if (!req.user) {
     console.log("requireAuth middleware: no user found");
@@ -89,4 +107,10 @@ const requireOwnerAuth = function (req, _res, next) {
   return next();
 };
 
-module.exports = { setTokenCookie, restoreUser, requireAuth, requireOwnerAuth };
+module.exports = {
+  setTokenCookie,
+  restoreUser,
+  requireAuth,
+  requireOwnerAuth,
+  requireAdminAuth,
+};
