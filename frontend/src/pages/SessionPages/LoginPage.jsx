@@ -2,6 +2,7 @@ import { Button, Card, Form, Input } from "antd";
 import React, { useEffect } from "react";
 import { LockOutlined } from "@ant-design/icons";
 import { useNavigate } from "react-router-dom";
+import { csrfFetch } from "../../utils/csrf";
 
 export default function LoginPage({ user, login }) {
   const navigate = useNavigate();
@@ -13,7 +14,7 @@ export default function LoginPage({ user, login }) {
   }, [user, navigate]);
 
   async function handleLogin(form) {
-    await fetch("/api/session", {
+    await csrfFetch("/api/session", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

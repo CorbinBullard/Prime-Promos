@@ -5,8 +5,11 @@ import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 import { BrowserRouter as Router } from "react-router-dom";
 import NotificationProvider from "./context/Notification";
+import { restoreCSRF } from "./utils/csrf";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
+
+restoreCSRF();
 root.render(
   <React.StrictMode>
     <NotificationProvider>

@@ -3,6 +3,7 @@ import { Suspense, lazy, useEffect, useState } from "react";
 import TeamPage from "./pages/MembersPages/TeamPage";
 import LoginPage from "./pages/SessionPages/LoginPage";
 import ProjectsPage from "./pages/ProjectsPage";
+import { csrfFetch } from "./utils/csrf";
 
 const RegisterPage = lazy(() => import("./pages/SessionPages/RegisterPage"));
 const Dashboard = lazy(() => import("./layout/Dashboard"));
@@ -14,7 +15,7 @@ function App() {
   useEffect(() => {
     async function getSession() {
       try {
-        const response = await fetch("/api/session");
+        const response = await csrfFetch("/api/session");
         if (!response.ok) throw new Error("Network response was not ok.");
         const data = await response.json();
         setSession(data);

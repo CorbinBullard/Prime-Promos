@@ -1,6 +1,7 @@
 import { useEffect, useReducer, useState } from "react";
 import { TeamReducer, actionTypes } from "../reducers/TeamReducer";
 import { useNotification } from "../context/Notification";
+import { csrfFetch } from "../utils/csrf";
 
 export default function useTeam(initialState = {}) {
   const [teamMembers, dispatch] = useReducer(TeamReducer, initialState);
@@ -10,7 +11,7 @@ export default function useTeam(initialState = {}) {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch("/api/users");
+        const response = await csrfFetch("/api/users");
         const data = await response.json();
         dispatch({ type: actionTypes.FETCH_MEMBERS, payload: data });
       } catch (error) {
@@ -22,7 +23,7 @@ export default function useTeam(initialState = {}) {
 
   const addMember = async (member) => {
     try {
-      const response = await fetch("/api/users/invite", {
+      const response = await csrfFetch("/api/users/invite", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -56,7 +57,7 @@ export default function useTeam(initialState = {}) {
 
   const deleteMember = async (id) => {
     try {
-      const response = await fetch(`/api/users/${id}`, {
+      const response = await csrfFetch(`/api/users/${id}`, {
         method: "DELETE",
       });
       if (response.status !== 200) {
