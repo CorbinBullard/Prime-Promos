@@ -1,6 +1,6 @@
 import { Route, Routes, useNavigate } from "react-router-dom";
 import { Suspense, lazy, useEffect, useState } from "react";
-import TeamPage from "./pages/TeamPage";
+import TeamPage from "./pages/MembersPages/TeamPage";
 import LoginPage from "./pages/SessionPages/LoginPage";
 import ProjectsPage from "./pages/ProjectsPage";
 
@@ -27,12 +27,21 @@ function App() {
     getSession();
   }, []);
 
+  const handleLoginSuccess = (user) => {
+    setSession({ user }); // Update the session state with the logged-in user
+  };
+
   return (
     // ! Create better loading component
     <Suspense fallback={<div>Loading...</div>}>
       {!isLoading && (
         <Routes>
-          <Route path="/login" element={<LoginPage user={session.user} />} />
+          <Route
+            path="/login"
+            element={
+              <LoginPage user={session.user} login={handleLoginSuccess} />
+            }
+          />
           <Route path="/" element={<Dashboard user={session.user} />}>
             <Route path="members" element={<TeamPage />} />
             <Route path="projects" element={<ProjectsPage />} />

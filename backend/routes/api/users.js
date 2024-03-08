@@ -17,29 +17,36 @@ router.get("/", requireOwnerAuth, async (req, res) => {
 
 // Invite new User
 router.post("/invite", requireOwnerAuth, async (req, res) => {
-  const { email } = req.body;
-  // console.log("email ", email);
+  const { email, firstName, lastName, role } = req.body;
   const invitationToken = crypto.randomBytes(20).toString("hex");
   const tokenExpiration = new Date(Date.now() + 48 * 3600000); // 48 hours from now
 
   const subject = "Register your Prime-Promos account";
   const text = "This is a test email sent using OAuth2 authentication.";
 
-  const user = await User.create({
-    email,
-    validated: false,
-    invitationToken,
-    tokenExpiration,
-  });
+  const userExists = await User.findOne({ where: { email } });
+  if (userExists) {
+    return res.status(400).json({ error: "User already exists" });
+  }
+
   // change this for production
-  const link = `localhost:3000/register/${invitationToken}`;
+  const link = `http://localhost:3000/register/${invitationToken}`;
 
   try {
+    const user = await User.create({
+      email,
+      validated: false,
+      invitationToken,
+      tokenExpiration,
+      firstName,
+      lastName,
+      role,
+    });
     await sendEmail(email, subject, text, link);
-    res.json("Invitation sent successfully");
+    return res.json(user);
   } catch (error) {
     console.error(error);
-    res.status(500).json({ error: "Failed to send invitation email" });
+    return res.status(500).json({ error: "Failed to send invitation email" });
   }
 });
 

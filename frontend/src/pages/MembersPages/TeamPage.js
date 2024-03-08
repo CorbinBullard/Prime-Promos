@@ -1,20 +1,20 @@
 import React, { useState, useMemo } from "react";
-import useTeam from "../hooks/Team/useTeam";
+import useTeam from "../../hooks/useTeam";
 import { Button, Flex, Modal, Space, Table } from "antd";
 import { UserAddOutlined } from "@ant-design/icons";
-import UserIcon from "../components/Team/UserIcon";
-import MemberOptions from "../components/Team/MemberOptions";
-import MembersTable from "../components/Team/MembersTable";
-import { capitalize } from "../utils/utilFunctions";
-import AddMemberForm from "../components/Team/AddMemberForm";
-import AddMemberModal from "../components/Team/AddMemberModal";
+import UserIcon from "../../components/Members/UserIcon";
+import MemberOptions from "../../components/Members/MemberOptions";
+import MembersTable from "../../components/Members/MembersTable";
+import { capitalize } from "../../utils/utilFunctions";
+import AddMemberForm from "../../components/Members/AddMemberForm";
+import AddMemberModal from "../../components/Members/AddMemberModal";
 
 export default function TeamPage() {
-  const [members, dispatch] = useTeam();
+  const { teamMembers, addMember } = useTeam();
   const [openModal, setOpenModal] = useState(false);
 
   const handleInvite = (values) => {
-    dispatch({ type: "INVITE_MEMBER", payload: values });
+    addMember(values);
     setOpenModal(false);
   };
 
@@ -27,7 +27,7 @@ export default function TeamPage() {
           Invite Member
         </Button>
       </Flex>
-      <MembersTable members={members} />
+      <MembersTable members={teamMembers} />
       <AddMemberModal
         open={openModal}
         onCancel={() => setOpenModal(false)}

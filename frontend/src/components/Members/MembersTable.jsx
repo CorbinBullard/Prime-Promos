@@ -66,20 +66,21 @@ const columns = [
     title: "",
     dataIndex: "action",
     key: "action",
-    render: (text, record) => <MemberOptions record={record} />,
+    render: (text, record) => <MemberOptions user={record} />,
   },
 ];
 export default function MembersTable({ members }) {
-    const tableData = useMemo(() => {
-      return Object.values(members).map((member) => {
-        return {
-          key: member.id,
-          name: `${member.firstName} ${member.lastName}`,
-          email: member.email,
-          role: capitalize(member.role),
-          validated: member.validated ? "Active" : "Pending",
-        };
-      });
-    }, [members]);
+  const tableData = useMemo(() => {
+    return Object.values(members).map((member) => {
+      return {
+        id: member.id,
+        key: member.id,
+        name: `${member.firstName} ${member.lastName}`,
+        email: member.email,
+        role: capitalize(member.role),
+        validated: member.validated ? "Active" : "Pending",
+      };
+    });
+  }, [members]);
   return <Table columns={columns} dataSource={tableData} />;
 }

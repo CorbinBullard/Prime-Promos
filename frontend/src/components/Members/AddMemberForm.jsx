@@ -24,6 +24,20 @@ export default function AddMemberForm({ form }) {
           ]}
         />
       </Item>
+      <Item
+        name="firstName"
+        label="First Name"
+        rules={[{ required: true, message: "Please enter a First Name" }]}
+      >
+        <Input />
+      </Item>
+      <Item
+        name="lastName"
+        label="Last Name"
+        rules={[{ required: true, message: "Please enter a Last Name" }]}
+      >
+        <Input />
+      </Item>
     </Form>
   );
 }

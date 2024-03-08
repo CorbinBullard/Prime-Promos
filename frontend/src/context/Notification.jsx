@@ -14,7 +14,7 @@ export default function NotificationProvider({ children }) {
   };
   return (
     <NotificationContext.Provider value={openNotification}>
-      {Children}
+      {children}
     </NotificationContext.Provider>
   );
 }

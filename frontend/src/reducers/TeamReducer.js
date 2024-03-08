@@ -6,7 +6,6 @@ export const actionTypes = {
 };
 
 export const TeamReducer = (state, action) => {
-  //   console.log("State: ", state);
   switch (action.type) {
     case actionTypes.FETCH_MEMBERS:
       const formattedUsers = { ...state };
@@ -15,13 +14,13 @@ export const TeamReducer = (state, action) => {
       });
       return formattedUsers;
     case actionTypes.ADD_MEMBER:
-      return [...state, action.payload];
+      return { ...state, [action.payload.id]: action.payload };
     case actionTypes.UPDATE_MEMBER:
-      return state.map((member) =>
-        member.id === action.payload.id ? action.payload : member
-      );
+      return { ...state, [action.payload.id]: action.payload };
     case actionTypes.DELETE_MEMBER:
-      return state.filter((member) => member.id !== action.payload);
+      const newState = { ...state };
+      delete newState[action.payload];
+      return newState;
     default:
       return state;
   }
