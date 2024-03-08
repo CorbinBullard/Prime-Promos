@@ -1,6 +1,11 @@
 "use strict";
 
 /** @type {import('sequelize-cli').Migration} */
+let options = {};
+if (process.env.NODE_ENV === "production") {
+  options.schema = process.env.SCHEMA; // define your schema in options object
+}
+options.tableName = "Users";
 module.exports = {
   async up(queryInterface, Sequelize) {
     /**
@@ -12,7 +17,7 @@ module.exports = {
      *   isBetaMember: false
      * }], {});
      */
-    await queryInterface.bulkInsert("Users", [
+    await queryInterface.bulkInsert(options, [
       {
         email: "robin26@cooper.com",
         firstName: "James",
