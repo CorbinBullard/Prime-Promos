@@ -3,9 +3,11 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
+    "sequelize": "sequelize",
+    "sequelize-cli": "sequelize-cli",
     "start": "per-env",
     "start:development": "nodemon ./bin/www",
-    "start:production": "node ./bin",
+    "start:production": "node ./bin/www",
     "build": "node psql-setup-script.js"
   },
   "dependencies": {
