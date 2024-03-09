@@ -74,6 +74,34 @@ router.post("/invite", requireOwnerAuth, async (req, res) => {
     return res.status(500).json({ error: "Failed to send invitation email" });
   }
 });
+// Resend invitation
+router.put("/invite/:id", requireOwnerAuth, async (req, res) => {
+  const { id } = req.params;
+  const user = await User.findByPk(id);
+  if (!user) {
+    return res.status(404).json({ message: "User not found" });
+  }
+  const invitationToken = crypto.randomBytes(20).toString("hex");
+  const tokenExpiration = new Date(Date.now() + 48 * 3600000); // 48 hours from now
+
+  const subject = "Register your Prime-Promos account";
+  const text = "This is a test email sent using OAuth2 authentication.";
+
+  const baseUrl = process.env.BASE_URL || "http://localhost:3000";
+  const link = `${baseUrl}/register/${invitationToken}`;
+
+  try {
+    await user.update({
+      invitationToken,
+      tokenExpiration,
+    });
+    await sendEmail(user.email, subject, text, link);
+    return res.json(user);
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ error: "Failed to send invitation email" });
+  }
+});
 
 // user registration
 router.post("/register", async (req, res) => {

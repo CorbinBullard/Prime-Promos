@@ -8,9 +8,12 @@ import MembersTable from "../../components/Members/MembersTable";
 import { capitalize } from "../../utils/utilFunctions";
 import AddMemberForm from "../../components/Members/AddMemberForm";
 import AddMemberModal from "../../components/Members/AddMemberModal";
+import { useTeamState } from "../../hooks/Team/useTeamState";
+import { useTeamActions } from "../../hooks/Team/useTeamActions";
 
 export default function TeamPage() {
-  const { teamMembers, addMember } = useTeam();
+  const { teamMembers, dispatch } = useTeamState();
+  const { addMember } = useTeamActions(dispatch);
   const [openModal, setOpenModal] = useState(false);
 
   const handleInvite = (values) => {
@@ -27,7 +30,7 @@ export default function TeamPage() {
           Invite Member
         </Button>
       </Flex>
-      <MembersTable members={teamMembers} />
+      <MembersTable members={teamMembers} dispatch={dispatch} />
       <AddMemberModal
         open={openModal}
         onCancel={() => setOpenModal(false)}
