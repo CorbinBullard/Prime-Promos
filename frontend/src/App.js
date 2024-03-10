@@ -1,6 +1,6 @@
 import { Route, Routes, useNavigate } from "react-router-dom";
 import { Suspense, lazy, useEffect, useState } from "react";
-import TeamPage from "./pages/MembersPages/TeamPage";
+import TeamPage from "./pages/TeamPage";
 import LoginPage from "./pages/SessionPages/LoginPage";
 import ProjectsPage from "./pages/ProjectsPage";
 import { csrfFetch } from "./utils/csrf";

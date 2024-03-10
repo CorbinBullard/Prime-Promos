@@ -50,6 +50,7 @@ router.post("/invite", requireOwnerAuth, async (req, res) => {
 
   const userExists = await User.findOne({ where: { email } });
   if (userExists) {
+    console.log("\nUser already exists\n");
     return res.status(400).json({ error: "User already exists" });
   }
 
@@ -140,11 +141,6 @@ router.delete("/:id", requireOwnerAuth, async (req, res, next) => {
   const user = await User.findByPk(id);
   if (!user) {
     return res.status(404).json({ message: "User not found" });
-    const err = new Error("User not found");
-    err.status = 404;
-    err.title = "User not found";
-    err.errors = ["User not found"];
-    return next(err);
   }
   await user.destroy();
   return res.json({ message: "User deleted" });

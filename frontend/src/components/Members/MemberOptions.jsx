@@ -40,8 +40,6 @@ function MemberOptions({ user, dispatch }) {
     },
   ];
 
-  console.log("user", user);
-
   const menu = (
     <Menu
       items={dropdownOptions.map(({ key, label, onClick, icon, disabled }) => ({

@@ -1,9 +1,9 @@
 import React from 'react'
 
-export default function UserDetails() {
+export default function CreateProjectModal() {
   return (
     <div>
-      details
+      
     </div>
   )
 }
