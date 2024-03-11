@@ -19,7 +19,7 @@ export default function RegisterPage() {
     async function getUser() {
       setLoading(true);
       try {
-        const response = await fetch(`/api/users/register/${token}`);
+        const response = await csrfFetch(`/api/users/register/${token}`);
         if (!response.ok) throw new Error("Network response was not ok.");
         const data = await response.json();
         setUser(data);
