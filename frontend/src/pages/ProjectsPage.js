@@ -6,10 +6,11 @@ import FormModalButton from "../components/UI/FormModalButton";
 import CreateProjectForm from "../components/Forms/CreateProjectForm";
 import { useProjectActions } from "../hooks/Projects/useProjectActions";
 import { useProjectsState } from "../hooks/Projects/useProjectsState";
+import ManageProjectUsers from "../components/Projects/ManageProjectUsers";
 
 export default function ProjectsPage() {
   const { projects, currentProject, dispatch } = useProjectsState();
-  const { createProject, addUsersToProject } = useProjectActions(dispatch);
+  const { createProject } = useProjectActions(dispatch);
 
   const items = [
     {
@@ -28,7 +29,7 @@ export default function ProjectsPage() {
   const handleCreateProject = async (form) => {
     await createProject(form);
   };
-  
+
   return (
     <>
       <Tabs
@@ -46,7 +47,9 @@ export default function ProjectsPage() {
           </FormModalButton>
         }
       />
-      <ProjectCardsContainer projects={projects} />
+      <ProjectCardsContainer projects={projects} dispatch={dispatch} />
+      {/* Drawer */}
+      <ManageProjectUsers project={currentProject} dispatch={dispatch}/>
     </>
   );
 }

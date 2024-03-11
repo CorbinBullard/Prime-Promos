@@ -11,7 +11,6 @@ export const useProjectActions = (dispatch) => {
 
   const createProject = useCallback(
     async (project) => {
-
       console.log("Creating project", project);
       try {
         const response = await csrfFetch("/api/projects", {
@@ -79,5 +78,19 @@ export const useProjectActions = (dispatch) => {
   const deleteProject = (projectId) => {
     dispatch({ type: actionTypes.DELETE_PROJECT, payload: projectId });
   };
-  return { createProject, updateProject, deleteProject, addUsersToProject };
+  const selectProject = (project) => {
+    dispatch({ type: actionTypes.LOAD_CURRENT_PROJECT, payload: project });
+  };
+  const resetCurrentProject = () => {
+    dispatch({ type: actionTypes.RESET_CURRENT_PROJECT });
+  };
+
+  return {
+    createProject,
+    updateProject,
+    deleteProject,
+    addUsersToProject,
+    selectProject,
+    resetCurrentProject
+  };
 };
