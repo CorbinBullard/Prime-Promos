@@ -1,7 +1,7 @@
 import { Form, Input, Select } from "antd";
 import React from "react";
 const { Item } = Form;
-export default function AddMemberForm({ form }) {
+export default function NewMemberForm({ form }) {
   return (
     <Form form={form}>
       <Item

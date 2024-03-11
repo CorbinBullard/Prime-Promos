@@ -4,25 +4,13 @@ import ProjectCardsContainer from "../components/Projects/ProjectCardsContainer"
 import { FolderAddOutlined } from "@ant-design/icons";
 import FormModalButton from "../components/UI/FormModalButton";
 import CreateProjectForm from "../components/Forms/CreateProjectForm";
+import { useProjectActions } from "../hooks/Projects/useProjectActions";
+import { useProjectsState } from "../hooks/Projects/useProjectsState";
 
 export default function ProjectsPage() {
-  const projects = [
-    {
-      id: 1,
-      name: "Project 1",
-      description: "Description for Project 1",
-    },
-    {
-      id: 2,
-      name: "Project 2",
-      description: "Description for Project 2",
-    },
-    {
-      id: 3,
-      name: "Project 3",
-      description: "Description for Project 3",
-    },
-  ];
+  const { projects, dispatch } = useProjectsState();
+  const { createProject, addUsersToProject } = useProjectActions(dispatch);
+
   const items = [
     {
       key: "active",
@@ -37,8 +25,9 @@ export default function ProjectsPage() {
       label: "Archived",
     },
   ];
-  const handleCreateProject = () => {
-    console.log("Create Project");
+  const handleCreateProject = async (form) => {
+    console.log("CREATING PROJECT : ", form);
+    createProject(form);
   };
   return (
     <>
@@ -49,6 +38,9 @@ export default function ProjectsPage() {
             icon={<FolderAddOutlined />}
             type="primary"
             form={CreateProjectForm}
+            title="Create New Project"
+            submitText="Create"
+            onSubmit={handleCreateProject}
           >
             Create New Project
           </FormModalButton>

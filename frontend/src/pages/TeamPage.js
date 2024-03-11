@@ -5,7 +5,7 @@ import MembersTable from "../components/Members/MembersTable";
 import { useTeamState } from "../hooks/Team/useTeamState";
 import { useTeamActions } from "../hooks/Team/useTeamActions";
 import FormModalButton from "../components/UI/FormModalButton";
-import AddMemberForm from "../components/Forms/AddMemberForm";
+import NewMemberForm from "../components/Forms/NewMemberForm";
 
 export default function TeamPage() {
   const { teamMembers, dispatch } = useTeamState();
@@ -23,7 +23,7 @@ export default function TeamPage() {
         <h1>My Team</h1>
         <FormModalButton
           icon={<UserAddOutlined />}
-          form={AddMemberForm}
+          form={NewMemberForm}
           onSubmit={addMember}
         >
           InviteMember

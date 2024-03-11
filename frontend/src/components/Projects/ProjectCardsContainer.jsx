@@ -3,10 +3,12 @@ import React from "react";
 import ProjectCard from "./ProjectCard";
 
 export default function ProjectCardsContainer({ projects }) {
+
+  const projectsArray = Object.values(projects);
   return (
     <Flex>
-      {projects.map((project) => (
-        <ProjectCard project={project} />
+      {projectsArray.map((project) => (
+        <ProjectCard project={project} key={project.id} />
       ))}
     </Flex>
   );

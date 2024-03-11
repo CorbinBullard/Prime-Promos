@@ -6,6 +6,7 @@ const FormModalButton = ({
   icon,
   form: FormComponent,
   onSubmit,
+  submitText,
   ...props
 }) => {
   const [isVisible, setIsVisible] = useState(false);
@@ -20,7 +21,6 @@ const FormModalButton = ({
       .validateFields()
       .then((values) => {
         console.log("Received values of form: ", values);
-        // setIsVisible(false);
         onSubmit(values) // Assuming onSubmit now returns a Promise.
           .then(() => {
             setIsVisible(false); // Move inside then to ensure it happens after async actions.
@@ -29,7 +29,7 @@ const FormModalButton = ({
           .catch((error) => {
             // Handle or log the error if onSubmit (addMember) fails.
             console.error("Submission failed", error);
-          });;
+          });
       })
       .catch((info) => {
         console.log("Validate Failed:", info);
@@ -50,6 +50,7 @@ const FormModalButton = ({
         open={isVisible}
         onOk={handleOk}
         onCancel={handleCancel}
+        okText={submitText || "Submit"}
         {...props}
       >
         <FormComponent onFormSubmit={handleOk} form={form} />

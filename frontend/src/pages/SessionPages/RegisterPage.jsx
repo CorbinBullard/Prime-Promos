@@ -2,6 +2,7 @@ import { Button, Input, Form, Flex, Card, Divider } from "antd";
 import React, { useEffect, useState } from "react";
 import { LockOutlined, WarningOutlined } from "@ant-design/icons";
 import { useNavigate, useParams } from "react-router-dom";
+import { csrfFetch } from "../../utils/csrf";
 const { Item } = Form;
 
 export default function RegisterPage() {
@@ -35,7 +36,7 @@ export default function RegisterPage() {
       setLoading(true);
       form.validateFields().then((values) => {
         console.log("Received values of form: ", values);
-        fetch("/api/users/register", {
+        csrfFetch("/api/users/register", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -45,7 +46,6 @@ export default function RegisterPage() {
           .then((res) => res.json())
           .then(() => {
             navigate("/login");
-            alert("Registration successful");
             setLoading(false);
           });
       });
