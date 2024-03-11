@@ -3,9 +3,10 @@ import { useNotification } from "../../context/Notification";
 import { actionTypes } from "../../reducers/ProjectsReducer";
 import { csrfFetch } from "../../utils/csrf";
 import { useTeamState } from "../Team/useTeamState";
+import { useTeam } from "../../context/Members";
 
 export const useProjectActions = (dispatch) => {
-  const { teamMembers } = useTeamState();
+  const { teamMembers } = useTeam();
   const [errors, setErrors] = useState({});
   const openNotification = useNotification();
 

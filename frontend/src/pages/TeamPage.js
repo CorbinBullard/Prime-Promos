@@ -6,10 +6,11 @@ import { useTeamState } from "../hooks/Team/useTeamState";
 import { useTeamActions } from "../hooks/Team/useTeamActions";
 import FormModalButton from "../components/UI/FormModalButton";
 import NewMemberForm from "../components/Forms/NewMemberForm";
+import { useTeam } from "../context/Members";
 
 export default function TeamPage() {
-  const { teamMembers, dispatch } = useTeamState();
-  const { addMember } = useTeamActions(dispatch);
+  const { teamMembers, dispatch, addMember } = useTeam();
+  // const { addMember } = useTeamActions(dispatch);
   const [openModal, setOpenModal] = useState(false);
 
   const handleInvite = (values) => {

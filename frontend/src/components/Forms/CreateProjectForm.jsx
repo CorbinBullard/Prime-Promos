@@ -1,10 +1,10 @@
 import React, { useMemo } from "react";
 import { Form, Input, Select } from "antd";
-import { useTeamState } from "../../hooks/Team/useTeamState";
+import { useTeam } from "../../context/Members";
 const { Item } = Form;
 
 export default function CreateProjectForm({ form }) {
-  const { teamMembers } = useTeamState();
+  const { teamMembers } = useTeam();
   const userOptions = useMemo(() => {
     return Object.values(teamMembers).map((member) => ({
       label: `${member.firstName} ${member.lastName}`,

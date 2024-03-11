@@ -7,11 +7,11 @@ import {
   DeleteOutlined,
 } from "@ant-design/icons";
 
-import { useTeamActions } from "../../hooks/Team/useTeamActions";
 import OptionsButton from "../UI/OptionsButton";
+import { useTeam } from "../../context/Members";
 
 function MemberOptions({ user, dispatch }) {
-  const { deleteMember, reinvite } = useTeamActions(dispatch);
+  const { deleteMember, reinvite } = useTeam();
 
   const handleDelete = (id) => {
     if (window.confirm("Are you sure you want to remove this member?")) {
