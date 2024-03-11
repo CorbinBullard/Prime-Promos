@@ -9,7 +9,7 @@ const RegisterPage = lazy(() => import("./pages/SessionPages/RegisterPage"));
 const Dashboard = lazy(() => import("./layout/Dashboard"));
 
 function App() {
-  const [session, setSession] = useState(null);
+  const [session, setSession] = useState({ user: null });
   const [isLoading, setIsLoading] = useState(true);
   const navigate = useNavigate();
   useEffect(() => {
@@ -31,6 +31,13 @@ function App() {
   const handleLoginSuccess = (user) => {
     setSession({ user }); // Update the session state with the logged-in user
   };
+  const handleLogout = async () => {
+    await csrfFetch("/api/session", {
+      method: "DELETE",
+    });
+    setSession({ user: null });
+    navigate("/login");
+  };
 
   return (
     // ! Create better loading component
@@ -40,10 +47,13 @@ function App() {
           <Route
             path="/login"
             element={
-              <LoginPage user={session.user} login={handleLoginSuccess} />
+              <LoginPage user={session?.user} login={handleLoginSuccess} />
             }
           />
-          <Route path="/" element={<Dashboard user={session.user} />}>
+          <Route
+            path="/"
+            element={<Dashboard user={session.user} logout={handleLogout} />}
+          >
             <Route path="members" element={<TeamPage />} />
             <Route path="projects" element={<ProjectsPage />} />
           </Route>

@@ -1,11 +1,12 @@
 import { Button, Card, Form, Input } from "antd";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { LockOutlined } from "@ant-design/icons";
 import { useNavigate } from "react-router-dom";
 import { csrfFetch } from "../../utils/csrf";
 
 export default function LoginPage({ user, login }) {
   const navigate = useNavigate();
+  const [errors, setErrors] = useState(false);
 
   useEffect(() => {
     if (user) {
@@ -14,22 +15,21 @@ export default function LoginPage({ user, login }) {
   }, [user, navigate]);
 
   async function handleLogin(form) {
-    await csrfFetch("/api/session", {
+    const response = await csrfFetch("/api/session", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify(form),
-    }).then((response) => {
-      if (response.ok) {
-        login(response.json());
-        navigate("/");
-      } else {
-        alert("Login failed");
-      }
     });
+    if (response.ok) {
+      const data = await response.json();
+      login(data.user);
+      navigate("/");
+    } else {
+      setErrors(true);
+    }
   }
-
   return (
     <div
       style={{
@@ -75,6 +75,7 @@ export default function LoginPage({ user, login }) {
             </Button>
           </Form.Item>
         </Form>
+        {errors && <p style={{ color: "red" }}>Invalid Login</p>}
       </Card>
     </div>
   );

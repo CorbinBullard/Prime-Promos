@@ -52,7 +52,7 @@ router.post("/", validateLogin, async (req, res, next) => {
     const err = new Error("Login failed");
     err.status = 401;
     err.title = "Login failed";
-    err.errors = { message: "The provided emails were invalid." };
+    err.errors = { message: "The provided credentials were invalid." };
     return next(err);
   }
   if (!user.validated) {

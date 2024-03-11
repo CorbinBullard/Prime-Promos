@@ -19,7 +19,7 @@ export const useTeamActions = (dispatch) => {
           body: JSON.stringify(member),
         });
         const data = await response.json();
-        if (response.status === 200) {
+        if (response.ok) {
           dispatch({ type: actionTypes.ADD_MEMBER, payload: data });
           openNotification({
             message: "Success",
@@ -27,7 +27,7 @@ export const useTeamActions = (dispatch) => {
             type: "success",
           });
         } else {
-          if (data.error) {
+          if (data) {
             openNotification({
               message: "Error",
               description: data.error,
