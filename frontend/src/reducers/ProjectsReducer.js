@@ -16,14 +16,26 @@ export const ProjectsReducer = (state, action) => {
       console.log("New state", newState);
       return newState;
     }
-    case actionTypes.CREATE_PROJECT:
+    case actionTypes.CREATE_PROJECT: {
+      console.log("Creating project", action.payload);
       return { ...state, [action.payload.id]: action.payload };
-    case actionTypes.UPDATE_PROJECT:
+    }
+    case actionTypes.UPDATE_PROJECT: {
       return { ...state, [action.payload.id]: action.payload };
-    case actionTypes.DELETE_PROJECT:
+    }
+    case actionTypes.DELETE_PROJECT: {
       const newState = { ...state };
       delete newState[action.payload];
       return newState;
+    }
+    case actionTypes.ADD_USERS_TO_PROJECT: {
+      const newState = { ...state };
+      newState[action.payload.projectId].Users = [
+        ...newState[action.payload.projectId].Users,
+        ...action.payload.users,
+      ];
+      return newState;
+    }
     default:
       return state;
   }

@@ -13,6 +13,8 @@ module.exports = (sequelize, DataTypes) => {
         through: "UserProject",
         foreignKey: "projectId",
         otherKey: "userId",
+        unique: true,
+        onDelete: "CASCADE",
       });
     }
   }

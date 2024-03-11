@@ -27,10 +27,10 @@ export const useProjectActions = (dispatch) => {
             type: "success",
           });
         }
-        return null;
+        return data;
       } catch (error) {
         console.error("Error creating project", error);
-        return null;
+        return;
       }
     },
     [dispatch]
@@ -45,13 +45,29 @@ export const useProjectActions = (dispatch) => {
           },
           body: JSON.stringify({ users }),
         });
+        const data = await response.json();
+        if (response.ok) {
+          dispatch({
+            type: actionTypes.ADD_USERS_TO_PROJECT,
+            payload: { projectId, users },
+          });
+          openNotification({
+            message: "Success",
+            description: "Members added successfully",
+            type: "success",
+          });
+        } else {
+          if (data) {
+            openNotification({
+              message: "Error",
+              description: data.error,
+              type: "error",
+            });
+          }
+        }
       } catch (error) {
         console.error("Error adding users to project", error);
       }
-      dispatch({
-        type: actionTypes.ADD_USERS_TO_PROJECT,
-        payload: { projectId, users },
-      });
     },
     [dispatch]
   );
@@ -61,5 +77,5 @@ export const useProjectActions = (dispatch) => {
   const deleteProject = (projectId) => {
     dispatch({ type: actionTypes.DELETE_PROJECT, payload: projectId });
   };
-  return { createProject, updateProject, deleteProject };
+  return { createProject, updateProject, deleteProject, addUsersToProject };
 };
