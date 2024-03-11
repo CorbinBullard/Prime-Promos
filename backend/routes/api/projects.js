@@ -86,6 +86,7 @@ router.get("/:projectId/users", async (req, res) => {
   });
   res.json(project.Users);
 });
+
 // Add user to project BY USER ID
 router.post("/:projectId/users", requireOwnerAuth, async (req, res) => {
   const { projectId } = req.params;
@@ -95,40 +96,40 @@ router.post("/:projectId/users", requireOwnerAuth, async (req, res) => {
   if (!project) {
     return res.status(404).json({ message: "Project not found" });
   }
-
-  for (let i = 0; i < users.length; i++) {
-    const userId = users[i]; // Corrected line to define userId
-    const user = await User.findByPk(userId);
-    if (user) {
-      await project.addUser(user);
-    }
-  }
+  const dbUsers = await User.findAll({
+    where: {
+      id: {
+        [Op.in]: users, // Corrected usage of Op.in
+      },
+    },
+  });
+  await project.addUsers(dbUsers);
 
   return res.json({ message: "Users added to project" }); // Changed message to plural since multiple users can be added
 });
 
-// Remove user from project
-router.delete(
-  "/:projectId/users/:userId",
-  requireOwnerAuth,
-  async (req, res) => {
-    const { projectId, userId } = req.params;
+// Remove users from project
+router.delete("/:projectId/users", requireOwnerAuth, async (req, res) => {
+  const { projectId } = req.params;
+  const { users } = req.body; // Assuming 'users' is an array of userIds
 
-    const project = await Project.findByPk(projectId);
-    const user = await User.findByPk(userId);
-    if (!user) {
-      return res.json({ message: "User not found" });
-    }
-    if (!project) {
-      return res.json({ message: "Project not found" });
-    }
-    if (user.role === "owner") {
-      return res.json({ message: "Cannot remove owner from project" });
-    }
-
-    await project.removeUser(user);
-    return res.json({ message: "User removed from project" });
+  const project = await Project.findByPk(projectId);
+  if (!project) {
+    return res.json({ message: "Project not found" });
   }
-);
+  const dbUsers = await User.findAll({
+    where: {
+      id: {
+        [Op.in]: users, // Corrected usage of Op.in
+      },
+    },
+  });
+  if (!users.length) {
+    return res.json({ message: "Users not found" });
+  }
+
+  await project.removeUsers(dbUsers);
+  return res.json({ message: "User removed from project" });
+});
 
 module.exports = router;

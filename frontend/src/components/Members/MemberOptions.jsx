@@ -8,6 +8,7 @@ import {
 } from "@ant-design/icons";
 
 import { useTeamActions } from "../../hooks/Team/useTeamActions";
+import OptionsButton from "../UI/OptionsButton";
 
 function MemberOptions({ user, dispatch }) {
   const { deleteMember, reinvite } = useTeamActions(dispatch);
@@ -40,23 +41,7 @@ function MemberOptions({ user, dispatch }) {
     },
   ];
 
-  const menu = (
-    <Menu
-      items={dropdownOptions.map(({ key, label, onClick, icon, disabled }) => ({
-        icon,
-        key,
-        label,
-        onClick,
-        disabled,
-      }))}
-    />
-  );
-
-  return (
-    <Dropdown overlay={menu} placement="bottomRight" trigger={["click"]}>
-      <Button type="text" icon={<MenuOutlined />} />
-    </Dropdown>
-  );
+  return OptionsButton({ items: dropdownOptions });
 }
 
 export default React.memo(MemberOptions, (prevProps, nextProps) => {

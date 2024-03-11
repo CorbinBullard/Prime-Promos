@@ -8,7 +8,7 @@ import { useProjectActions } from "../hooks/Projects/useProjectActions";
 import { useProjectsState } from "../hooks/Projects/useProjectsState";
 
 export default function ProjectsPage() {
-  const { projects, dispatch } = useProjectsState();
+  const { projects, currentProject, dispatch } = useProjectsState();
   const { createProject, addUsersToProject } = useProjectActions(dispatch);
 
   const items = [
@@ -26,10 +26,9 @@ export default function ProjectsPage() {
     },
   ];
   const handleCreateProject = async (form) => {
-
-    const newProject = await createProject(form);
-    
+    await createProject(form);
   };
+  
   return (
     <>
       <Tabs

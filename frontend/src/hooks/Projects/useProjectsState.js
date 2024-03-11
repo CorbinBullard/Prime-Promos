@@ -3,7 +3,7 @@ import { ProjectsReducer } from "../../reducers/ProjectsReducer";
 import { csrfFetch } from "../../utils/csrf";
 import { actionTypes } from "../../reducers/ProjectsReducer";
 
-export const useProjectsState = (initialState = {}) => {
+export const useProjectsState = (initialState = {all: {}, current: null}) => {
   const [projects, dispatch] = useReducer(ProjectsReducer, initialState);
   useEffect(() => {
     const fetchData = async () => {
@@ -17,5 +17,5 @@ export const useProjectsState = (initialState = {}) => {
     };
     fetchData();
   }, [dispatch]);
-  return { projects, dispatch };
+  return { projects: projects.all, currentProject: projects.current, dispatch };
 };

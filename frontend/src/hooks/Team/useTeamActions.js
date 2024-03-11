@@ -39,13 +39,7 @@ export const useTeamActions = (dispatch) => {
           return; // Exit early as the operation was not successful
         }
 
-        // If the response is OK, proceed to dispatch the action
-        dispatch({ type: actionTypes.ADD_MEMBER, payload: data });
-        openNotification({
-          message: "Success",
-          description: "Member added successfully",
-          type: "success",
-        });
+        return data;
       } catch (error) {
         // Centralize error logging
         console.error("Error adding member", error);
