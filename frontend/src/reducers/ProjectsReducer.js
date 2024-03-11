@@ -1,3 +1,5 @@
+import { useTeamState } from "../hooks/Team/useTeamState";
+
 export const actionTypes = {
   FETCH_PROJECTS: "FETCH_PROJECTS",
   CREATE_PROJECT: "CREATE_PROJECT_PROJECT",
@@ -7,17 +9,17 @@ export const actionTypes = {
 };
 
 export const ProjectsReducer = (state, action) => {
+  console.log("PREV STATE", state);
+
   switch (action.type) {
     case actionTypes.FETCH_PROJECTS: {
       const newState = { ...state };
       action.payload.forEach((project) => {
         newState[project.id] = project;
       });
-      console.log("New state", newState);
       return newState;
     }
     case actionTypes.CREATE_PROJECT: {
-      console.log("Creating project", action.payload);
       return { ...state, [action.payload.id]: action.payload };
     }
     case actionTypes.UPDATE_PROJECT: {
@@ -29,7 +31,9 @@ export const ProjectsReducer = (state, action) => {
       return newState;
     }
     case actionTypes.ADD_USERS_TO_PROJECT: {
+      // console.log("Adding users to project", action.payload);
       const newState = { ...state };
+      // console.log("NEW STATE", newState);
       newState[action.payload.projectId].Users = [
         ...newState[action.payload.projectId].Users,
         ...action.payload.users,

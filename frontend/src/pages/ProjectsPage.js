@@ -28,11 +28,7 @@ export default function ProjectsPage() {
   const handleCreateProject = async (form) => {
 
     const newProject = await createProject(form);
-    if (newProject) {
-      console.log("New Project", newProject);
-      const { id } = newProject;
-      addUsersToProject(id, form.users);
-    }
+    
   };
   return (
     <>

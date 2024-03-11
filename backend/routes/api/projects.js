@@ -1,4 +1,5 @@
 const router = require("express").Router();
+const { Op } = require("sequelize");
 const { Project, User } = require("../../db/models");
 const { requireOwnerAuth } = require("../../utils/auth");
 
@@ -14,19 +15,43 @@ router.get("/", async (req, res) => {
 // Create Project
 router.post("/", requireOwnerAuth, async (req, res) => {
   console.log("REQ BODY", req.body);
-  const { name } = req.body;
-  const project = await Project.create({ name });
-  const owner = await User.findOne({
-    where: { role: "owner" },
-  });
-  project.addUser(owner);
-  return res.json(project);
+  const { name, users } = req.body;
+
+  try {
+    // Create the project without including users in this step
+    const project = await Project.create({ name });
+
+    // Find users based on IDs provided in the request
+    const dbUsers = await User.findAll({
+      where: {
+        id: {
+          [Op.in]: users, // Corrected usage of Op.in
+        },
+      },
+    });
+
+    // Associate found users with the project
+    await project.addUsers(dbUsers);
+
+    // Retrieve the newly created project with associated users
+    const newProject = await Project.findByPk(project.id, {
+      include: [{ model: User }], // Corrected include syntax
+    });
+
+    return res.json(newProject);
+  } catch (error) {
+    console.error("Error creating project:", error);
+    return res.status(500).send("Server Error");
+  }
 });
 
 // Delete Project
 router.delete("/:projectId", requireOwnerAuth, async (req, res) => {
   const { projectId } = req.params;
   const project = await Project.findByPk(projectId);
+  if (!project) {
+    return res.json({ message: "Project not found" });
+  }
   await project.destroy();
   return res.json({ message: "Project deleted" });
 });
@@ -81,7 +106,6 @@ router.post("/:projectId/users", requireOwnerAuth, async (req, res) => {
 
   return res.json({ message: "Users added to project" }); // Changed message to plural since multiple users can be added
 });
-
 
 // Remove user from project
 router.delete(
