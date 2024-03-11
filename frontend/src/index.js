@@ -10,7 +10,10 @@ import { TeamProvider } from "./context/Members";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 
-restoreCSRF();
+if (process.env.NODE_ENV !== "production") {
+  restoreCSRF();
+}
+
 root.render(
   <React.StrictMode>
     <NotificationProvider>
