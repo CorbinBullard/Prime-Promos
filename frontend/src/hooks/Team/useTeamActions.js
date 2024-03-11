@@ -20,17 +20,21 @@ export const useTeamActions = (dispatch) => {
         });
 
         const data = await response.json();
-
-        // Log the response for debugging purposes
-        if (!response.ok) {
-          console.error("Error adding member", data);
-          // Handle non-OK response
-          const errorMessage = data.error || "An unknown error occurred";
+        if (response.ok) {
+          dispatch({ type: actionTypes.ADD_MEMBER, payload: data });
           openNotification({
-            message: "Error",
-            description: errorMessage,
-            type: "error",
+            message: "Success",
+            description: "Member added successfully",
+            type: "success",
           });
+        } else {
+          if (data) {
+            openNotification({
+              message: "Error",
+              description: data.error,
+              type: "error",
+            });
+          }
           setErrors(data);
           return; // Exit early as the operation was not successful
         }

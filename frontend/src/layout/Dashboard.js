@@ -8,7 +8,9 @@ import {
 } from "@ant-design/icons";
 import { Breadcrumb, Layout, Menu, theme } from "antd";
 import { Outlet, useNavigate } from "react-router-dom";
+import { csrfFetch } from "../utils/csrf";
 const { Header, Content, Footer, Sider } = Layout;
+
 function getItem(label, key, icon, children) {
   return {
     key,
@@ -18,11 +20,14 @@ function getItem(label, key, icon, children) {
   };
 }
 const items = [
+  getItem("My Account", "account", <UserOutlined />, [
+    getItem("Logout", "logout"),
+  ]),
   getItem("Projects", "projects", <PieChartOutlined />),
   getItem("My Team", "members", <TeamOutlined />), // Owner Only
 ];
 
-export default function Dashboard({ user }) {
+export default function Dashboard({ user, logout }) {
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -30,14 +35,18 @@ export default function Dashboard({ user }) {
       navigate("/login");
     }
   }, [user, navigate]);
-  
+
   const [collapsed, setCollapsed] = useState(false);
   const {
     token: { colorBgContainer, borderRadiusLG },
   } = theme.useToken();
 
-  const handleMenuClick = (e) => {
+  const handleMenuClick = async (e) => {
     const { key } = e;
+    if (key === "logout") {
+      logout();
+      return;
+    }
     navigate(`/${key}`);
   };
 
