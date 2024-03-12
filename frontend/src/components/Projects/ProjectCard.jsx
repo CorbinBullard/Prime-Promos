@@ -6,7 +6,7 @@ import OptionsButton from "../UI/OptionsButton";
 import { useProjectActions } from "../../hooks/Projects/useProjectActions";
 
 export default function ProjectCard({ project, dispatch }) {
-  const { selectProject } = useProjectActions(dispatch);
+  const { selectProject, deleteProject } = useProjectActions(dispatch);
   const projectUsers = project.Users;
   const handleProjectSelect = () => {
     console.log(project);
@@ -14,6 +14,11 @@ export default function ProjectCard({ project, dispatch }) {
   const handleProjectUserSelect = (e) => {
     e.stopPropagation();
     console.log(projectUsers);
+  };
+  const handleDeleteProject = () => {
+    if (window.confirm("Are you sure you want to remove this Project?")) {
+      deleteProject(project.id);
+    }
   };
   const projectOptions = [
     {
@@ -26,7 +31,7 @@ export default function ProjectCard({ project, dispatch }) {
       key: "delete",
       label: "Delete Project",
       icon: <DeleteOutlined style={{ color: "red" }} />,
-      onClick: () => console.log("Delete"),
+      onClick: handleDeleteProject,
     },
   ];
   return (

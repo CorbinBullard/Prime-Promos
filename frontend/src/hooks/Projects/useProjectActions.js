@@ -76,7 +76,10 @@ export const useProjectActions = (dispatch) => {
   const updateProject = (project) => {
     dispatch({ type: actionTypes.UPDATE_PROJECT, payload: project });
   };
-  const deleteProject = (projectId) => {
+  const deleteProject = async(projectId) => {
+    const response = await csrfFetch(`/api/projects/${projectId}`, {
+      method: "DELETE",
+    });
     dispatch({ type: actionTypes.DELETE_PROJECT, payload: projectId });
   };
   const selectProject = (project) => {

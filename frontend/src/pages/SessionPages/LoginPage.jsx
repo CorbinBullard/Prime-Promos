@@ -7,20 +7,22 @@ import { csrfFetch } from "../../utils/csrf";
 import { useSession } from "../../context/Session";
 
 export default function LoginPage() {
-  const { user, login } = useSession();
+  const { user, login, error, isLoading } = useSession();
   const navigate = useNavigate();
   const [errors, setErrors] = useState(false);
 
   useEffect(() => {
+    console.log("user", user)
     if (user) {
-      navigate("/");
+      navigate("/projects");
     }
   }, [user, navigate]);
 
   async function handleLogin(form) {
-    login(form)
-      .then(() => navigate("/"))
-      .catch(() => setErrors(true));
+    login(form);
+    if (!isLoading && !error ) {
+      navigate("/projects");
+    }
   }
   return (
     <div
@@ -67,7 +69,7 @@ export default function LoginPage() {
             </Button>
           </Form.Item>
         </Form>
-        {errors && <p style={{ color: "red" }}>Invalid Login</p>}
+        {error && <p style={{ color: "red" }}>Invalid Login</p>}
       </Card>
     </div>
   );

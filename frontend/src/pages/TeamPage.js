@@ -19,6 +19,7 @@ export default function TeamPage() {
           icon={<UserAddOutlined />}
           form={NewMemberForm}
           onSubmit={addMember}
+          title="Invite Member"
         >
           InviteMember
         </FormModalButton>

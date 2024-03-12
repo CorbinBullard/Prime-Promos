@@ -24,6 +24,7 @@ export const SessionProvider = ({ children }) => {
         setIsLoading(false);
       }
     }
+    console.log("getSession");
     getSession();
   }, []);
 
@@ -58,6 +59,7 @@ export const SessionProvider = ({ children }) => {
         method: "DELETE",
       });
       setUser(null);
+      setError(null);
     } catch (error) {
       console.error("Logout error:", error);
       setError(error.message);
