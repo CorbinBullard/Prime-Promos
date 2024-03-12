@@ -20,7 +20,6 @@ const FormModalButton = ({
     form
       .validateFields()
       .then((values) => {
-        console.log("Received values of form: ", values);
         onSubmit(values) // Assuming onSubmit now returns a Promise.
           .then(() => {
             setIsVisible(false); // Move inside then to ensure it happens after async actions.

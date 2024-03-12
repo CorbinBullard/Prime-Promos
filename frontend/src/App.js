@@ -13,11 +13,10 @@ function App() {
   const { isLoading, user } = useSession();
   const navigate = useNavigate();
   useEffect(() => {
-    if (!user) {
+    if (!user && !isLoading) {
       navigate("/login");
     }
-  }
-  , [user, navigate]);
+  }, [user, navigate]);
 
   return (
     // ! Create better loading component

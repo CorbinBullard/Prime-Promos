@@ -1,11 +1,22 @@
 const router = require("express").Router();
 const { Op } = require("sequelize");
 const { Project, User } = require("../../db/models");
-const { requireOwnerAuth } = require("../../utils/auth");
+const { requireOwnerAuth, requireAuth } = require("../../utils/auth");
 
-// Get all projects TESTING ONLY
-router.get("/", async (req, res) => {
+// Get all projects
+router.get("/", requireAuth, async (req, res) => {
+  const { user } = req;
+  const UserJSON = user.toJSON();
+  const { id, role } = UserJSON;
+  console.log("USER", user.toJSON());
+  console.log("ID", id);
+  const where = {};
+  if (role !== "owner" && role !== "admin") {
+    where.id = id;
+  }
+
   const projects = await Project.findAll({
+    where,
     include: User,
     required: false,
   });

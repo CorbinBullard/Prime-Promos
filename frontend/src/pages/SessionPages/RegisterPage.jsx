@@ -35,7 +35,6 @@ export default function RegisterPage() {
     try {
       setLoading(true);
       form.validateFields().then((values) => {
-        console.log("Received values of form: ", values);
         csrfFetch("/api/users/register", {
           method: "POST",
           headers: {
@@ -54,7 +53,6 @@ export default function RegisterPage() {
       setLoading(false);
     }
   };
-  console.log(user);
   return (
     <div
       style={{

@@ -12,7 +12,6 @@ export const useProjectActions = (dispatch) => {
 
   const createProject = useCallback(
     async (project) => {
-      console.log("Creating project", project);
       try {
         const response = await csrfFetch("/api/projects", {
           method: "POST",
@@ -22,7 +21,6 @@ export const useProjectActions = (dispatch) => {
           body: JSON.stringify(project),
         });
         const data = await response.json();
-        console.log("Create project response", response, data);
         if (response.ok) {
           dispatch({ type: actionTypes.CREATE_PROJECT, payload: data });
           openNotification({

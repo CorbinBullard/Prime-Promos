@@ -31,13 +31,13 @@ const items = [
 export default function Dashboard() {
   const { user, logout } = useSession();
   const navigate = useNavigate();
-  console.log("CURRENT USER: ", user);
 
   useEffect(() => {
     if (!user) {
+      console.log("No user found in Dashboard")
       navigate("/login");
     }
-  }, [user, navigate]);
+  }, [user]);
 
   const [collapsed, setCollapsed] = useState(false);
   const {

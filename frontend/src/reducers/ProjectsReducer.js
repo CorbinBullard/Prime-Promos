@@ -35,7 +35,6 @@ export const ProjectsReducer = (state = { all: {}, current: null }, action) => {
     }
     case actionTypes.ADD_USERS_TO_PROJECT: {
       const newState = { ...state };
-      console.log("NEW STATE", newState);
       newState.all[action.payload.projectId].Users = [
         ...newState.all[action.payload.projectId].Users,
         ...action.payload.users,

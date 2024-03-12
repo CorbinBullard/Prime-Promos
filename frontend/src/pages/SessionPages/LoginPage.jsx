@@ -12,7 +12,6 @@ export default function LoginPage() {
   const [errors, setErrors] = useState(false);
 
   useEffect(() => {
-    console.log("user", user)
     if (user) {
       navigate("/projects");
     }

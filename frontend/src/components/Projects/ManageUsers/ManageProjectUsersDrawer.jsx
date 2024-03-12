@@ -24,7 +24,6 @@ export default function ManageProjectUsers({ project, dispatch }) {
     selectedRowKeys,
     onChange: onSelectChange,
   };
-  console.log("Team Members: ", teamMembers);
   return (
     <Drawer open={project !== null} onClose={resetCurrentProject} width={800}>
       <>

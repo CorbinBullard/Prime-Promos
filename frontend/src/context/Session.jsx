@@ -24,7 +24,6 @@ export const SessionProvider = ({ children }) => {
         setIsLoading(false);
       }
     }
-    console.log("getSession");
     getSession();
   }, []);
 

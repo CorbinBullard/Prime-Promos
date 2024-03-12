@@ -38,7 +38,6 @@ export default function MembersTable({ members, dispatch }) {
         },
       ],
       onFilter: (value, record) => {
-        console.log("Record: ", record, "Value: ", value);
         return record.role === value;
       },
       sorter: (a, b) => (a.role === "Admin" && b.role === "User" ? 1 : -1),
@@ -59,7 +58,6 @@ export default function MembersTable({ members, dispatch }) {
         },
       ],
       onFilter: (value, record) => {
-        console.log("Record: ", record, "Value: ", value);
         return record.validated === value;
       },
     },
