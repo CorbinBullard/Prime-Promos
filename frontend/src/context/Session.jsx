@@ -37,7 +37,10 @@ export const SessionProvider = ({ children }) => {
         },
         body: JSON.stringify(form),
       });
-      if (!response.ok) throw new Error("Login failed.");
+      if (!response.ok) {
+        setError("Invalid credentials");
+        return;
+      }
       const data = await response.json();
       setUser(data.user);
     } catch (error) {

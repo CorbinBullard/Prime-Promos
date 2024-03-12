@@ -12,9 +12,12 @@ const Dashboard = lazy(() => import("./layout/Dashboard"));
 function App() {
   const { isLoading, user } = useSession();
   const navigate = useNavigate();
-  if (!user && !isLoading) {
-    navigate("/login");
+  useEffect(() => {
+    if (!user) {
+      navigate("/login");
+    }
   }
+  , [user, navigate]);
 
   return (
     // ! Create better loading component
