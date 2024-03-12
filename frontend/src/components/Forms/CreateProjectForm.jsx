@@ -1,6 +1,7 @@
 import React, { useMemo } from "react";
 import { Form, Input, Select } from "antd";
 import { useTeam } from "../../context/Members";
+import UserDropdown from "../UI/UserDropdown";
 const { Item } = Form;
 
 export default function CreateProjectForm({ form }) {
@@ -26,7 +27,8 @@ export default function CreateProjectForm({ form }) {
           mode="multiple"
           placeholder="Select Users"
           options={userOptions}
-        ></Select>
+        />
+        {/* <UserDropdown options={userOptions} /> */}
       </Item>
     </Form>
   );

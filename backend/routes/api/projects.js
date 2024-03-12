@@ -32,21 +32,23 @@ router.post("/", requireOwnerAuth, async (req, res) => {
     // Create the project without including users in this step
     const project = await Project.create({ name });
 
-    // Find users based on IDs provided in the request
-    const dbUsers = await User.findAll({
-      where: {
-        id: {
-          [Op.in]: users, // Corrected usage of Op.in
+    if (users && users.length) {
+      // Find users based on IDs provided in the request
+      const dbUsers = await User.findAll({
+        where: {
+          id: {
+            [Op.in]: users, // Corrected usage of Op.in
+          },
         },
-      },
-    });
+      });
 
-    // Associate found users with the project
-    await project.addUsers(dbUsers);
+      // Associate found users with the project
+      await project.addUsers(dbUsers);
+    }
 
     // Retrieve the newly created project with associated users
     const newProject = await Project.findByPk(project.id, {
-      include: [{ model: User }], // Corrected include syntax
+      include: [{ model: User, required: false }], // Corrected include syntax
     });
 
     return res.json(newProject);

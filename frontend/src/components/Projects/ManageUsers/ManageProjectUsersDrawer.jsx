@@ -1,4 +1,4 @@
-import { Drawer, Table } from "antd";
+import { Drawer, List, Modal, Table, Tabs } from "antd";
 import React, { useState } from "react";
 import { useTeam } from "../../../context/Members";
 import { useProjectActions } from "../../../hooks/Projects/useProjectActions";
@@ -6,30 +6,28 @@ import { useProjectActions } from "../../../hooks/Projects/useProjectActions";
 export default function ManageProjectUsers({ project, dispatch }) {
   const { teamMembers } = useTeam();
   const { resetCurrentProject } = useProjectActions(dispatch);
-  const [selectedRowKeys, setSelectedRowKeys] = useState([]);
-  const tableColumns = [
+  const [selectedTab, setSelectedTab] = useState("current");
+  const tabList = [
     {
-      title: "User",
-      dataIndex: "user",
+      key: "current",
+      label: "Project Users",
     },
     {
-      title: "Role",
-      dataIndex: "role",
+      key: "members",
+      label: "Team Members",
     },
   ];
-  const onSelectChange = (selectedRowKeys) => {
-    setSelectedRowKeys(selectedRowKeys);
-  };
-  const rowSelection = {
-    selectedRowKeys,
-    onChange: onSelectChange,
-  };
   return (
-    <Drawer open={project !== null} onClose={resetCurrentProject} width={800}>
+    <Modal
+      open={project !== null}
+      onCancel={resetCurrentProject}
+      width={600}
+    >
       <>
-        {project && <h1>{project.name}</h1>}
-        <Table columns={tableColumns} />
+        <Tabs items={tabList} />
+        <p>Choose who can access this project</p>
+        {/* <List dataSource={}/> */}
       </>
-    </Drawer>
+    </Modal>
   );
 }

@@ -5,6 +5,7 @@ import LoginPage from "./pages/SessionPages/LoginPage";
 import ProjectsPage from "./pages/ProjectsPage";
 import { csrfFetch } from "./utils/csrf";
 import { useSession } from "./context/Session";
+import Loader from "./components/UI/Loader";
 
 const RegisterPage = lazy(() => import("./pages/SessionPages/RegisterPage"));
 const Dashboard = lazy(() => import("./layout/Dashboard"));
@@ -20,7 +21,7 @@ function App() {
 
   return (
     // ! Create better loading component
-    <Suspense fallback={<div>Loading...</div>}>
+    <Suspense fallback={<Loader />}>
       {!isLoading && (
         <Routes>
           <Route path="/login" element={<LoginPage />} />

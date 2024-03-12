@@ -1,4 +1,4 @@
-import { Avatar, Card } from "antd";
+import { Avatar, Card, Flex } from "antd";
 import { DeleteOutlined, UserSwitchOutlined } from "@ant-design/icons";
 import React from "react";
 import UserIcon from "../Members/UserIcon";
@@ -41,7 +41,16 @@ export default function ProjectCard({ project, dispatch }) {
       hoverable
       onClick={handleProjectSelect}
       style={{ width: 300 }}
-      extra={<OptionsButton items={projectOptions} />}
+      extra={
+        <Flex align="center" gap={2}>
+          <Avatar.Group size="small" maxCount={4}>
+            {projectUsers.map((user) => (
+              <UserIcon key={user.id} user={user} />
+            ))}
+          </Avatar.Group>
+          <OptionsButton items={projectOptions} />
+        </Flex>
+      }
       // actions={[<div onClick={handleProjectUserSelect}>View Users</div>]}
     />
   );
