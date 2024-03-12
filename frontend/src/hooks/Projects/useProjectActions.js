@@ -71,14 +71,60 @@ export const useProjectActions = (dispatch) => {
       console.error("Error adding users to project", error);
     }
   };
+  const removeUserFromProject = async (projectId, userId) => {
+    try {
+      const response = await csrfFetch(
+        `/api/projects/${projectId}/users/${userId}`,
+        {
+          method: "DELETE",
+        }
+      );
+      const data = await response.json();
+      if (response.ok) {
+        dispatch({
+          type: actionTypes.REMOVE_USER_FROM_PROJECT,
+          payload: { projectId, userId },
+        });
+        openNotification({
+          message: "Success",
+          description: "Member removed successfully",
+          type: "success",
+        });
+      } else {
+        if (data) {
+          openNotification({
+            message: "Error",
+            description: data.error,
+            type: "error",
+          });
+        }
+      }
+    } catch (error) {
+      console.error("Error removing user from project", error);
+    }
+  };
   const updateProject = (project) => {
     dispatch({ type: actionTypes.UPDATE_PROJECT, payload: project });
   };
-  const deleteProject = async(projectId) => {
+  const deleteProject = async (projectId) => {
     const response = await csrfFetch(`/api/projects/${projectId}`, {
       method: "DELETE",
     });
-    dispatch({ type: actionTypes.DELETE_PROJECT, payload: projectId });
+    const data = await response.json();
+    if (response.ok) {
+      openNotification({
+        message: "Success",
+        description: "Project deleted successfully",
+        type: "success",
+      });
+      dispatch({ type: actionTypes.DELETE_PROJECT, payload: projectId });
+    } else {
+      openNotification({
+        message: "Error",
+        description: data.error,
+        type: "error",
+      });
+    }
   };
   const selectProject = (project) => {
     dispatch({ type: actionTypes.LOAD_CURRENT_PROJECT, payload: project });
@@ -93,6 +139,7 @@ export const useProjectActions = (dispatch) => {
     deleteProject,
     addUsersToProject,
     selectProject,
-    resetCurrentProject
+    resetCurrentProject,
+    removeUserFromProject,
   };
 };

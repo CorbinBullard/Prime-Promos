@@ -6,7 +6,7 @@ import FormModalButton from "../components/UI/FormModalButton";
 import CreateProjectForm from "../components/Forms/CreateProjectForm";
 import { useProjectActions } from "../hooks/Projects/useProjectActions";
 import { useProjectsState } from "../hooks/Projects/useProjectsState";
-import ManageProjectUsers from "../components/Projects/ManageUsers/ManageProjectUsersDrawer";
+import ManageProjectUsers from "../components/Projects/ManageProject";
 
 export default function ProjectsPage() {
   const { projects, currentProject, dispatch } = useProjectsState();
@@ -49,6 +49,7 @@ export default function ProjectsPage() {
       />
       <ProjectCardsContainer projects={projects} dispatch={dispatch} />
       {/* Drawer */}
+
       <ManageProjectUsers project={currentProject} dispatch={dispatch} />
     </>
   );

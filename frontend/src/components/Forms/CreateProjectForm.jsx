@@ -6,12 +6,7 @@ const { Item } = Form;
 
 export default function CreateProjectForm({ form }) {
   const { teamMembers } = useTeam();
-  const userOptions = useMemo(() => {
-    return Object.values(teamMembers).map((member) => ({
-      label: `${member.firstName} ${member.lastName}`,
-      value: member.id,
-    }));
-  }, [teamMembers]);
+  
   return (
     <Form form={form}>
       <Item
@@ -21,15 +16,16 @@ export default function CreateProjectForm({ form }) {
       >
         <Input />
       </Item>
-      <Item name="users" label="Users">
+      {/* This is the UserDropdown component */}
+      <UserDropdown options={teamMembers} />
+      {/* <Item name="users" label="Users">
         <Select
           defaultValue={[]}
           mode="multiple"
           placeholder="Select Users"
           options={userOptions}
         />
-        {/* <UserDropdown options={userOptions} /> */}
-      </Item>
+      </Item> */}
     </Form>
   );
 }

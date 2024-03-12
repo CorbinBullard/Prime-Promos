@@ -1,13 +1,28 @@
-import { Select } from 'antd';
-import React from 'react'
+import { Form, Select } from "antd";
+import React, { useMemo } from "react";
 
-export default function UserDropdown({ options, defaultValue, mode, placeholder}) {
+export default function UserDropdown({
+  options,
+  defaultValue,
+  mode,
+  placeholder,
+  label
+}) {
+  const userOptions = useMemo(() => {
+    return Object.values(options).map((member) => ({
+      label: `${member.firstName} ${member.lastName}`,
+      value: member.id,
+    }));
+  }, [options]);
+
   return (
-    <Select
-      defaultValue={defaultValue || []}
-      mode={mode || "multiple"}
-      placeholder={placeholder || "Select Users"}
-      options={options}
-    />
+    <Form.Item name="users" label={label || "Users"}>
+      <Select
+        defaultValue={defaultValue || []}
+        mode={mode || "multiple"}
+        placeholder={placeholder || "Select Users"}
+        options={userOptions}
+      />
+    </Form.Item>
   );
 }
