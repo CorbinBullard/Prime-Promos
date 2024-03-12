@@ -24,15 +24,19 @@ export default function ManageProject({ project, dispatch }) {
       width={600}
       footer={null}
     >
-      <>
-        <Tabs
-          items={tabList}
-          onChange={(tab) => setSelectedTab(tab)}
-          defaultActiveKey="members"
-        />
+      {project && (
+        <div>
+          <Tabs
+            items={tabList}
+            onChange={(tab) => setSelectedTab(tab)}
+            defaultActiveKey="members"
+          />
 
-        {selectedTab === "members" && <ManageMembers project={project} />}
-      </>
+          {selectedTab === "members" && (
+            <ManageMembers project={project} dispatch={dispatch} />
+          )}
+        </div>
+      )}
     </Drawer>
   );
 }

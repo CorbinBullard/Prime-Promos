@@ -8,6 +8,7 @@ import NotificationProvider from "./context/Notification";
 import { restoreCSRF } from "./utils/csrf";
 import { TeamProvider } from "./context/Members";
 import { SessionProvider } from "./context/Session";
+import { ModalProvider } from "./context/useModal";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 
@@ -17,15 +18,17 @@ if (process.env.NODE_ENV !== "production") {
 
 root.render(
   <React.StrictMode>
-    <SessionProvider>
-      <NotificationProvider>
-        <TeamProvider>
-          <Router>
-            <App />
-          </Router>
-        </TeamProvider>
-      </NotificationProvider>
-    </SessionProvider>
+    <ModalProvider>
+      <SessionProvider>
+        <NotificationProvider>
+          <TeamProvider>
+            <Router>
+              <App />
+            </Router>
+          </TeamProvider>
+        </NotificationProvider>
+      </SessionProvider>
+    </ModalProvider>
   </React.StrictMode>
 );
 

@@ -9,9 +9,11 @@ import {
 
 import OptionsButton from "../UI/OptionsButton";
 import { useTeam } from "../../context/Members";
+import { useModal } from "../../context/useModal";
 
 function MemberOptions({ user, dispatch }) {
   const { deleteMember, reinvite } = useTeam();
+  const { openModal} = useModal()
 
   const handleDelete = (id) => {
     if (window.confirm("Are you sure you want to remove this member?")) {
@@ -19,12 +21,16 @@ function MemberOptions({ user, dispatch }) {
     }
   };
 
+  const handleEditUser = () => {
+
+  };
+
   const dropdownOptions = [
     {
       key: "edit",
-      label: "Change Permissions",
+      label: "Edit User",
       icon: <EditOutlined style={{ color: "skyblue" }} />,
-      onClick: () => console.log("Edit"),
+      onClick: handleEditUser,
     },
     {
       key: "resend",
@@ -43,10 +49,4 @@ function MemberOptions({ user, dispatch }) {
 
   return OptionsButton({ items: dropdownOptions });
 }
-
-export default React.memo(MemberOptions, (prevProps, nextProps) => {
-  return (
-    prevProps.user.id === nextProps.user.id &&
-    prevProps.user.validated === nextProps.user.validated
-  );
-});
+export default MemberOptions;

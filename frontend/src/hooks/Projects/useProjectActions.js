@@ -71,6 +71,7 @@ export const useProjectActions = (dispatch) => {
       console.error("Error adding users to project", error);
     }
   };
+  
   const removeUserFromProject = async (projectId, userId) => {
     try {
       const response = await csrfFetch(

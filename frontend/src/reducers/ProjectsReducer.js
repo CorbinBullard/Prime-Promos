@@ -6,7 +6,7 @@ export const actionTypes = {
   UPDATE_PROJECT: "UPDATE_PROJECT",
   DELETE_PROJECT: "DELETE_PROJECT",
   ADD_USERS_TO_PROJECT: "ADD_USERS_TO_PROJECT",
-  REMOVE_USERS_FROM_PROJECT: "REMOVE_USERS_FROM_PROJECT",
+  REMOVE_USER_FROM_PROJECT: "REMOVE_USER_FROM_PROJECT",
   LOAD_CURRENT_PROJECT: "LOAD_CURRENT_PROJECT",
   RESET_CURRENT_PROJECT: "RESET_CURRENT_PROJECT",
 };
@@ -49,6 +49,19 @@ export const ProjectsReducer = (state = { all: {}, current: null }, action) => {
     case actionTypes.RESET_CURRENT_PROJECT: {
       const newState = { ...state };
       newState.current = null;
+      return newState;
+    }
+    case actionTypes.REMOVE_USER_FROM_PROJECT: {
+      const newState = { ...state };
+      newState.all[action.payload.projectId].Users = newState.all[
+        action.payload.projectId
+      ].Users.filter((user) => user.id !== action.payload.userId);
+      newState.current = {
+        ...newState.current,
+        Users: newState.current.Users.filter(
+          (user) => user.id !== action.payload.userId
+        ),
+      };
       return newState;
     }
     default:

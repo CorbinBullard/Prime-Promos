@@ -6,7 +6,7 @@ export default function UserDropdown({
   defaultValue,
   mode,
   placeholder,
-  label
+  label,
 }) {
   const userOptions = useMemo(() => {
     return Object.values(options).map((member) => ({
@@ -16,9 +16,8 @@ export default function UserDropdown({
   }, [options]);
 
   return (
-    <Form.Item name="users" label={label || "Users"}>
+    <Form.Item name="users" label={label || ""}>
       <Select
-        defaultValue={defaultValue || []}
         mode={mode || "multiple"}
         placeholder={placeholder || "Select Users"}
         options={userOptions}

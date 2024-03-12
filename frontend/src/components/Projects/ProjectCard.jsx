@@ -11,7 +11,7 @@ export default function ProjectCard({ project, dispatch }) {
   const handleProjectSelect = () => {
     console.log(project);
   };
-  const handleProjectUserSelect = (e) => {
+  const handleProjectOptionsSelect = (e) => {
     e.stopPropagation();
     console.log(projectUsers);
   };
