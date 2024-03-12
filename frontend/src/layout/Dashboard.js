@@ -9,6 +9,7 @@ import {
 import { Breadcrumb, Layout, Menu, theme } from "antd";
 import { Outlet, useNavigate } from "react-router-dom";
 import { csrfFetch } from "../utils/csrf";
+import { useSession } from "../context/Session";
 const { Header, Content, Footer, Sider } = Layout;
 
 function getItem(label, key, icon, children) {
@@ -27,8 +28,10 @@ const items = [
   getItem("My Team", "members", <TeamOutlined />), // Owner Only
 ];
 
-export default function Dashboard({ user, logout }) {
+export default function Dashboard() {
+  const { user, logout } = useSession();
   const navigate = useNavigate();
+  console.log("CURRENT USER: ", user);
 
   useEffect(() => {
     if (!user) {

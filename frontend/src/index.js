@@ -7,6 +7,7 @@ import { BrowserRouter as Router } from "react-router-dom";
 import NotificationProvider from "./context/Notification";
 import { restoreCSRF } from "./utils/csrf";
 import { TeamProvider } from "./context/Members";
+import { SessionProvider } from "./context/Session";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 
@@ -16,13 +17,15 @@ if (process.env.NODE_ENV !== "production") {
 
 root.render(
   <React.StrictMode>
-    <NotificationProvider>
-      <TeamProvider>
-        <Router>
-          <App />
-        </Router>
-      </TeamProvider>
-    </NotificationProvider>
+    <SessionProvider>
+      <NotificationProvider>
+        <TeamProvider>
+          <Router>
+            <App />
+          </Router>
+        </TeamProvider>
+      </NotificationProvider>
+    </SessionProvider>
   </React.StrictMode>
 );
 

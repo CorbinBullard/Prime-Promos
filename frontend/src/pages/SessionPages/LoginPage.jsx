@@ -4,7 +4,10 @@ import { LockOutlined } from "@ant-design/icons";
 import { useNavigate } from "react-router-dom";
 import { csrfFetch } from "../../utils/csrf";
 
-export default function LoginPage({ user, login }) {
+import { useSession } from "../../context/Session";
+
+export default function LoginPage() {
+  const { user, login } = useSession();
   const navigate = useNavigate();
   const [errors, setErrors] = useState(false);
 
@@ -15,20 +18,9 @@ export default function LoginPage({ user, login }) {
   }, [user, navigate]);
 
   async function handleLogin(form) {
-    const response = await csrfFetch("/api/session", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(form),
-    });
-    if (response.ok) {
-      const data = await response.json();
-      login(data.user);
-      navigate("/");
-    } else {
-      setErrors(true);
-    }
+    login(form)
+      .then(() => navigate("/"))
+      .catch(() => setErrors(true));
   }
   return (
     <div

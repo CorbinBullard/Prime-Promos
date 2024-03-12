@@ -9,7 +9,7 @@ const TeamContext = createContext();
 export const TeamProvider = ({ children }) => {
   const { teamMembers, dispatch } = useTeamState();
   const teamActions = useTeamActions(dispatch);
-    console.log("Team Actions: ", teamActions);
+    
   const value = {
     teamMembers,
     ...teamActions,

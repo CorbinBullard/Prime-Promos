@@ -10,13 +10,6 @@ import { useTeam } from "../context/Members";
 
 export default function TeamPage() {
   const { teamMembers, dispatch, addMember } = useTeam();
-  // const { addMember } = useTeamActions(dispatch);
-  const [openModal, setOpenModal] = useState(false);
-
-  const handleInvite = (values) => {
-    addMember(values);
-    setOpenModal(false);
-  };
 
   return (
     <div>
