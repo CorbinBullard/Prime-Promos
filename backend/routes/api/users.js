@@ -75,6 +75,7 @@ router.post("/invite", requireOwnerAuth, async (req, res) => {
     return res.status(500).json({ error: "Failed to send invitation email" });
   }
 });
+
 // Resend invitation
 router.put("/invite/:id", requireOwnerAuth, async (req, res) => {
   const { id } = req.params;
