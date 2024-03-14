@@ -3,7 +3,7 @@ import { useNotification } from "../../context/Notification";
 import { actionTypes } from "../../reducers/ProjectsReducer";
 import { csrfFetch } from "../../utils/csrf";
 import { useTeamState } from "../Team/useTeamState";
-import { useTeam } from "../../context/Members";
+import { useTeam } from "../../context/useTeam";
 
 export const useProjectActions = (dispatch) => {
   const { teamMembers } = useTeam();
@@ -71,7 +71,7 @@ export const useProjectActions = (dispatch) => {
       console.error("Error adding users to project", error);
     }
   };
-  
+
   const removeUserFromProject = async (projectId, userId) => {
     try {
       const response = await csrfFetch(

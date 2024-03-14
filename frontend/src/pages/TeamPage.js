@@ -6,7 +6,7 @@ import { useTeamState } from "../hooks/Team/useTeamState";
 import { useTeamActions } from "../hooks/Team/useTeamActions";
 import FormModalButton from "../components/UI/FormModalButton";
 import NewMemberForm from "../components/Forms/NewMemberForm";
-import { useTeam } from "../context/Members";
+import { useTeam } from "../context/useTeam";
 
 export default function TeamPage() {
   const { teamMembers, dispatch, addMember } = useTeam();

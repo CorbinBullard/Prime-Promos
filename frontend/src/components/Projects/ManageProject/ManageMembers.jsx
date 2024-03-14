@@ -4,7 +4,7 @@ import UserIcon from "../../Members/UserIcon";
 import OptionsButton from "../../UI/OptionsButton";
 import { CloseOutlined } from "@ant-design/icons";
 import UserDropdown from "../../UI/UserDropdown";
-import { useTeam } from "../../../context/Members";
+import { useTeam } from "../../../context/useTeam";
 import { Form } from "antd";
 import { useProjectActions } from "../../../hooks/Projects/useProjectActions";
 

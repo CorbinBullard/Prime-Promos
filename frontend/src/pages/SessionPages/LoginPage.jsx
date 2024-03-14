@@ -13,14 +13,14 @@ export default function LoginPage() {
 
   useEffect(() => {
     if (user) {
-      navigate("/projects");
+      navigate("/");
     }
   }, [user, navigate]);
 
   async function handleLogin(form) {
     login(form);
-    if (!isLoading && !error ) {
-      navigate("/projects");
+    if (!isLoading && !error) {
+      navigate("/");
     }
   }
   return (

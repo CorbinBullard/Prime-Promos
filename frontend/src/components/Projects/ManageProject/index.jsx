@@ -1,6 +1,6 @@
 import { Drawer, List, Modal, Table, Tabs } from "antd";
 import React, { useEffect, useState } from "react";
-import { useTeam } from "../../../context/Members";
+import { useTeam } from "../../../context/useTeam";
 import { useProjectActions } from "../../../hooks/Projects/useProjectActions";
 import UserDropdown from "../../UI/UserDropdown";
 import ManageMembers from "./ManageMembers";

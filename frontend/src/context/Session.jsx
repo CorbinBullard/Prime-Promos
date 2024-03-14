@@ -1,35 +1,32 @@
-import React, { createContext, useContext, useEffect, useState } from "react";
+import React, { createContext, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { csrfFetch } from "../utils/csrf";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
 const SessionContext = createContext();
 
 export const SessionProvider = ({ children }) => {
-  const [user, setUser] = useState(null);
-  const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState(null);
+  const queryClient = useQueryClient();
 
-  useEffect(() => {
-    async function getSession() {
-      setIsLoading(true);
-      try {
-        const response = await csrfFetch("/api/session");
-        if (!response.ok) throw new Error("Network response was not ok.");
-        const data = await response.json();
-        setUser(data.user);
-      } catch (error) {
-        console.error("Failed to fetch session:", error);
-        setError(error.message);
-      } finally {
-        setIsLoading(false);
-      }
-    }
-    getSession();
-  }, []);
+  // Fetch user session
+  const {
+    data: user,
+    isLoading: isLoadingSession,
+    error: sessionError,
+  } = useQuery({
+    queryKey: ["session"],
+    queryFn: async () => {
+      const response = await csrfFetch("/api/session");
+      if (!response.ok) throw new Error("Network response was not ok.");
+      return response.json();
+    },
+    // You can specify options such as cacheTime, staleTime, refetchOnWindowFocus, etc. here
+  });
 
-  const login = async (form) => {
-    setIsLoading(true);
-    try {
+  // Login mutation
+  const loginMutation = useMutation({
+    mutationKey: ["login"],
+    mutationFn: async (form) => {
       const response = await csrfFetch("/api/session", {
         method: "POST",
         headers: {
@@ -37,38 +34,49 @@ export const SessionProvider = ({ children }) => {
         },
         body: JSON.stringify(form),
       });
-      if (!response.ok) {
-        setError("Invalid credentials");
-        return;
-      }
-      const data = await response.json();
-      setUser(data.user);
-    } catch (error) {
-      console.error("Login error:", error);
-      setError(error.message);
-    } finally {
-      setIsLoading(false);
-    }
-  };
+      if (!response.ok) throw new Error("Invalid credentials");
+      return response.json();
+    },
+    onSuccess: (data) => {
+      queryClient.setQueryData(["session"], data);
+      // navigate("/dashboard"); // or any post-login route
+    },
+    // onError to handle login errors specifically can be defined here
+  });
 
-  const logout = async () => {
-    setIsLoading(true);
-    try {
-      await csrfFetch("/api/session", {
+  const login = (form) => loginMutation.mutate(form);
+
+  // Logout mutation
+  const logoutMutation = useMutation({
+    mutationKey: ["logout"],
+    mutationFn: async () => {
+      const response = await csrfFetch("/api/session", {
         method: "DELETE",
       });
-      setUser(null);
-      setError(null);
-    } catch (error) {
-      console.error("Logout error:", error);
-      setError(error.message);
-    } finally {
-      setIsLoading(false);
-    }
-  };
+      if (!response.ok) throw new Error("Network response was not ok.");
+    },
+    onSuccess: () => {
+      queryClient.removeQueries(["session"], { exact: true });
+      // navigate("/login"); // or any post-logout route
+    },
+    // onError to handle logout errors specifically can be defined here
+  });
+
+  const logout = () => logoutMutation.mutate();
 
   return (
-    <SessionContext.Provider value={{ user, login, logout, isLoading, error }}>
+    <SessionContext.Provider
+      value={{
+        user: user?.user,
+        isLoading:
+          isLoadingSession ||
+          loginMutation.isLoading ||
+          logoutMutation.isLoading,
+        error: sessionError || loginMutation.error || logoutMutation.error,
+        login,
+        logout,
+      }}
+    >
       {children}
     </SessionContext.Provider>
   );
