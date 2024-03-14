@@ -1,5 +1,5 @@
 import { Button, Tabs } from "antd";
-import React, { useState } from "react";
+import React, { useMemo, useState } from "react";
 import ProjectCardsContainer from "../components/Projects/ProjectCardsContainer";
 import { FolderAddOutlined } from "@ant-design/icons";
 import FormModalButton from "../components/UI/FormModalButton";
@@ -8,8 +8,14 @@ import ManageProjectDrawer from "../components/Projects/ManageProjectDrawer";
 import { useProjects } from "../hooks/useProjects";
 
 export default function ProjectsPage() {
-  const { projects, createProject, isLoading } = useProjects();
-  const [selectedProjected, setSelectedProject] = useState(null);
+  const {
+    projects,
+    createProject,
+    isLoading,
+    selectProject,
+    currentProjectId,
+    clearCurrentProject,
+  } = useProjects();
 
   const items = [
     {
@@ -26,17 +32,19 @@ export default function ProjectsPage() {
     },
   ];
 
+  const projectsObj = useMemo(() => {
+    if (!projects) return {};
+    return projects?.reduce((acc, project) => {
+      acc[project.id] = project
+      return acc;
+    }, {});
+  }
+  , [projects]);
+
   const handleCreateProject = async (form) => {
     await createProject(form);
   };
-
-  const handleSelectProject = (project) => {
-    setSelectedProject(project);
-  };
-  const handleDeselectProject = () => {
-    setSelectedProject(null);
-  };
-  console.log("project", selectedProjected);
+  
   return (
     <>
       {!isLoading && (
@@ -58,11 +66,11 @@ export default function ProjectsPage() {
           />
           <ProjectCardsContainer
             projects={projects}
-            selectProject={handleSelectProject}
+            selectProject={selectProject}
           />
           <ManageProjectDrawer
-            project={selectedProjected}
-            deselectProject={handleDeselectProject}
+            project={projectsObj[currentProjectId] || null}
+            deselectProject={clearCurrentProject}
           />
         </>
       )}

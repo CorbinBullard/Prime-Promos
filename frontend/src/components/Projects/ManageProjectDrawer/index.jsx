@@ -13,7 +13,7 @@ export default function index({ project, deselectProject }) {
 
   return (
     <Drawer open={!!project} onClose={deselectProject} width={500}>
-      <Tabs items={tabItems} />
+      {project && <Tabs items={tabItems} />}
     </Drawer>
   );
 }

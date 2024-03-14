@@ -6,7 +6,7 @@ import { useCallback, useState } from "react";
 export function useProjects() {
   const queryClient = useQueryClient();
   const openNotification = useNotification();
-  const [currentProject, setCurrentProject] = useState(null);
+  const [currentProjectId, setCurrentProjectId] = useState(null);
 
   // Fetch projects
   const {
@@ -135,13 +135,19 @@ export function useProjects() {
       }
       return response.json();
     },
-    onSuccess: () => {
+    onSuccess: ({ users }) => {
       queryClient.invalidateQueries(["projects"]);
       openNotification({
         message: "Success",
         description: "Members added successfully",
         type: "success",
       });
+      if (currentProjectId) {
+        setCurrentProjectId((prev) => ({
+          ...prev,
+          Users: [...prev.Users, ...users],
+        }));
+      }
     },
     onError: (error) => {
       openNotification({
@@ -152,7 +158,6 @@ export function useProjects() {
     },
     // onSuccess, onError similar to above
   });
-
   // Remove user from project
   const removeUserFromProjectMutation = useMutation({
     mutationKey: ["removeUserFromProject"],
@@ -171,7 +176,7 @@ export function useProjects() {
       return response.json();
     },
     // onSuccess, onError similar to above
-    onSuccess: () => {
+    onSuccess: ({ userId }) => {
       queryClient.invalidateQueries(["projects"]);
       openNotification({
         message: "Success",
@@ -188,6 +193,12 @@ export function useProjects() {
     },
   });
 
+  const selectProject = useCallback(
+    (project) => setCurrentProjectId(project.id),
+    []
+  );
+  const clearCurrentProject = useCallback(() => setCurrentProjectId(null), []);
+
   // Function wrappers for mutations
   const createProject = (project) => createProjectMutation.mutate(project);
   const updateProject = ({ projectId, project }) =>
@@ -200,7 +211,7 @@ export function useProjects() {
 
   return {
     projects,
-    currentProject,
+    currentProjectId,
     projectsError,
     projectsLoading,
     createProject,
@@ -208,5 +219,7 @@ export function useProjects() {
     deleteProject,
     addUsersToProject,
     removeUserFromProject,
+    selectProject,
+    clearCurrentProject,
   };
 }
