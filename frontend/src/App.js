@@ -10,6 +10,7 @@ import Loader from "./components/UI/Loader";
 
 const RegisterPage = lazy(() => import("./pages/SessionPages/RegisterPage"));
 const Dashboard = lazy(() => import("./layout/Dashboard"));
+const ProjectDetailsPage = lazy(() => import("./pages/ProjectDetailsPage"));
 
 function App() {
   const { isLoading, user } = useSession();
@@ -31,7 +32,7 @@ function App() {
           <Route path="/" element={<Dashboard />}>
             <Route path="members" element={<TeamPage />} />
             <Route path="projects" element={<ProjectsPage />} />
-            <Route path="projects/:projectId" element={<></>} />
+            <Route path="projects/:projectId" element={<ProjectDetailsPage />} />
           </Route>
           <Route path="/register/:token" element={<RegisterPage />} />
         </Routes>
