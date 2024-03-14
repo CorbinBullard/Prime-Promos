@@ -3,10 +3,10 @@ import { DeleteOutlined, UserSwitchOutlined } from "@ant-design/icons";
 import React from "react";
 import UserIcon from "../Members/UserIcon";
 import OptionsButton from "../UI/OptionsButton";
-import { useProjectActions } from "../../hooks/Projects/useProjectActions";
+import { useProjects } from "../../hooks/useProjects";
 
-export default function ProjectCard({ project, dispatch }) {
-  const { selectProject, deleteProject } = useProjectActions(dispatch);
+export default function ProjectCard({ project }) {
+  const { selectProject, deleteProject } = useProjects();
   const projectUsers = project.Users;
   const handleProjectSelect = () => {
     console.log(project);
@@ -25,7 +25,7 @@ export default function ProjectCard({ project, dispatch }) {
       key: "users",
       label: "Manage Users",
       icon: <UserSwitchOutlined style={{ color: "skyblue" }} />,
-      onClick: () => selectProject(project),
+      onClick: () => selectProject(project.id),
     },
     {
       key: "delete",

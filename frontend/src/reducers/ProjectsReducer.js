@@ -1,5 +1,3 @@
-import { useTeamState } from "../hooks/Team/useTeamState";
-
 export const actionTypes = {
   FETCH_PROJECTS: "FETCH_PROJECTS",
   CREATE_PROJECT: "CREATE_PROJECT_PROJECT",

@@ -37,21 +37,7 @@ export const TeamProvider = ({ children }) => {
       }
       return response.json();
     },
-    onSuccess: (data) => {
-      queryClient.invalidateQueries(["teamMembers"]);
-      openNotification({
-        message: "Success",
-        description: "Member added successfully",
-        type: "success",
-      });
-    },
-    onError: (error) => {
-      openNotification({
-        message: "Error",
-        description: error.message,
-        type: "error",
-      });
-    },
+     
   });
 
   const reinviteMutation = useMutation({
@@ -112,6 +98,12 @@ export const TeamProvider = ({ children }) => {
     addMember: addMemberMutation.mutate,
     reinvite: reinviteMutation.mutate,
     deleteMember: deleteMemberMutation.mutate,
+    errors: {
+      fetchError: teamMembersQuery.error,
+      addMemberError: addMemberMutation.error,
+      reinviteError: reinviteMutation.error,
+      deleteMemberError: deleteMemberMutation.error,
+    },
   };
 
   return <TeamContext.Provider value={value}>{children}</TeamContext.Provider>;

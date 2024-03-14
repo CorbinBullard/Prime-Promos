@@ -99,6 +99,7 @@ router.get("/:projectId/users", async (req, res) => {
   });
   res.json(project.Users);
 });
+
 // Add SINGLE user to project BY USER ID
 router.post("/:projectId/users/:userId", requireOwnerAuth, async (req, res) => {
   const { projectId, userId } = req.params;

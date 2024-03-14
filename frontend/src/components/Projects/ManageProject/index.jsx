@@ -1,14 +1,14 @@
 import { Drawer, List, Modal, Table, Tabs } from "antd";
 import React, { useEffect, useState } from "react";
 import { useTeam } from "../../../context/useTeam";
-import { useProjectActions } from "../../../hooks/Projects/useProjectActions";
 import UserDropdown from "../../UI/UserDropdown";
 import ManageMembers from "./ManageMembers";
+import { useProjects } from "../../../hooks/useProjects";
 
-export default function ManageProject({ project, dispatch }) {
+export default function ManageProject({ project }) {
   const { teamMembers } = useTeam();
-  const { resetCurrentProject, addUsersToProject } =
-    useProjectActions(dispatch);
+  const { resetCurrentProject, addUsersToProject } = useProjects();
+
   const [selectedTab, setSelectedTab] = useState("members");
 
   const tabList = [
@@ -17,9 +17,10 @@ export default function ManageProject({ project, dispatch }) {
       label: "Project Members",
     },
   ];
+  console.log(project, !!project, "project");
   return (
     <Drawer
-      open={project !== null}
+      open={!!project}
       onClose={resetCurrentProject}
       width={600}
       footer={null}
@@ -32,9 +33,7 @@ export default function ManageProject({ project, dispatch }) {
             defaultActiveKey="members"
           />
 
-          {selectedTab === "members" && (
-            <ManageMembers project={project} dispatch={dispatch} />
-          )}
+          {selectedTab === "members" && <ManageMembers project={project} />}
         </div>
       )}
     </Drawer>

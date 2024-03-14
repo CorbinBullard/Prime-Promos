@@ -6,12 +6,11 @@ import { CloseOutlined } from "@ant-design/icons";
 import UserDropdown from "../../UI/UserDropdown";
 import { useTeam } from "../../../context/useTeam";
 import { Form } from "antd";
-import { useProjectActions } from "../../../hooks/Projects/useProjectActions";
+import { useProjects } from "../../../hooks/useProjects";
 
-export default function ManageMembers({ project, dispatch }) {
+export default function ManageMembers({ project }) {
   const { teamMembers } = useTeam();
-  const { addUsersToProject, removeUserFromProject } =
-    useProjectActions(dispatch);
+  const { addUsersToProject, removeUserFromProject } = useProjects()
   const { Users: users } = project;
 
   // Convert teamMembers object to an array for filtering
