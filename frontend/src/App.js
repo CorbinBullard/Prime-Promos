@@ -1,5 +1,6 @@
 import { Route, Routes, useNavigate } from "react-router-dom";
 import { Suspense, lazy, useEffect, useState } from "react";
+import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import TeamPage from "./pages/TeamPage";
 import LoginPage from "./pages/SessionPages/LoginPage";
 import ProjectsPage from "./pages/ProjectsPage";
@@ -13,6 +14,7 @@ const Dashboard = lazy(() => import("./layout/Dashboard"));
 function App() {
   const { isLoading, user } = useSession();
   const navigate = useNavigate();
+
   useEffect(() => {
     if (!user && !isLoading) {
       navigate("/login");
@@ -22,12 +24,14 @@ function App() {
   return (
     // ! Create better loading component
     <Suspense fallback={<Loader />}>
+      <ReactQueryDevtools initialIsOpen={false} />
       {!isLoading && (
         <Routes>
           <Route path="/login" element={<LoginPage />} />
           <Route path="/" element={<Dashboard />}>
             <Route path="members" element={<TeamPage />} />
-            <Route index path="projects" element={<ProjectsPage />} />
+            <Route path="projects" element={<ProjectsPage />} />
+            <Route path="projects/:projectId" element={<></>} />
           </Route>
           <Route path="/register/:token" element={<RegisterPage />} />
         </Routes>
