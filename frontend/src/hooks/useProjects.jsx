@@ -188,19 +188,6 @@ export function useProjects() {
     },
   });
 
-  const selectProject = useCallback(
-    (projectId) => {
-      // Find the project by ID from the projects list
-      const project = projects?.find((p) => p.id === projectId);
-      setCurrentProject(project);
-    },
-    [projects]
-  );
-  // Optionally, a function to clear the current project selection
-  const clearCurrentProject = useCallback(() => {
-    setCurrentProject(null);
-  }, []);
-
   // Function wrappers for mutations
   const createProject = (project) => createProjectMutation.mutate(project);
   const updateProject = ({ projectId, project }) =>
@@ -221,7 +208,5 @@ export function useProjects() {
     deleteProject,
     addUsersToProject,
     removeUserFromProject,
-    selectProject,
-    clearCurrentProject,
   };
 }

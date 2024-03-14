@@ -30,7 +30,8 @@ function App() {
           <Route path="/login" element={<LoginPage />} />
           <Route path="/" element={<Dashboard />}>
             <Route path="members" element={<TeamPage />} />
-            <Route index path="projects" element={<ProjectsPage />} />
+            <Route path="projects" element={<ProjectsPage />} />
+            <Route path="projects/:projectId" element={<></>} />
           </Route>
           <Route path="/register/:token" element={<RegisterPage />} />
         </Routes>

@@ -4,28 +4,31 @@ import React from "react";
 import UserIcon from "../Members/UserIcon";
 import OptionsButton from "../UI/OptionsButton";
 import { useProjects } from "../../hooks/useProjects";
+import { useNavigate } from "react-router-dom";
 
-export default function ProjectCard({ project }) {
-  const { selectProject, deleteProject } = useProjects();
+export default function ProjectCard({ project, selectProject }) {
+  const { deleteProject } = useProjects();
+  const navigate = useNavigate();
   const projectUsers = project.Users;
   const handleProjectSelect = () => {
-    console.log(project);
+    navigate(`/projects/${project.id}`);
   };
-  const handleProjectOptionsSelect = (e) => {
-    e.stopPropagation();
-    console.log(projectUsers);
+  const handleProjectOptionsSelect = () => {
+    // e.stopPropagation();
+    selectProject(project);
   };
   const handleDeleteProject = () => {
     if (window.confirm("Are you sure you want to remove this Project?")) {
       deleteProject(project.id);
     }
   };
+
   const projectOptions = [
     {
       key: "users",
       label: "Manage Users",
       icon: <UserSwitchOutlined style={{ color: "skyblue" }} />,
-      onClick: () => selectProject(project.id),
+      onClick: handleProjectOptionsSelect,
     },
     {
       key: "delete",
