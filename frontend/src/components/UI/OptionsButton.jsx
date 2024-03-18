@@ -2,7 +2,7 @@ import { Button, Dropdown, Menu } from "antd";
 import { MenuOutlined } from "@ant-design/icons";
 import React from "react";
 
-export default function OptionsButton({ items }) {
+export default function OptionsButton({ items = [] }) {
   const handleClick = (e) => {
     e.stopPropagation();
   };

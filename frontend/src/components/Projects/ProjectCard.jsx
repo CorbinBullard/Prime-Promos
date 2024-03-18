@@ -1,10 +1,11 @@
-import { Avatar, Card, Flex } from "antd";
+import { Avatar, Card, Flex, List, Progress, Tag } from "antd";
 import { DeleteOutlined, UserSwitchOutlined } from "@ant-design/icons";
 import React from "react";
 import UserIcon from "../Members/UserIcon";
 import OptionsButton from "../UI/OptionsButton";
 import { useProjects } from "../../hooks/useProjects";
 import { useNavigate } from "react-router-dom";
+import { ItemStatusColors } from "../../utils/constants";
 
 export default function ProjectCard({ project, selectProject }) {
   const { deleteProject } = useProjects();
@@ -37,13 +38,14 @@ export default function ProjectCard({ project, selectProject }) {
       onClick: handleDeleteProject,
     },
   ];
+  console.log(project);
   return (
     <Card
       title={project.name}
       bordered={false}
       hoverable
       onClick={handleProjectSelect}
-      style={{ width: 300 }}
+      style={{ width: 500, minWidth: 300 }}
       extra={
         <Flex align="center" gap={2}>
           <Avatar.Group size="small" maxCount={4}>
@@ -54,7 +56,26 @@ export default function ProjectCard({ project, selectProject }) {
           <OptionsButton items={projectOptions} />
         </Flex>
       }
-      // actions={[<div onClick={handleProjectUserSelect}>View Users</div>]}
-    />
+    >
+      <List
+      size="small"
+        dataSource={project.Items}
+        renderItem={(item) => (
+          <List.Item
+            style={{ display: "flex" }}
+            key={item.name}
+            extra={
+              <>
+                <Progress />
+                <Tag color={ItemStatusColors[item.status]}>{item.status}</Tag>
+              </>
+            }
+          >
+            <List.Item.Meta />
+            <span>{item.name}</span>
+          </List.Item>
+        )}
+      />
+    </Card>
   );
 }

@@ -1,6 +1,6 @@
 const jwt = require("jsonwebtoken");
 const { jwtConfig } = require("../config");
-const { User } = require("../db/models");
+const { User, Project } = require("../db/models");
 
 const { secret, expiresIn } = jwtConfig;
 
@@ -77,7 +77,7 @@ const requireAdminAuth = function (req, _res, next) {
     err.status = 401;
     return next(err);
   }
-  if (req.user.role !== "admin" || req.user.role !== "owner") {
+  if (req.user.role !== "admin" && req.user.role !== "owner") {
     console.log("requireAuth middleware: User is not an admin or owner");
     const err = new Error("Unauthorized");
     err.title = "Unauthorized";
@@ -106,6 +106,27 @@ const requireOwnerAuth = function (req, _res, next) {
   }
   return next();
 };
+const validateProjectUser = async (req, res, next) => {
+  const { projectId } = req.params;
+  const { user } = req;
+  const { role } = user;
+  const project = await Project.findByPk(projectId, {
+    include: User,
+    required: false,
+  });
+
+  if (!project) {
+    return res.json({ message: "Project not found" });
+  }
+  if (
+    role !== "admin" &&
+    role !== "owner" &&
+    !project.Users.find((u) => u.id === user.id)
+  ) {
+    return res.json({ message: "Unauthorized" });
+  }
+  return next();
+};
 
 module.exports = {
   setTokenCookie,
@@ -113,4 +134,5 @@ module.exports = {
   requireAuth,
   requireOwnerAuth,
   requireAdminAuth,
+  validateProjectUser,
 };

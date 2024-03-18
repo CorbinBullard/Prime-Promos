@@ -1,7 +1,13 @@
 const router = require("express").Router();
 const { Op } = require("sequelize");
-const { Project, User } = require("../../db/models");
-const { requireOwnerAuth, requireAuth } = require("../../utils/auth");
+const { Project, User, Item } = require("../../db/models");
+const { getItemQuotePercentage } = require("../../utils/utilFunctions");
+const {
+  requireOwnerAuth,
+  requireAuth,
+  requireAdminAuth,
+  validateProjectUser,
+} = require("../../utils/auth");
 
 // Get all projects
 router.get("/", requireAuth, async (req, res) => {
@@ -17,7 +23,10 @@ router.get("/", requireAuth, async (req, res) => {
 
   const projects = await Project.findAll({
     where,
-    include: User,
+    include: [
+      { model: User, required: false },
+      { model: Item, required: false },
+    ],
     required: false,
   });
   return res.json(projects);
@@ -138,20 +147,24 @@ router.post("/:projectId/users", requireOwnerAuth, async (req, res) => {
 });
 
 // Remove SINGLE user from project
-router.delete("/:projectId/users/:userId", requireOwnerAuth, async (req, res) => {
-  const { projectId, userId } = req.params;
+router.delete(
+  "/:projectId/users/:userId",
+  requireOwnerAuth,
+  async (req, res) => {
+    const { projectId, userId } = req.params;
 
-  const project = await Project.findByPk(projectId);
-  if (!project) {
-    return res.json({ message: "Project not found" });
+    const project = await Project.findByPk(projectId);
+    if (!project) {
+      return res.json({ message: "Project not found" });
+    }
+    const user = await User.findByPk(userId);
+    if (!user) {
+      return res.json({ message: "User not found" });
+    }
+    await project.removeUser(user);
+    return res.json({ message: "User removed from project" });
   }
-  const user = await User.findByPk(userId);
-  if (!user) {
-    return res.json({ message: "User not found" });
-  }
-  await project.removeUser(user);
-  return res.json({ message: "User removed from project" });
-});
+);
 
 // Remove MULTIPLE users from project
 router.delete("/:projectId/users", requireOwnerAuth, async (req, res) => {
@@ -175,6 +188,53 @@ router.delete("/:projectId/users", requireOwnerAuth, async (req, res) => {
 
   await project.removeUsers(dbUsers);
   return res.json({ message: "User removed from project" });
+});
+
+// Items
+
+// Get all items for a project
+router.get(
+  "/:projectId/items",
+  requireAuth,
+  validateProjectUser,
+  async (req, res) => {
+    const { projectId } = req.params;
+    const { user } = req;
+    const { role } = user;
+    const project = await Project.findByPk(projectId, {
+      include: User,
+      required: false,
+    });
+
+    if (!project) {
+      return res.json({ message: "Project not found" });
+    }
+
+    const items = await project.getItems();
+
+    const formattedItems = items.map((item) => {
+      const itemJSON = item.toJSON();
+      return {
+        ...itemJSON,
+        quotePercentage: getItemQuotePercentage(itemJSON),
+      };
+    });
+
+    res.json(formattedItems);
+  }
+);
+
+// Add item to project
+router.post("/:projectId/items", requireAdminAuth, async (req, res) => {
+  const { projectId } = req.params;
+  const { name } = req.body;
+
+  const project = await Project.findByPk(projectId);
+  if (!project) {
+    return res.json({ message: "Project not found" });
+  }
+  const item = await project.createItem({ name, projectId: project.id });
+  res.json(item);
 });
 
 module.exports = router;

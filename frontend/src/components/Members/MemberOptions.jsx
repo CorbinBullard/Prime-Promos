@@ -9,11 +9,9 @@ import {
 
 import OptionsButton from "../UI/OptionsButton";
 import { useTeam } from "../../context/useTeam";
-import { useModal } from "../../context/useModal";
 
-function MemberOptions({ user, dispatch }) {
+function MemberOptions({ user }) {
   const { deleteMember, reinvite } = useTeam();
-  const { openModal } = useModal();
 
   const handleDelete = (id) => {
     if (window.confirm("Are you sure you want to remove this member?")) {

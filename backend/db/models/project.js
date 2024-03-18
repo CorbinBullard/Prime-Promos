@@ -16,6 +16,10 @@ module.exports = (sequelize, DataTypes) => {
         unique: true,
         onDelete: "CASCADE",
       });
+      Project.hasMany(models.Item, {
+        foreignKey: "projectId",
+        onDelete: "CASCADE",
+      });
     }
   }
   Project.init(

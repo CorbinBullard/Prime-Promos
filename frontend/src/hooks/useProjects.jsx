@@ -60,8 +60,8 @@ export function useProjects() {
   // Update project
   const updateProjectMutation = useMutation({
     mutationKey: ["updateProject"],
-    mutationFn: async ({ projectId, project }) => {
-      const response = await csrfFetch(`/api/projects/${projectId}`, {
+    mutationFn: async ({ project }) => {
+      const response = await csrfFetch(`/api/projects/${project.id}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
