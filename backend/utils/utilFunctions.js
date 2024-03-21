@@ -15,14 +15,29 @@ const quoteItemList = [
   "productionTime",
   "shippingEstimate",
 ];
+const orderItemList = [
+  "factory",
+  "primePO",
+  "orderSent",
+  "preVirtual",
+  "shipDate",
+  "tracking",
+];
+const isProductionItemList = [
+  "recieveOrderAcknowledge",
+  "proofForAprovalFile",
+  "proofForAprovalDate",
+  "prepaymentConfirmed",
+  "invoice",
+];
 
-function getItemQuotePercentage(item) {
-  let total = 0;
-  quoteItemList.forEach((key) => {
-    if (item[key]) {
-      total += 1;
-    }
-  });
-  return Math.floor((total / quoteItemList.length) * 100);
-}
-module.exports = { getItemQuotePercentage };
+const ItemStatusFields = {
+  quote: quoteItemList,
+  order: orderItemList,
+  isProduction: isProductionItemList,
+  shipped: [],
+  delivered: [],
+};
+
+
+module.exports = { ItemStatusFields };

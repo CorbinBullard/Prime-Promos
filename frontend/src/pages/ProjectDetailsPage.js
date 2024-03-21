@@ -5,7 +5,7 @@ import { Flex, Modal } from "antd";
 import ItemCard from "../components/Items/ItemCard";
 import FormModalButton from "../components/UI/FormModalButton";
 import { AppstoreAddOutlined } from "@ant-design/icons";
-import CreateItemForm from "../components/Forms/CreateItemForm";
+import CreateItemForm from "../components/Forms/ItemForms/CreateItemForm";
 import CurrentItemModal from "../components/Items/CurrentItemModal";
 
 export default function ProjectDetailsPage({ children }) {
@@ -15,7 +15,7 @@ export default function ProjectDetailsPage({ children }) {
       projectId,
     });
 
-    
+
 
   const handleCreateItem = async (form) => {
     await createItem(form);

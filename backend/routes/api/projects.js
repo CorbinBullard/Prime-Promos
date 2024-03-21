@@ -1,7 +1,6 @@
 const router = require("express").Router();
 const { Op } = require("sequelize");
 const { Project, User, Item } = require("../../db/models");
-const { getItemQuotePercentage } = require("../../utils/utilFunctions");
 const {
   requireOwnerAuth,
   requireAuth,
@@ -29,17 +28,25 @@ router.get("/", requireAuth, async (req, res) => {
     ],
     required: false,
   });
+  
   return res.json(projects);
 });
 
 // Create Project
 router.post("/", requireOwnerAuth, async (req, res) => {
   console.log("REQ BODY", req.body);
-  const { name, users } = req.body;
+  const { name, users, inHandsDate, eventDate, customerPO, salesConfirmation } =
+    req.body;
 
   try {
     // Create the project without including users in this step
-    const project = await Project.create({ name });
+    const project = await Project.create({
+      name,
+      inHandsDate,
+      eventDate,
+      customerPO,
+      salesConfirmation,
+    });
 
     if (users && users.length) {
       // Find users based on IDs provided in the request
@@ -196,7 +203,7 @@ router.delete("/:projectId/users", requireOwnerAuth, async (req, res) => {
 router.get(
   "/:projectId/items",
   requireAuth,
-  validateProjectUser,
+  // validateProjectUser,
   async (req, res) => {
     const { projectId } = req.params;
     const { user } = req;
@@ -216,10 +223,10 @@ router.get(
       const itemJSON = item.toJSON();
       return {
         ...itemJSON,
-        quotePercentage: getItemQuotePercentage(itemJSON),
+        currentPercentage: item.getCurrentStatusPercentage(itemJSON),
       };
     });
-
+    console.log("FORMATTED ITEMS", formattedItems);
     res.json(formattedItems);
   }
 );

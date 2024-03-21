@@ -1,7 +1,12 @@
 const router = require("express").Router();
 const { Op } = require("sequelize");
 const { Project, User, Item } = require("../../db/models");
-const { requireOwnerAuth, requireAuth, requireAdminAuth, validateProjectUser } = require("../../utils/auth");
+const {
+  requireOwnerAuth,
+  requireAuth,
+  requireAdminAuth,
+  validateProjectUser,
+} = require("../../utils/auth");
 
 // Get all items TESTING ONLY
 router.get("/", requireAuth, async (req, res) => {
@@ -20,20 +25,37 @@ router.delete("/:id", requireAdminAuth, async (req, res) => {
   return res.json(item);
 });
 
-
 // update item by id
 // This may need to be seperated into different logic for different fields
 router.put("/:id", requireAuth, async (req, res) => {
   const { id } = req.params;
-  const { logo }= req.body;
+
+  console.log("\nREQ BODY", req.body, id, "\n");
   // check if user is apart of the current project
   const item = await Item.findByPk(id);
-  console.log("\nITEM", item, id,"\n");
   if (!item) {
     return res.status(404).send("Item not found");
   }
-  await item.update({ ...req.body });
-  return res.json(item);
+
+  const newItem = await item.update({ ...req.body });
+
+  return res.json(newItem);
 });
+
+router.post(
+  "/:id/image",
+  requireAuth,
+  async (req, res) => {
+
+    const { id } = req.params;
+    const item = await Item.findByPk(id);
+    console.log("REQ FILE", req.file);
+    if (!item) {
+      return res.status(404).send("Item not found");
+    }
+
+    return res.json(item);
+  }
+);
 
 module.exports = router;

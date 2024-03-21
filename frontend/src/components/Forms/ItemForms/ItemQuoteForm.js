@@ -1,6 +1,7 @@
 import { Button, Form, Input, InputNumber, Upload } from "antd";
 import React from "react";
 import { UploadOutlined } from "@ant-design/icons";
+import ImageUploader from "../../UI/ImageUploader";
 const { Item } = Form;
 
 export default function ItemQuoteForm({ form, onValuesChange, initialValues }) {
@@ -8,6 +9,10 @@ export default function ItemQuoteForm({ form, onValuesChange, initialValues }) {
     style: { width: "100%", marginBottom: "2px" }, // Apply width to the layout
   };
 
+  const handleImageUpload = (url) => {
+    form.setFieldsValue({ logo: url });
+    onValuesChange({ logo: url }, { ...form.getFieldsValue(), logo: url });
+  };
   return (
     <Form
       form={form}
@@ -27,15 +32,11 @@ export default function ItemQuoteForm({ form, onValuesChange, initialValues }) {
       <Item name="itemColor">
         <Input addonBefore="Item Color" style={{ width: "100%" }} />
       </Item>
-      <Item name="logo" label="Logo">
-        <Upload style={{ width: "100%" }}>
-          <Button
-            icon={<UploadOutlined />}
-            style={{ display: "block", width: "100%" }}
-          >
-            Click to Upload
-          </Button>
-        </Upload>
+      <Item name="logo">
+        <ImageUploader
+          callback={handleImageUpload}
+          initialUrl={initialValues.logo}
+        />
       </Item>
       <Item name="logoColor">
         <Input addonBefore="Logo Color" style={{ width: "100%" }} />

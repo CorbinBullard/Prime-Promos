@@ -1,3 +1,5 @@
+require("dotenv").config();
+
 const createError = require("http-errors");
 const express = require("express");
 const cors = require("cors");
@@ -39,6 +41,8 @@ app.use(
     },
   })
 );
+
+
 
 app.use("/", indexRouter);
 

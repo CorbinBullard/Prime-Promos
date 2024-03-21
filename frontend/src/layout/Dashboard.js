@@ -31,15 +31,19 @@ const items = [
 export default function Dashboard() {
   const { user, logout } = useSession();
   const navigate = useNavigate();
+  const [collapsed, setCollapsed] = useState(false);
+
+  const logoSrc = collapsed
+    ? "/pp_icon_transparent.png"
+    : "/pp_horizontal_logo_transparent.png";
 
   useEffect(() => {
     if (!user) {
-      console.log("No user found in Dashboard")
+      console.log("No user found in Dashboard");
       navigate("/login");
     }
   }, [user]);
 
-  const [collapsed, setCollapsed] = useState(false);
   const {
     token: { colorBgContainer, borderRadiusLG },
   } = theme.useToken();
@@ -61,6 +65,13 @@ export default function Dashboard() {
         collapsed={collapsed}
         onCollapse={(value) => setCollapsed(value)}
       >
+        <div style={{ padding: "1.3rem" }}>
+          <img
+            src={logoSrc}
+            alt="Company Logo"
+            style={{ width: "100%", display: "block" }}
+          />
+        </div>
         <Menu
           // defaultSelectedKeys={[`${location.pathname.split("/")[2] || ""}`]}
           mode="inline"

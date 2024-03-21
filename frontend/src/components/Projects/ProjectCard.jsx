@@ -58,7 +58,7 @@ export default function ProjectCard({ project, selectProject }) {
       }
     >
       <List
-      size="small"
+        size="small"
         dataSource={project.Items}
         renderItem={(item) => (
           <List.Item
@@ -66,13 +66,11 @@ export default function ProjectCard({ project, selectProject }) {
             key={item.name}
             extra={
               <>
-                <Progress />
                 <Tag color={ItemStatusColors[item.status]}>{item.status}</Tag>
               </>
             }
           >
-            <List.Item.Meta />
-            <span>{item.name}</span>
+            <List.Item.Meta title={item.name} />
           </List.Item>
         )}
       />

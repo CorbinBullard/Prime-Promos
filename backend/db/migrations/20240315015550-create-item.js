@@ -41,12 +41,6 @@ module.exports = {
         logoColor: {
           type: Sequelize.STRING,
         },
-        inHandsDate: {
-          type: Sequelize.DATE,
-        },
-        eventDate: {
-          type: Sequelize.DATE,
-        },
         quoteNotes: {
           type: Sequelize.TEXT,
         },
@@ -101,9 +95,31 @@ module.exports = {
         delivered: {
           type: Sequelize.DATE,
         },
+        recieveOrderAcknowledge: {
+          type: Sequelize.DATE,
+        },
+        proofForAprovalFile: {
+          type: Sequelize.STRING,
+        },
+        proofForAprovalDate: {
+          type: Sequelize.DATE,
+        },
+        invoice: {
+          type: Sequelize.STRING,
+        },
         status: {
-          type: Sequelize.ENUM("quote", "order", "shipped", "delivered"),
+          type: Sequelize.ENUM(
+            "quote",
+            "order",
+            "isProduction",
+            "shipped",
+            "delivered"
+          ),
           defaultValue: "quote",
+        },
+        prepaymentConfirmed: {
+          type: Sequelize.BOOLEAN,
+          defaultValue: false,
         },
         createdAt: {
           allowNull: false,

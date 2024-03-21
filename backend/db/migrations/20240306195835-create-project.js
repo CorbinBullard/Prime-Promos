@@ -19,6 +19,20 @@ module.exports = {
           type: Sequelize.STRING,
           allowNull: false,
         },
+        inHandsDate: {
+          type: Sequelize.DATE,
+          allowNull: false,
+        },
+        eventDate: {
+          type: Sequelize.DATE,
+          allowNull: false,
+        },
+        customerPO: {
+          type: Sequelize.INTEGER,
+        },
+        salesConfirmation: {
+          type: Sequelize.INTEGER,
+        },
         createdAt: {
           allowNull: false,
           type: Sequelize.DATE,
@@ -34,7 +48,7 @@ module.exports = {
     );
   },
   async down(queryInterface, Sequelize) {
-    options.tableName= "Projects";
+    options.tableName = "Projects";
     await queryInterface.dropTable(options);
   },
 };

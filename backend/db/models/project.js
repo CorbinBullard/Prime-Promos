@@ -25,6 +25,10 @@ module.exports = (sequelize, DataTypes) => {
   Project.init(
     {
       name: DataTypes.STRING,
+      inHandsDate: DataTypes.DATE,
+      eventDate: DataTypes.DATE,
+      customerPO: DataTypes.INTEGER,
+      salesConfirmation: DataTypes.INTEGER,
     },
     {
       sequelize,

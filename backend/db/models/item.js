@@ -1,5 +1,7 @@
 "use strict";
 const { Model } = require("sequelize");
+const { ItemStatusFields } = require("../../utils/utilFunctions");
+
 module.exports = (sequelize, DataTypes) => {
   class Item extends Model {
     /**
@@ -14,9 +16,50 @@ module.exports = (sequelize, DataTypes) => {
         onDelete: "CASCADE",
       });
     }
+
+    // Adding a static method to advance the status of an item
+    static async advanceStatus(itemId) {
+      const item = await this.findByPk(itemId);
+      if (!item) throw new Error("Item not found");
+
+      const statusOrder = [
+        "quote",
+        "order",
+        "isProduction",
+        "shipped",
+        "delivered",
+      ];
+
+      const currentIndex = statusOrder.indexOf(item.status);
+      const currentPercentage = item.getCurrentStatusPercentage(item);
+
+      // If the item is not already in the last status, advance it
+      if (currentPercentage === 100 && currentIndex < statusOrder.length - 1) {
+        item.status = statusOrder[currentIndex + 1];
+        await item.save();
+        return item;
+      } else {
+        throw new Error("Item is already in the last status");
+      }
+    }
+
+    getCurrentStatusPercentage(item) {
+      let total = 0;
+      console.log("\n\nITEM", item);
+      const list = ItemStatusFields[item.status];
+      list.forEach((key) => {
+        if (item[key]) {
+          total += 1;
+        }
+      });
+      console.log("\n\nTOTAL", total);
+      return Math.floor((total / list.length) * 100);
+    }
   }
+
   Item.init(
     {
+      // Model attributes
       name: DataTypes.STRING,
       projectId: DataTypes.INTEGER,
       itemNumber: DataTypes.STRING,
@@ -25,8 +68,6 @@ module.exports = (sequelize, DataTypes) => {
       itemColor: DataTypes.STRING,
       logo: DataTypes.STRING,
       logoColor: DataTypes.STRING,
-      inHandsDate: DataTypes.DATE,
-      eventDate: DataTypes.DATE,
       quoteNotes: DataTypes.TEXT,
       stockCheck: DataTypes.STRING,
       netUnitPrice: DataTypes.DECIMAL,
@@ -45,10 +86,18 @@ module.exports = (sequelize, DataTypes) => {
       shipDate: DataTypes.DATE,
       tracking: DataTypes.STRING,
       delivered: DataTypes.DATE,
+      recieveOrderAcknowledge: DataTypes.DATE,
+      proofForAprovalFile: DataTypes.STRING,
+      proofForAprovalDate: DataTypes.DATE,
+      invoice: DataTypes.STRING,
       status: {
         type: DataTypes.ENUM,
-        values: ["quote", "order","shipped", "delivered"],
+        values: ["quote", "order", "isProduction", "shipped", "delivered"],
         defaultValue: "quote",
+      },
+      prepaymentConfirmed: {
+        type: DataTypes.BOOLEAN,
+        defaultValue: false,
       },
     },
     {
@@ -56,5 +105,6 @@ module.exports = (sequelize, DataTypes) => {
       modelName: "Item",
     }
   );
+
   return Item;
 };

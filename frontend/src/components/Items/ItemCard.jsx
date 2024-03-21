@@ -12,8 +12,6 @@ import {
 } from "@ant-design/icons";
 import ItemStatusChangeButton from "./ItemStatusChangeButton";
 
-
-
 export default function ItemCard({ item, setItem }) {
   const { deleteItem } = useItems({ projectId: item.projectId });
 
@@ -57,10 +55,7 @@ export default function ItemCard({ item, setItem }) {
           </>
         }
       >
-        <Flex gap={15} justify="center" align="center">
-          <Progress type="circle" percent={item.quotePercentage} size={50} />
-          <ItemStatusChangeButton item={item} />
-        </Flex>
+        <ItemStatusChangeButton item={item} />
       </Card>
     </>
   );
