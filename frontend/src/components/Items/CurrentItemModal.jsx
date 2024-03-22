@@ -23,7 +23,7 @@ export default function CurrentItemModal({
     await updateItem(changedValues);
     // Remember to handle API response and errors appropriately
   };
-  const FormComponent = FORM_COMPONENTS[item.status];
+  const CurrentStatusForm = FORM_COMPONENTS[item.status];
   const debouncedSave = useCallback(debounce(saveFormData, 1000), []);
 
   return (
@@ -37,7 +37,7 @@ export default function CurrentItemModal({
     >
       <div style={{ width: "40%" }}>
         {/* This will have to be dynamic for different status types */}
-        <FormComponent
+        <CurrentStatusForm
           form={form}
           item={item}
           onValuesChange={debouncedSave}

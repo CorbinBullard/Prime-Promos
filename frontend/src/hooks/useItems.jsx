@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useQueryClient, useQuery, useMutation } from "@tanstack/react-query";
-import { csrfFetch } from "../utils/csrf";
+import { csrfFetch } from "../utils/csrf"; // Consider making this injectable for easier testing
 import { useNotification } from "../context/Notification";
 
 export default function useItems({ projectId, itemId }) {
@@ -8,6 +8,7 @@ export default function useItems({ projectId, itemId }) {
   const openNotification = useNotification();
   const [selectedItem, setSelectedItem] = useState(null);
 
+  // Fetch items with React Query
   const {
     data: items,
     error: itemsError,
@@ -19,13 +20,30 @@ export default function useItems({ projectId, itemId }) {
       if (!response.ok) throw new Error("Failed to fetch items");
       return response.json();
     },
-    enabled: !!projectId,
-
+    enabled: !!projectId, // Fetch only if projectId is provided
   });
 
-  // Create item
-  const createItemMutation = useMutation({
-    mutationKey: ["createItem"],
+  // Generic success handler for mutations
+  const handleSuccess = (message) => {
+    queryClient.invalidateQueries(["items"]); // Consider more dynamic invalidation if needed
+    openNotification({
+      message: "Success",
+      description: message,
+      type: "success",
+    });
+  };
+
+  // Generic error handler for mutations
+  const handleError = (error) => {
+    openNotification({
+      message: "Error",
+      description: error.message,
+      type: "error",
+    });
+  };
+
+  // Mutation for creating an item
+  const createItem = useMutation({
     mutationFn: async (item) => {
       const response = await csrfFetch(`/api/projects/${projectId}/items`, {
         method: "POST",
@@ -40,29 +58,13 @@ export default function useItems({ projectId, itemId }) {
       }
       return response.json();
     },
-    onSuccess: (data) => {
-      queryClient.invalidateQueries(["items"]);
-      openNotification({
-        message: "Success",
-        description: "Item created successfully",
-        type: "success",
-      });
-    },
-    onError: (error) => {
-      openNotification({
-        message: "Error",
-        description: error.message,
-        type: "error",
-      });
-    },
-  });
+    onSuccess: () => handleSuccess("Item created successfully"),
+    onError: handleError,
+  }).mutate;
 
-  // Update item
-  const updateItemMutation = useMutation({
-    mutationKey: ["updateItem"],
+  // Mutation for updating an item
+  const updateItem = useMutation({
     mutationFn: async (values) => {
-      console.log("item", values);
-
       const response = await csrfFetch(`/api/items/${itemId}`, {
         method: "PUT",
         headers: {
@@ -76,52 +78,21 @@ export default function useItems({ projectId, itemId }) {
       }
       return response.json();
     },
-    onSuccess: (data) => {
-      queryClient.invalidateQueries(["items"]);
-      openNotification({
-        message: "Success",
-        description: "Item updated successfully",
-        type: "success",
-      });
-    },
-    onError: (error) => {
-      openNotification({
-        message: "Error",
-        description: error.message,
-        type: "error",
-      });
-    },
-  });
-  // Delete item
-  const deleteItemMutation = useMutation({
-    mutationKey: ["deleteItem"],
+    onSuccess: () => handleSuccess("Item updated successfully"),
+    onError: handleError,
+  }).mutate;
+
+  // Mutation for deleting an item
+  const deleteItem = useMutation({
     mutationFn: async (id) => {
       const response = await csrfFetch(`/api/items/${id}`, {
         method: "DELETE",
       });
       if (!response.ok) throw new Error("Failed to delete item");
     },
-    onSuccess: () => {
-      queryClient.invalidateQueries(["items"]);
-      openNotification({
-        message: "Success",
-        description: "Item deleted successfully",
-        type: "success",
-      });
-    },
-    onError: (error) => {
-      openNotification({
-        message: "Error",
-        description: error.message,
-        type: "error",
-      });
-    },
-  });
-
-  // Function wrappers for mutations
-  const createItem = (item) => createItemMutation.mutate(item);
-  const updateItem = (item) => updateItemMutation.mutate(item);
-  const deleteItem = (id) => deleteItemMutation.mutate(id);
+    onSuccess: () => handleSuccess("Item deleted successfully"),
+    onError: handleError,
+  }).mutate;
 
   return {
     items,

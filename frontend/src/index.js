@@ -3,14 +3,12 @@ import ReactDOM from "react-dom/client";
 import "./index.css";
 import App from "./App";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-
 import reportWebVitals from "./reportWebVitals";
 import { BrowserRouter as Router } from "react-router-dom";
 import NotificationProvider from "./context/Notification";
 import { restoreCSRF } from "./utils/csrf";
 import { TeamProvider } from "./context/useTeam";
 import { SessionProvider } from "./context/Session";
-import { ModalProvider } from "./context/useModal";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -29,17 +27,15 @@ if (process.env.NODE_ENV !== "production") {
 root.render(
   <React.StrictMode>
     <QueryClientProvider client={queryClient}>
-      <ModalProvider>
-        <SessionProvider>
-          <NotificationProvider>
-            <TeamProvider>
-              <Router>
-                <App />
-              </Router>
-            </TeamProvider>
-          </NotificationProvider>
-        </SessionProvider>
-      </ModalProvider>
+      <SessionProvider>
+        <NotificationProvider>
+          <TeamProvider>
+            <Router>
+              <App />
+            </Router>
+          </TeamProvider>
+        </NotificationProvider>
+      </SessionProvider>
     </QueryClientProvider>
   </React.StrictMode>
 );

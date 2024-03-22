@@ -48,11 +48,10 @@ module.exports = (sequelize, DataTypes) => {
       console.log("\n\nITEM", item);
       const list = ItemStatusFields[item.status];
       list.forEach((key) => {
-        if (item[key]) {
+        if (item[key] !== null && item[key] !== "") {
           total += 1;
         }
       });
-      console.log("\n\nTOTAL", total);
       return Math.floor((total / list.length) * 100);
     }
   }

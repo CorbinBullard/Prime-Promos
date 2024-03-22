@@ -12,7 +12,7 @@ import {
 } from "@ant-design/icons";
 import ItemStatusChangeButton from "./ItemStatusChangeButton";
 
-export default function ItemCard({ item, setItem }) {
+export default function ItemCard({ item, setItem, setItemManager }) {
   const { deleteItem } = useItems({ projectId: item.projectId });
 
   const handleDelete = async () => {
@@ -26,7 +26,7 @@ export default function ItemCard({ item, setItem }) {
       key: "edit",
       label: "Edit",
       icon: <EditOutlined style={{ color: "skyblue" }} />,
-      onClick: (e) => console.log("Edit", e),
+      onClick: (e) => setItemManager(item),
     },
     {
       key: "delete",
