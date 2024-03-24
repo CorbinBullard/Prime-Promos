@@ -1,6 +1,7 @@
 import { Checkbox, DatePicker, Form, Input } from "antd";
 import React from "react";
 import moment from "moment";
+import { formatDateForForm } from "../../../utils/utilFunctions";
 
 const { Item } = Form;
 
@@ -8,7 +9,7 @@ export default function ItemOrderForm({ form, onValuesChange, initialValues }) {
   // Ensure shipDate is a moment object and preVirtual is a boolean
   const formattedInitialValues = {
     ...initialValues,
-    shipDate: initialValues.shipDate ? moment(initialValues.shipDate) : null,
+    shipDate: formatDateForForm(initialValues.shipDate),
     preVirtual: !!initialValues.preVirtual, // Converts truthy/falsy values to boolean
   };
 
@@ -25,7 +26,7 @@ export default function ItemOrderForm({ form, onValuesChange, initialValues }) {
         <Input addonBefore="Prime PO" style={{ width: "100%" }} />
       </Item>
       <Item name="preVirtual" valuePropName="checked">
-        <Checkbox >Pre-Virtual</Checkbox>
+        <Checkbox>Pre-Virtual</Checkbox>
       </Item>
       <Item name="shipDate" label="Ship Date">
         <DatePicker style={{ width: "100%" }} />

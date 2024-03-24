@@ -34,6 +34,8 @@ export default function CurrentItemModal({
       width={1000}
       footer={null}
       icon={<SaveOutlined />}
+      header="HELLO"
+
     >
       <div style={{ width: "40%" }}>
         {/* This will have to be dynamic for different status types */}

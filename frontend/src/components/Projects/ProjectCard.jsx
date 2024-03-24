@@ -1,4 +1,4 @@
-import { Avatar, Card, Flex, List, Progress, Tag } from "antd";
+import { Avatar, Card, Flex, List, Modal, Progress, Tag } from "antd";
 import { DeleteOutlined, UserSwitchOutlined } from "@ant-design/icons";
 import React from "react";
 import UserIcon from "../Members/UserIcon";
@@ -19,9 +19,7 @@ export default function ProjectCard({ project, selectProject }) {
     selectProject(project);
   };
   const handleDeleteProject = () => {
-    if (window.confirm("Are you sure you want to remove this Project?")) {
-      deleteProject(project.id);
-    }
+    deleteProject(project.id);
   };
 
   const projectOptions = [
@@ -35,7 +33,12 @@ export default function ProjectCard({ project, selectProject }) {
       key: "delete",
       label: "Delete Project",
       icon: <DeleteOutlined style={{ color: "red" }} />,
-      onClick: handleDeleteProject,
+      onClick: () =>
+        Modal.confirm({
+          title: "Delete Project",
+          content: "Are you sure you want to delete this project?",
+          onOk: handleDeleteProject,
+        }),
     },
   ];
   console.log(project);

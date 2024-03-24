@@ -16,9 +16,7 @@ export default function ItemCard({ item, setItem, setItemManager }) {
   const { deleteItem } = useItems({ projectId: item.projectId });
 
   const handleDelete = async () => {
-    if (window.confirm("Are you sure you want to delete this item?")) {
       deleteItem(item.id);
-    }
   };
 
   const itemOptions = [
@@ -32,7 +30,11 @@ export default function ItemCard({ item, setItem, setItemManager }) {
       key: "delete",
       label: "Delete",
       icon: <DeleteOutlined style={{ color: "red" }} />,
-      onClick: handleDelete,
+      onClick: () => Modal.confirm({
+        title: "Delete Item",
+        content: "Are you sure you want to delete this item?",
+        onOk: handleDelete,
+      }),
     },
   ];
 

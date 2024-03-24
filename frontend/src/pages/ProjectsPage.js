@@ -1,11 +1,12 @@
-import { Button, Tabs } from "antd";
-import React, { useMemo, useState } from "react";
+import {  Tabs } from "antd";
+import React, { useMemo } from "react";
 import ProjectCardsContainer from "../components/Projects/ProjectCardsContainer";
 import { FolderAddOutlined } from "@ant-design/icons";
 import FormModalButton from "../components/UI/FormModalButton";
 import CreateProjectForm from "../components/Forms/CreateProjectForm";
-import ManageProjectDrawer from "../components/Projects/ManageProjectDrawer";
 import { useProjects } from "../hooks/useProjects";
+import DrawerManager from "../components/UI/DrawerManager";
+import { projectManagerTabs } from "../components/Projects/ManageProjectDrawer/ProjectManager";
 
 export default function ProjectsPage() {
   const {
@@ -35,16 +36,15 @@ export default function ProjectsPage() {
   const projectsObj = useMemo(() => {
     if (!projects) return {};
     return projects?.reduce((acc, project) => {
-      acc[project.id] = project
+      acc[project.id] = project;
       return acc;
     }, {});
-  }
-  , [projects]);
+  }, [projects]);
 
   const handleCreateProject = async (form) => {
     await createProject(form);
   };
-  
+
   return (
     <>
       {!isLoading && (
@@ -68,9 +68,11 @@ export default function ProjectsPage() {
             projects={projects}
             selectProject={selectProject}
           />
-          <ManageProjectDrawer
-            project={projectsObj[currentProjectId] || null}
-            deselectProject={clearCurrentProject}
+          <DrawerManager
+            open={!!currentProjectId}
+            onClose={clearCurrentProject}
+            item={projectsObj[currentProjectId]}
+            tabItems={projectManagerTabs(projectsObj[currentProjectId])}
           />
         </>
       )}

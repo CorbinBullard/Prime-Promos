@@ -18,7 +18,7 @@ const quoteItemList = [
 const orderItemList = [
   "factory",
   "primePO",
-  "orderSent",
+  // "orderSent",
   "preVirtual",
   "shipDate",
   "tracking",

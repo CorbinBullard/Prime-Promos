@@ -53,7 +53,7 @@ export default function ProjectDetailsPage({ children }) {
         />
       )}
       <DrawerManager
-        itemId={manageItem}
+        item={manageItem}
         open={!!manageItem}
         onClose={() => setManageItem(null)}
         tabItems={itemManagerTabs(manageItem)}

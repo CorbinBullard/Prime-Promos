@@ -1,3 +1,5 @@
+import moment from "moment";
+
 export function capitalize(str) {
   return str.charAt(0).toUpperCase() + str.slice(1);
 }
@@ -12,4 +14,8 @@ export function debounce(func, wait) {
     clearTimeout(timeout);
     timeout = setTimeout(later, wait);
   };
+}
+
+export function formatDateForForm(value) {
+  return value ? moment(value) : null;
 }

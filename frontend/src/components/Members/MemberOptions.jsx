@@ -1,5 +1,5 @@
 import React from "react";
-import { Button, Dropdown, Menu } from "antd";
+import { Button, Dropdown, Menu, Modal } from "antd";
 import {
   MenuOutlined,
   SendOutlined,
@@ -13,10 +13,8 @@ import { useTeam } from "../../context/useTeam";
 function MemberOptions({ user }) {
   const { deleteMember, reinvite } = useTeam();
 
-  const handleDelete = (id) => {
-    if (window.confirm("Are you sure you want to remove this member?")) {
-      deleteMember(id);
-    }
+  const handleDelete = () => {
+    deleteMember(user.id);
   };
 
   const handleEditUser = () => {};
@@ -39,7 +37,12 @@ function MemberOptions({ user }) {
       key: "delete",
       label: "Remove Member",
       icon: <DeleteOutlined style={{ color: "red" }} />,
-      onClick: () => handleDelete(user.id),
+      onClick: () =>
+        Modal.confirm({
+          title: "Remove Member",
+          content: "Are you sure you want to remove this member?",
+          onOk: handleDelete,
+        }),
     },
   ];
 

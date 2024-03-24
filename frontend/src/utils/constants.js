@@ -1,3 +1,4 @@
+import ItemInProductionForm from "../components/Forms/ItemForms/ItemInProductionForm";
 import ItemOrderForm from "../components/Forms/ItemForms/ItemOrderForm";
 import ItemQuoteForm from "../components/Forms/ItemForms/ItemQuoteForm";
 
@@ -26,7 +27,7 @@ export const ItemStatusLabels = {
 export const FORM_COMPONENTS = {
   quote: ItemQuoteForm,
   order: ItemOrderForm,
-  isProduction: <div>Production Form</div>,
+  isProduction: ItemInProductionForm,
   shipped: <div>Shipped Form</div>,
   delivered: <div>Delivered Form</div>,
 };

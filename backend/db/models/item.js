@@ -1,6 +1,6 @@
 "use strict";
 const { Model } = require("sequelize");
-const { ItemStatusFields } = require("../../utils/utilFunctions");
+const { ItemStatusFields } = require("../../utils/ItemStatusFields");
 
 module.exports = (sequelize, DataTypes) => {
   class Item extends Model {

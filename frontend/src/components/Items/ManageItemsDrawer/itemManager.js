@@ -1,5 +1,5 @@
 import React from "react";
-import EditItem from "./Tabs/EditItem";
+import EditItem from "./Tabs/EditItemTab";
 
 export const itemManagerTabs = (item) => [
   {

@@ -1,4 +1,4 @@
-import { Button, Divider, Flex, List } from "antd";
+import { Button, Divider, Flex, List, Modal } from "antd";
 import React, { useMemo } from "react";
 import { useTeam } from "../../../../context/useTeam";
 import UserIcon from "../../../Members/UserIcon";
@@ -15,10 +15,12 @@ export default function ManageUsersTab({ project }) {
 
   const handleRemoveUser = (userId) => {
     console.log("Remove user with id: ", userId);
-    if (window.confirm("Are you sure you want to remove this user?")) {
-      // Remove user from project
-      removeUserFromProject({ userId, projectId: project.id });
-    }
+    // Remove user from project
+    Modal.confirm({
+      title: "Remove User",
+      content: "Are you sure you want to remove this user from the project?",
+      onOk: () => removeUserFromProject({ userId, projectId: project.id }),
+    });
   };
   const handleAddUsers = () => {
     form.validateFields().then((values) => {
