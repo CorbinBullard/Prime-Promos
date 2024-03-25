@@ -33,7 +33,7 @@ export default function ProjectDetailsPage({ children }) {
       >
         Add New Item
       </FormModalButton>
-      <Flex gap={20}>
+      <Flex gap={20} wrap="wrap">
         {!itemsLoading &&
           items.map((item) => {
             return (

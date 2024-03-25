@@ -46,12 +46,17 @@ export default function AdminFullItemForm({ form, item }) {
   console.log(itemValues);
   return (
     <>
-      <Form form={form} initialValues={{name: item.name}}>
+      <Form form={form} initialValues={{ name: item.name }}>
         <Item name="name">
           <Input addonBefore="Item Name" />
         </Item>
       </Form>
-      <Steps direction="vertical" items={items} current={current} />
+      <Steps
+        direction="vertical"
+        items={items}
+        current={current}
+        percent={item.currentPercentage}
+      />
     </>
   );
 }

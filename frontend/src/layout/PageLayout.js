@@ -5,9 +5,10 @@ import {
   PieChartOutlined,
   TeamOutlined,
   UserOutlined,
+  DashboardOutlined,
 } from "@ant-design/icons";
 import { Breadcrumb, Layout, Menu, theme } from "antd";
-import { Outlet, useNavigate } from "react-router-dom";
+import { Outlet, useLocation, useNavigate } from "react-router-dom";
 import { csrfFetch } from "../utils/csrf";
 import { useSession } from "../context/Session";
 import HeaderBreadcrumb from "../components/UI/HeaderBreadcrumb";
@@ -25,13 +26,15 @@ const items = [
   getItem("My Account", "account", <UserOutlined />, [
     getItem("Logout", "logout"),
   ]),
+  getItem("Dashboard", "", <DashboardOutlined />),
   getItem("Projects", "projects", <PieChartOutlined />),
   getItem("My Team", "members", <TeamOutlined />), // Owner Only
 ];
 
-export default function Dashboard() {
+export default function PageLayout() {
   const { user, logout } = useSession();
   const navigate = useNavigate();
+  const location = useLocation();
   const [collapsed, setCollapsed] = useState(false);
 
   const logoSrc = collapsed
@@ -46,7 +49,15 @@ export default function Dashboard() {
   }, [user]);
 
   const {
-    token: { colorBgContainer, borderRadiusLG },
+    token: {
+      colorBgContainer,
+      borderRadiusLG,
+      colorBgBase,
+      colorBgLayout,
+      colorBgBlur,
+      colorBgMask,
+      colorBgElevated,
+    },
   } = theme.useToken();
 
   const handleMenuClick = async (e) => {
@@ -57,7 +68,7 @@ export default function Dashboard() {
     }
     navigate(`/${key}`);
   };
-
+  console.log("THEME: ", theme.useToken());
   return (
     <Layout style={{ maxHeight: "100vh", minHeight: "100vh" }}>
       <Sider
@@ -74,7 +85,7 @@ export default function Dashboard() {
           />
         </div>
         <Menu
-          // defaultSelectedKeys={[`${location.pathname.split("/")[2] || ""}`]}
+          defaultSelectedKeys={[`${location.pathname.split("/")[1] || ""}`]}
           mode="inline"
           items={items}
           theme="light"
@@ -90,7 +101,9 @@ export default function Dashboard() {
             alignContent: "center",
             display: "flex",
           }}
-        ><HeaderBreadcrumb /></Header>
+        >
+          <HeaderBreadcrumb />
+        </Header>
         <Content
           style={{
             margin: "0 16px",

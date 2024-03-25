@@ -11,3 +11,25 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+/* This styles the scrollbar track (the part the thumb moves along) */
+::-webkit-scrollbar-track {
+  background-color: transparent; /* Transparent track */
+}
+
+/* This styles the scrollbar thumb (the part that is draggable) */
+::-webkit-scrollbar-thumb {
+  background-color: rgba(0, 0, 0, 0.2); /* Slightly transparent black */
+  border-radius: 8px; /* Rounded edges */
+}
+
+/* This styles the scrollbar itself (including its width and height) */
+::-webkit-scrollbar {
+  width: 8px; /* Width of the vertical scrollbar */
+  height: 8px; /* Height of the horizontal scrollbar */
+}
+
+/* Optional: style the scrollbar corner (where both scrollbars meet) */
+::-webkit-scrollbar-corner {
+  background-color: transparent; /* Transparent corner */
+}

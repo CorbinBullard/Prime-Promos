@@ -33,6 +33,10 @@ module.exports = {
         salesConfirmation: {
           type: Sequelize.INTEGER,
         },
+        status: {
+          type: Sequelize.ENUM("active", "completed", "archived"),
+          defaultValue: "active",
+        },
         createdAt: {
           allowNull: false,
           type: Sequelize.DATE,

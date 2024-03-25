@@ -77,3 +77,19 @@ export const ItemStatusFields = {
   shipped: [],
   delivered: [],
 };
+
+// month colors object
+export const monthColors = {
+  January: "#FF0000",
+  February: "#FF4000",
+  March: "#FF8000",
+  April: "#FFBF00",
+  May: "#FFFF00",
+  June: "#BFFF00",
+  July: "#80FF00",
+  August: "#40FF00",
+  September: "#00FF00",
+  October: "#00FF40",
+  November: "#00FF80",
+  December: "#00FFBF",
+};

@@ -7,9 +7,10 @@ import ProjectsPage from "./pages/ProjectsPage";
 import { csrfFetch } from "./utils/csrf";
 import { useSession } from "./context/Session";
 import Loader from "./components/UI/Loader";
+import Dashboard from "./pages/Dashboard";
 
 const RegisterPage = lazy(() => import("./pages/SessionPages/RegisterPage"));
-const Dashboard = lazy(() => import("./layout/Dashboard"));
+const Layout = lazy(() => import("./layout/PageLayout"));
 const ProjectDetailsPage = lazy(() => import("./pages/ProjectDetailsPage"));
 
 function App() {
@@ -29,10 +30,14 @@ function App() {
       {!isLoading && (
         <Routes>
           <Route path="/login" element={<LoginPage />} />
-          <Route path="/" element={<Dashboard />}>
+          <Route path="/" element={<Layout />}>
+            <Route index path="/" element={<Dashboard />} />
             <Route path="members" element={<TeamPage />} />
             <Route path="projects" element={<ProjectsPage />} />
-            <Route path="projects/:projectId" element={<ProjectDetailsPage />} />
+            <Route
+              path="projects/:projectId"
+              element={<ProjectDetailsPage />}
+            />
           </Route>
           <Route path="/register/:token" element={<RegisterPage />} />
         </Routes>

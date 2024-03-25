@@ -29,6 +29,7 @@ module.exports = (sequelize, DataTypes) => {
       eventDate: DataTypes.DATE,
       customerPO: DataTypes.INTEGER,
       salesConfirmation: DataTypes.INTEGER,
+      status: DataTypes.ENUM("active", "completed", "archived"),
     },
     {
       sequelize,
