@@ -1,4 +1,4 @@
-import { Checkbox, DatePicker, Form, Input } from "antd";
+import { Checkbox, DatePicker, Form, Input, InputNumber } from "antd";
 import React from "react";
 import moment from "moment";
 import FileUploader from "../../UI/FileUploader";
@@ -14,25 +14,25 @@ export default function ItemInProductionForm({
   // Ensure shipDate is a moment object and preVirtual is a boolean
   const formattedInitialValues = {
     ...initialValues,
-    proofForAprovalDate: formatDateForForm(initialValues.proofForAprovalDate),
-    delivered: formatDateForForm(initialValues.delivered),
+    proofForAprovalDate: formatDateForForm(initialValues?.proofForAprovalDate),
+    delivered: formatDateForForm(initialValues?.delivered),
     recieveOrderAcknowledge: formatDateForForm(
-      initialValues.recieveOrderAcknowledge
+      initialValues?.recieveOrderAcknowledge
     ),
   };
 
   const handleImageUpload = (url) => {
     form.setFieldsValue({ proofForAprovalFile: url });
-    onValuesChange(
-      {
-        proofForAprovalFile: url,
-        proofForAprovalDate: moment(),
-        recieveOrderAcknowledge: moment(),
-      },
-      { ...form.getFieldsValue(), proofForAprovalFile: url }
-    );
+    onValuesChange &&
+      onValuesChange(
+        {
+          proofForAprovalFile: url,
+          proofForAprovalDate: moment(),
+          recieveOrderAcknowledge: moment(),
+        },
+        { ...form.getFieldsValue(), proofForAprovalFile: url }
+      );
   };
-
   return (
     <Form
       form={form}
@@ -45,7 +45,7 @@ export default function ItemInProductionForm({
       <Item name="proofForAprovalFile" label="Proof For Aproval">
         <FileUploader
           callback={handleImageUpload}
-          initialUrl={initialValues.proofForAprovalFile}
+          initialUrl={initialValues?.proofForAprovalFile}
         />
       </Item>
       {form.getFieldsValue("proofForAprovalFile") && (
@@ -53,8 +53,14 @@ export default function ItemInProductionForm({
           <DatePicker style={{ width: "100%" }} />
         </Item>
       )}
-      <Item name="deleivered" label="Delivery Date">
+      <Item name="delivered" label="Delivery Date">
         <DatePicker style={{ width: "100%" }} />
+      </Item>
+      <Item name="tracking">
+        <InputNumber addonBefore="Tracking #" style={{ width: "100%" }} />
+      </Item>
+      <Item name="invoice">
+        <Input addonBefore="Invoice #" />
       </Item>
     </Form>
   );

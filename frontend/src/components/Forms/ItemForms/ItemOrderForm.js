@@ -7,12 +7,12 @@ const { Item } = Form;
 
 export default function ItemOrderForm({ form, onValuesChange, initialValues }) {
   // Ensure shipDate is a moment object and preVirtual is a boolean
+
   const formattedInitialValues = {
     ...initialValues,
     shipDate: formatDateForForm(initialValues.shipDate),
     preVirtual: !!initialValues.preVirtual, // Converts truthy/falsy values to boolean
   };
-
   return (
     <Form
       form={form}

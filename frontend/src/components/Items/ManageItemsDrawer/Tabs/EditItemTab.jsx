@@ -2,6 +2,7 @@ import useItems from "../../../../hooks/useItems";
 import React from "react";
 import CreateItemForm from "../../../Forms/ItemForms/CreateItemForm";
 import { Button, Form } from "antd";
+import AdminFullItemForm from "../../../Forms/ItemForms/AdminFullItemForm";
 
 export default function EditItem({ item }) {
   const [form] = Form.useForm();
@@ -18,7 +19,7 @@ export default function EditItem({ item }) {
   };
   return (
     <div>
-      <CreateItemForm initialValues={item} form={form} />
+      <AdminFullItemForm form={form}  item={item} />
       <Button type="primary" onClick={handleUpdateItem}>
         Update Item
       </Button>

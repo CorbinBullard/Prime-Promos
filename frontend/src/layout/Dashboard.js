@@ -10,6 +10,7 @@ import { Breadcrumb, Layout, Menu, theme } from "antd";
 import { Outlet, useNavigate } from "react-router-dom";
 import { csrfFetch } from "../utils/csrf";
 import { useSession } from "../context/Session";
+import HeaderBreadcrumb from "../components/UI/HeaderBreadcrumb";
 const { Header, Content, Footer, Sider } = Layout;
 
 function getItem(label, key, icon, children) {
@@ -86,8 +87,10 @@ export default function Dashboard() {
             padding: 0,
             marginBottom: "1rem",
             background: colorBgContainer,
+            alignContent: "center",
+            display: "flex",
           }}
-        />
+        ><HeaderBreadcrumb /></Header>
         <Content
           style={{
             margin: "0 16px",

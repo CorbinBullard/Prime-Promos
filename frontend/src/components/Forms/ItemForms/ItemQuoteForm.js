@@ -11,7 +11,8 @@ export default function ItemQuoteForm({ form, onValuesChange, initialValues }) {
 
   const handleImageUpload = (url) => {
     form.setFieldsValue({ logo: url });
-    onValuesChange({ logo: url }, { ...form.getFieldsValue(), logo: url });
+    onValuesChange &&
+      onValuesChange({ logo: url }, { ...form.getFieldsValue(), logo: url });
   };
   return (
     <Form
@@ -34,6 +35,7 @@ export default function ItemQuoteForm({ form, onValuesChange, initialValues }) {
       </Item>
       <Item name="logo">
         <ImageUploader
+          buttonText={"Upload Logo"}
           callback={handleImageUpload}
           initialUrl={initialValues.logo}
         />

@@ -11,7 +11,7 @@ const getBase64 = (file) =>
     reader.onerror = (error) => reject(error);
   });
 
-const ImageUploader = ({ callback, initialUrl }) => {
+const ImageUploader = ({ callback, initialUrl, buttonText }) => {
   const [previewOpen, setPreviewOpen] = useState(false);
   const [previewImage, setPreviewImage] = useState("");
   const [previewTitle, setPreviewTitle] = useState("");
@@ -57,7 +57,6 @@ const ImageUploader = ({ callback, initialUrl }) => {
       setFileList(newFileList);
     }
   };
-
 
   const handleCancel = () => setPreviewOpen(false);
 
@@ -121,9 +120,12 @@ const ImageUploader = ({ callback, initialUrl }) => {
     const fileKey = file.url.split("/").pop();
 
     try {
-      await csrfFetch(`/api/aws/delete-file?fileName=${encodeURIComponent(fileKey)}`, {
-        method: "DELETE",
-      });
+      await csrfFetch(
+        `/api/aws/delete-file?fileName=${encodeURIComponent(fileKey)}`,
+        {
+          method: "DELETE",
+        }
+      );
       console.log("File deleted successfully");
       callback(null); // Notify parent component
       setFileList([]);
@@ -141,7 +143,7 @@ const ImageUploader = ({ callback, initialUrl }) => {
       }}
     >
       <PlusOutlined />
-      <div style={{ marginTop: 8 }}>Upload</div>
+      <div style={{ marginTop: 8 }}>{buttonText}</div>
     </div>
   );
   return (

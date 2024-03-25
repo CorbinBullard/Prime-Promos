@@ -28,7 +28,9 @@ const isProductionItemList = [
   "proofForAprovalFile",
   "proofForAprovalDate",
   "prepaymentConfirmed",
+  "delivered",
   "invoice",
+  "tracking"
 ];
 
 const ItemStatusFields = {
