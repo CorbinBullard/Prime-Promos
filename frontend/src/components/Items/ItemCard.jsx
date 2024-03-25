@@ -16,25 +16,26 @@ export default function ItemCard({ item, setItem, setItemManager }) {
   const { deleteItem } = useItems({ projectId: item.projectId });
 
   const handleDelete = async () => {
-      deleteItem(item.id);
+    deleteItem(item.id);
   };
 
   const itemOptions = [
     {
       key: "edit",
-      label: "Edit",
+      label: "Edit Item",
       icon: <EditOutlined style={{ color: "skyblue" }} />,
       onClick: (e) => setItemManager(item),
     },
     {
       key: "delete",
-      label: "Delete",
+      label: "Delete Item",
       icon: <DeleteOutlined style={{ color: "red" }} />,
-      onClick: () => Modal.confirm({
-        title: "Delete Item",
-        content: "Are you sure you want to delete this item?",
-        onOk: handleDelete,
-      }),
+      onClick: () =>
+        Modal.confirm({
+          title: "Delete Item",
+          content: "Are you sure you want to delete this item?",
+          onOk: handleDelete,
+        }),
     },
   ];
 

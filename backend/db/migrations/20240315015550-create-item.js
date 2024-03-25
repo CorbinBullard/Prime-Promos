@@ -22,6 +22,11 @@ module.exports = {
         projectId: {
           type: Sequelize.INTEGER,
           allowNull: false,
+          references: {
+            model: "Projects",
+            key: "id",
+          },
+          onDelete: "CASCADE",
         },
         itemNumber: {
           type: Sequelize.STRING,

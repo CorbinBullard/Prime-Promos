@@ -11,10 +11,13 @@ export default function CreateProjectForm({ form, initialValues }) {
 
   const formattedInitialValues = {
     ...initialValues,
-    inHandsDate: initialValues?.inHandsDate ? moment(initialValues.shipDate) : null,
-    eventDate: initialValues?.inHandsDate ? moment(initialValues.shipDate) : null,
+    inHandsDate: initialValues?.inHandsDate
+      ? moment(initialValues.shipDate)
+      : null,
+    eventDate: initialValues?.inHandsDate
+      ? moment(initialValues.shipDate)
+      : null,
   };
-
   return (
     <Form form={form} initialValues={formattedInitialValues}>
       <Item
@@ -23,7 +26,8 @@ export default function CreateProjectForm({ form, initialValues }) {
       >
         <Input placeholder="Enter Project Name" />
       </Item>
-      <UserDropdown options={teamMembers} />
+      {/* Add with users only When Creating a project, not when editting! */}
+      {!initialValues && <UserDropdown options={teamMembers} />}
       <Space size="middle" style={{ display: "flex" }}>
         <Item
           name="inHandsDate"

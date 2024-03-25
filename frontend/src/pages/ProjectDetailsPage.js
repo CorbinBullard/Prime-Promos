@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import useItems from "../hooks/useItems";
-import { Flex, Modal } from "antd";
+import { Flex, Modal, Space } from "antd";
 import ItemCard from "../components/Items/ItemCard";
 import FormModalButton from "../components/UI/FormModalButton";
 import { AppstoreAddOutlined } from "@ant-design/icons";
@@ -22,7 +22,7 @@ export default function ProjectDetailsPage({ children }) {
     await createItem(form);
   };
   return (
-    <>
+    <Space direction="vertical">
       <FormModalButton
         form={CreateItemForm}
         onSubmit={handleCreateItem}
@@ -58,6 +58,6 @@ export default function ProjectDetailsPage({ children }) {
         onClose={() => setManageItem(null)}
         tabItems={itemManagerTabs(manageItem)}
       />
-    </>
+    </Space>
   );
 }

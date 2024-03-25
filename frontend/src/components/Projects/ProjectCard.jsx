@@ -1,5 +1,5 @@
 import { Avatar, Card, Flex, List, Modal, Progress, Tag } from "antd";
-import { DeleteOutlined, UserSwitchOutlined } from "@ant-design/icons";
+import { EditOutlined, DeleteOutlined } from "@ant-design/icons";
 import React from "react";
 import UserIcon from "../Members/UserIcon";
 import OptionsButton from "../UI/OptionsButton";
@@ -24,9 +24,9 @@ export default function ProjectCard({ project, selectProject }) {
 
   const projectOptions = [
     {
-      key: "users",
-      label: "Manage Users",
-      icon: <UserSwitchOutlined style={{ color: "skyblue" }} />,
+      key: "edit",
+      label: "Edit Project",
+      icon: <EditOutlined style={{ color: "skyblue" }} />,
       onClick: handleProjectOptionsSelect,
     },
     {

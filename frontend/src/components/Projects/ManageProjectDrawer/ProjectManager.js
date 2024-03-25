@@ -1,8 +1,13 @@
 // Use Drawer Manager to manage the drawer in the ManageProjectDrawer component.
 
 import ManageUsersTab from "./Tabs/ManageUsersTab";
-
+import EditProject from "./Tabs/EditProjectTab";
 export const projectManagerTabs = (project) => [
+  {
+    key: "details",
+    label: "Project Details",
+    children: <EditProject project={project} />,
+  },
   {
     key: "users",
     label: "Manage Users",
