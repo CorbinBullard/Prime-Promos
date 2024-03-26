@@ -8,10 +8,9 @@ export default function CreateItemForm({ form, initialValues }) {
     <Form form={form} layout="vertical" initialValues={initialValues}>
       <Item
         name="name"
-        label="Item Name"
         rules={[{ required: true, message: "Please Enter an Item Name" }]}
       >
-        <Input />
+        <Input addonBefore="Item Name" />
       </Item>
     </Form>
   );

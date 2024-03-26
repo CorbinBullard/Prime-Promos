@@ -2,6 +2,7 @@ const express = require("express");
 const { Op } = require("sequelize");
 const bcrypt = require("bcryptjs");
 
+
 const { setTokenCookie, restoreUser } = require("../../utils/auth");
 const { User } = require("../../db/models");
 const { check } = require("express-validator");
@@ -60,6 +61,38 @@ router.post("/", validateLogin, async (req, res, next) => {
     err.status = 401;
     err.title = "Login failed";
     err.errors = { message: "User not validated" };
+    return next(err);
+  }
+
+  const safeUser = {
+    id: user.id,
+    email: user.email,
+    firstName: user.firstName,
+    lastName: user.lastName,
+    role: user.role,
+  };
+
+  await setTokenCookie(res, safeUser);
+
+  return res.json({
+    user: safeUser,
+  });
+});
+
+// LOGIN WITH GOOGLE
+router.post("/google", async (req, res, next) => {
+  const { email } = req.body;
+  const user = await User.findOne({
+    where: {
+      email,
+    },
+  });
+
+  if (!user) {
+    const err = new Error("Login failed");
+    err.status = 401;
+    err.title = "Login failed";
+    err.errors = { message: "The provided credentials were invalid." };
     return next(err);
   }
 

@@ -13,7 +13,11 @@ import {
 import { useProjects } from "../hooks/useProjects";
 import { useTeam } from "../context/useTeam";
 import dayjs from "dayjs";
-import { CalendarOutlined, UsergroupAddOutlined, UserOutlined } from "@ant-design/icons";
+import {
+  CalendarOutlined,
+  UsergroupAddOutlined,
+  UserOutlined,
+} from "@ant-design/icons";
 import VerticalBlock from "../components/DashboardComponents/VerticalBlock";
 import { Link } from "react-router-dom";
 import UserIcon from "../components/Members/UserIcon";
@@ -59,6 +63,7 @@ export default function Dashboard() {
             />
           </Card>
         </Col>
+        {/* Replace with Previous projects for Non-admins/owner? */}
         <Col span={12}>
           <Card bordered={false}>
             <Statistic
@@ -93,6 +98,7 @@ export default function Dashboard() {
                   title={
                     <Link to={`/projects/${project.id}`}>{project.name}</Link>
                   }
+                  description={`In Hands Date: ${dayjs(project.inHandsDate).format("MMM DD")}`}
                 />
                 <Avatar.Group maxCount={5}>
                   {project.Users.map((user) => (
