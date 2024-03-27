@@ -3,5 +3,9 @@ import React from "react";
 import { UserOutlined } from "@ant-design/icons";
 
 export default function UserIcon({ icon, user }) {
-  return <Avatar icon={<UserOutlined />} />;
+  console.log("UserIcon: ", user);
+  if (user?.profileImageUrl) {
+    return <Avatar size={"large"} src={user.profileImageUrl} />;
+  }
+  return <Avatar size="large" icon={<UserOutlined />} />;
 }

@@ -73,6 +73,7 @@ export default function MembersTable({ members, dispatch }) {
   const tableData = useMemo(() => {
     return Object.values(members).map((member) => {
       return {
+        ...member,
         id: member.id,
         key: member.id,
         name: `${member.firstName} ${member.lastName}`,

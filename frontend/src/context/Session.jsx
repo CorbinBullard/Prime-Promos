@@ -46,6 +46,28 @@ export const SessionProvider = ({ children }) => {
 
   const login = (form) => loginMutation.mutate(form);
 
+  const loginGoogleMutation = useMutation({
+    mutationKey: ["loginGoogle"],
+    mutationFn: async (response) => {
+      const res = await csrfFetch("/api/session/google-login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(response),
+      });
+      if (!res.ok) throw new Error("Not A current User");
+      return res.json();
+    },
+    onSuccess: (data) => {
+      queryClient.setQueryData(["session"], data);
+      // navigate("/dashboard"); // or any post-login route
+    },
+    // onError to handle login errors specifically can be defined here
+  });
+
+  const loginGoogle = (response) => loginGoogleMutation.mutate(response);
+
   // Logout mutation
   const logoutMutation = useMutation({
     mutationKey: ["logout"],
@@ -75,6 +97,7 @@ export const SessionProvider = ({ children }) => {
         error: sessionError || loginMutation.error || logoutMutation.error,
         login,
         logout,
+        loginGoogle,
       }}
     >
       {children}

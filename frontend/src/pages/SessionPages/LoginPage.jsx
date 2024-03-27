@@ -1,13 +1,13 @@
-import { Button, Card, Form, Input } from "antd";
+import { Button, Card, Divider, Form, Input } from "antd";
 import React, { useEffect, useState } from "react";
 import { LockOutlined } from "@ant-design/icons";
 import { useNavigate } from "react-router-dom";
 import { csrfFetch } from "../../utils/csrf";
-
 import { useSession } from "../../context/Session";
+import { GoogleLogin } from "@react-oauth/google";
 
 export default function LoginPage() {
-  const { user, login, error, isLoading } = useSession();
+  const { user, login, error, isLoading, loginGoogle } = useSession();
   const navigate = useNavigate();
   const [errors, setErrors] = useState(false);
 
@@ -23,6 +23,15 @@ export default function LoginPage() {
       navigate("/");
     }
   }
+  const handleGoogleSucess = async (response) => {
+    loginGoogle(response);
+    if (!isLoading && !error) {
+      navigate("/");
+    }
+  };
+  const handleGoogleFailure = (response) => {
+    console.log(response);
+  };
   return (
     <div
       style={{
@@ -33,6 +42,7 @@ export default function LoginPage() {
       }}
     >
       <Card
+        bordered={false}
         title="Login to Prime Promo Account"
         style={{
           width: 300,
@@ -68,6 +78,11 @@ export default function LoginPage() {
             </Button>
           </Form.Item>
         </Form>
+        <Divider>or</Divider>
+        <GoogleLogin
+          onSuccess={handleGoogleSucess}
+          onError={handleGoogleFailure}
+        />
         {error && <p style={{ color: "red" }}>Invalid Login</p>}
       </Card>
     </div>

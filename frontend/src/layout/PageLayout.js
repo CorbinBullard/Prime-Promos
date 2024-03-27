@@ -47,7 +47,7 @@ export default function PageLayout() {
       navigate("/login");
     }
   }, [user]);
-
+  console.log("USER: ", user);
   const {
     token: {
       colorBgContainer,

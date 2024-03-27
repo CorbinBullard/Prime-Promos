@@ -19,7 +19,7 @@ const app = express();
 
 app.use(logger("dev"));
 app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
+app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 
 if (!isProduction) {
@@ -43,20 +43,7 @@ app.use(
   })
 );
 
-// For oauth login
-passport.use(
-  new GoogleStrategy(
-    {
-      clientID: process.env.GOOGLE_CLIENT_ID,
-      clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-      callbackURL: "http://localhost:3000/auth/google/callback",
-    },
-    function (accessToken, refreshToken, profile, cb) {
-      // Here, you would find or create a user in your database
-      cb(null, profile);
-    }
-  )
-);
+
 
 app.use("/", indexRouter);
 

@@ -14,14 +14,9 @@ const Layout = lazy(() => import("./layout/PageLayout"));
 const ProjectDetailsPage = lazy(() => import("./pages/ProjectDetailsPage"));
 
 function App() {
-  const { isLoading, user } = useSession();
+  const { isLoading } = useSession();
   const navigate = useNavigate();
 
-  useEffect(() => {
-    if (!user && !isLoading) {
-      navigate("/login");
-    }
-  }, [user, navigate]);
 
   return (
     // ! Create better loading component

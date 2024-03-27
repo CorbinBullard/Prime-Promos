@@ -4,6 +4,7 @@ import {
   Calendar,
   Card,
   Col,
+  Divider,
   Flex,
   List,
   Row,
@@ -54,7 +55,7 @@ export default function Dashboard() {
 
   return (
     <>
-      <Row>
+      <Row gutter={15}>
         <Col span={12}>
           <Card bordered={false}>
             <Statistic
@@ -73,7 +74,8 @@ export default function Dashboard() {
           </Card>
         </Col>
       </Row>
-      <Row>
+      <Divider />
+      <Row gutter={15}>
         <Col span={8}>
           <VerticalBlock
             header={
@@ -98,9 +100,11 @@ export default function Dashboard() {
                   title={
                     <Link to={`/projects/${project.id}`}>{project.name}</Link>
                   }
-                  description={`In Hands Date: ${dayjs(project.inHandsDate).format("MMM DD")}`}
+                  description={`In Hands Date: ${dayjs(
+                    project.inHandsDate
+                  ).format("MMM DD")}`}
                 />
-                <Avatar.Group maxCount={5}>
+                <Avatar.Group maxCount={4}>
                   {project.Users.map((user) => (
                     <UserIcon user={user} />
                   ))}
@@ -117,27 +121,14 @@ export default function Dashboard() {
                 <h2>Pending Users</h2>
               </Flex>
             }
-            data={dashboardData.projects.completed}
-            renderItem={(project) => (
+            data={dashboardData.members.pending}
+            renderItem={(user) => (
               <List.Item>
                 <List.Item.Meta
-                  avatar={
-                    <Avatar
-                      size={50}
-                      shape="square"
-                      style={{ backgroundColor: "#87d068" }}
-                      icon={<UserOutlined />}
-                    />
-                  }
-                  title={
-                    <Link to={`/projects/${project.id}`}>{project.name}</Link>
-                  }
+                  avatar={<UserIcon user={user} />}
+                  title={user.firstName + " " + user.lastName}
+                  description={user.email}
                 />
-                <Avatar.Group maxCount={5}>
-                  {project.Users.map((user) => (
-                    <UserIcon user={user} />
-                  ))}
-                </Avatar.Group>
               </List.Item>
             )}
           />

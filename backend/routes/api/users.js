@@ -5,6 +5,9 @@ const { User } = require("../../db/models");
 const bcrypt = require("bcryptjs");
 const crypto = require("crypto");
 const Sequelize = require("sequelize");
+const { OAuth2Client } = require("google-auth-library");
+const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
+
 const { sendEmail } = require("../../utils/nodemailer");
 const { requireAuth, requireOwnerAuth } = require("../../utils/auth");
 
@@ -133,7 +136,50 @@ router.post("/register", async (req, res) => {
     lastName,
   });
 
-  return res.json("User registered successfully");
+  return res.json(user);
+});
+
+// Google Register
+router.post("/google-register", async (req, res) => {
+  console.log("\nREQ : ", req.body, "\n");
+  const { response, token } = req.body;
+
+  const ticket = await client.verifyIdToken({
+    idToken: response.credential,
+    audience: process.env.GOOGLE_CLIENT_ID,
+  });
+  const payload = ticket.getPayload();
+  const email = payload.email;
+  const firstName = payload.given_name;
+  const lastName = payload.family_name;
+  const profileImageUrl = payload.picture;
+
+  console.log("\nPAYLOAD : ", payload, "\n");
+
+  const user = await User.findOne({
+    where: {
+      email,
+      invitationToken: token,
+      tokenExpiration: {
+        [Sequelize.Op.gt]: new Date(),
+      },
+    },
+  });
+
+  if (!user) {
+    return res.status(400).send("Invalid or expired token");
+  }
+
+  await user.update({
+    validated: true,
+    invitationToken: null,
+    tokenExpiration: null,
+    firstName,
+    lastName,
+    profileImageUrl,
+  });
+
+  return res.json(user);
 });
 
 // Delete a user

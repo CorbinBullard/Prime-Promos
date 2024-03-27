@@ -28,6 +28,7 @@ module.exports = (sequelize, DataTypes) => {
       validated: DataTypes.BOOLEAN,
       invitationToken: DataTypes.STRING,
       tokenExpiration: DataTypes.DATE,
+      profileImageUrl: DataTypes.STRING,
     },
     {
       sequelize,

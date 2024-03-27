@@ -3,13 +3,17 @@ import React, { useEffect, useState } from "react";
 import { LockOutlined, WarningOutlined } from "@ant-design/icons";
 import { useNavigate, useParams } from "react-router-dom";
 import { csrfFetch } from "../../utils/csrf";
+import { GoogleLogin } from "@react-oauth/google";
+import { useSession } from "../../context/Session";
+import ImageUploader from "../../components/UI/ImageUploader";
+import NewUserForm from "../../components/Forms/NewUserForm";
 const { Item } = Form;
 
 export default function RegisterPage() {
-  const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
-  const [user, setUser] = useState({});
+  const { login } = useSession();
+  const [unvalidatedUser, setUnvalidatedUser] = useState({});
   const [form] = Form.useForm();
   const navigate = useNavigate();
 
@@ -22,7 +26,7 @@ export default function RegisterPage() {
         const response = await csrfFetch(`/api/users/register/${token}`);
         if (!response.ok) throw new Error("Network response was not ok.");
         const data = await response.json();
-        setUser(data);
+        setUnvalidatedUser(data);
         setLoading(false);
       } catch (error) {
         console.error("Failed to fetch user:", error);
@@ -53,6 +57,30 @@ export default function RegisterPage() {
       setLoading(false);
     }
   };
+
+  const handleGoogleSucess = async (response) => {
+    try {
+      setLoading(true);
+      csrfFetch("/api/users/google-register", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ response, token }),
+      })
+        .then((res) => res.json())
+        .then(() => {
+          navigate("/login");
+          setLoading(false);
+        });
+    } catch (error) {
+      setError(error.response.data);
+      setLoading(false);
+    }
+  };
+  const handleGoogleFailure = (response) => {
+    console.log(response);
+  };
   return (
     <div
       style={{
@@ -62,7 +90,7 @@ export default function RegisterPage() {
         background: "gray",
       }}
     >
-      {!loading && user ? (
+      {!loading && unvalidatedUser ? (
         <Card
           title="Register Prime Promo Account"
           style={{
@@ -76,52 +104,17 @@ export default function RegisterPage() {
             right: 0,
           }}
         >
-          <Form initialValues={user} form={form}>
-            <Item
-              name="email"
-              rules={[{ required: true, message: "Please enter your email" }]}
-            >
-              <Input type="email" placeholder="Email" disabled />
-            </Item>
-            <Flex gap={5}>
-              <Item
-                name="firstName"
-                rules={[{ required: true, message: "First Name is Required" }]}
-              >
-                <Input />
-              </Item>
-              <Item
-                name="lastName"
-                rules={[{ required: true, message: "Last Name is Required" }]}
-              >
-                <Input />
-              </Item>
-            </Flex>
-            <Item
-              name="password"
-              rules={[
-                { required: true, message: "Please enter your password" },
-              ]}
-            >
-              <Input.Password
-                prefix={<LockOutlined style={{ color: "gray" }} />}
-                type="password"
-                placeholder="Password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-              />
-            </Item>
-            <Item>
-              <Button
-                type="primary"
-                htmlType="submit"
-                block
-                onClick={registerUser}
-              >
-                Register
-              </Button>
-            </Item>
-          </Form>
+          <NewUserForm form={form} initialValues={unvalidatedUser} />
+          <Button block type="primary" onClick={registerUser}>
+            Register User
+          </Button>
+          <Divider>or</Divider>
+          <GoogleLogin
+            onSuccess={handleGoogleSucess}
+            onError={handleGoogleFailure}
+            text="signup_with"
+            width={250}
+          />
         </Card>
       ) : (
         <Card

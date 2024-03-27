@@ -1,7 +1,8 @@
 const express = require("express");
 const { Op } = require("sequelize");
 const bcrypt = require("bcryptjs");
-
+const { OAuth2Client } = require("google-auth-library");
+const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
 
 const { setTokenCookie, restoreUser } = require("../../utils/auth");
 const { User } = require("../../db/models");
@@ -31,6 +32,7 @@ router.get("/", (req, res) => {
       firstName: user.firstName,
       lastName: user.lastName,
       role: user.role,
+      profileImageUrl: user.profileImageUrl,
     };
     return res.json({
       user: safeUser,
@@ -80,19 +82,36 @@ router.post("/", validateLogin, async (req, res, next) => {
 });
 
 // LOGIN WITH GOOGLE
-router.post("/google", async (req, res, next) => {
-  const { email } = req.body;
-  const user = await User.findOne({
+router.post("/google-login", async (req, res) => {
+  console.log("\nREQ : ", req, "\n");
+  console.log("\nREQ BODY : ", req.body, "\n");
+  const { credential } = req.body;
+  const ticket = await client.verifyIdToken({
+    idToken: credential,
+    audience: process.env.GOOGLE_CLIENT_ID, // Specify the CLIENT_ID of the app that accesses the backend
+  });
+  const payload = ticket.getPayload();
+  // Use payload to create or update your user in your database
+
+  // Respond with your own JWT or user data as needed
+  const data = await User.unscoped().findOne({
     where: {
-      email,
+      email: payload.email,
     },
   });
-
+  const user = data?.toJSON();
   if (!user) {
     const err = new Error("Login failed");
     err.status = 401;
     err.title = "Login failed";
     err.errors = { message: "The provided credentials were invalid." };
+    return next(err);
+  }
+  if (!user.validated) {
+    const err = new Error("Login failed");
+    err.status = 401;
+    err.title = "Login failed";
+    err.errors = { message: "User not validated" };
     return next(err);
   }
 

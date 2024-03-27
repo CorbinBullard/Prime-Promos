@@ -9,6 +9,7 @@ import NotificationProvider from "./context/Notification";
 import { restoreCSRF } from "./utils/csrf";
 import { TeamProvider } from "./context/useTeam";
 import { SessionProvider } from "./context/Session";
+import { GoogleOAuthProvider } from "@react-oauth/google";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -27,15 +28,17 @@ if (process.env.NODE_ENV !== "production") {
 root.render(
   <React.StrictMode>
     <QueryClientProvider client={queryClient}>
-      <SessionProvider>
-        <NotificationProvider>
-          <TeamProvider>
-            <Router>
-              <App />
-            </Router>
-          </TeamProvider>
-        </NotificationProvider>
-      </SessionProvider>
+      <GoogleOAuthProvider clientId={process.env.REACT_APP_GOOGLE_CLIENT_ID}>
+        <SessionProvider>
+          <NotificationProvider>
+            <TeamProvider>
+              <Router>
+                <App />
+              </Router>
+            </TeamProvider>
+          </NotificationProvider>
+        </SessionProvider>
+      </GoogleOAuthProvider>
     </QueryClientProvider>
   </React.StrictMode>
 );

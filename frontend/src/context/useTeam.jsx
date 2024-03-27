@@ -18,7 +18,7 @@ export const TeamProvider = ({ children }) => {
       if (!response.ok) throw new Error("Failed to fetch team members");
       return response.json();
     },
-    enabled: !!user, // Only fetch when user is logged in
+    enabled: !!user && (user.role === "owner" || user.role === "admin"), // Only fetch when user is logged in
   });
 
   const addMemberMutation = useMutation({
@@ -37,7 +37,21 @@ export const TeamProvider = ({ children }) => {
       }
       return response.json();
     },
-     
+    onSuccess: () => {
+      queryClient.invalidateQueries(["teamMembers"]);
+      openNotification({
+        message: "Success",
+        description: "Member added successfully",
+        type: "success",
+      });
+    },
+    onError: (error) => {
+      openNotification({
+        message: "Error",
+        description: error.message,
+        type: "error",
+      });
+    },
   });
 
   const reinviteMutation = useMutation({
