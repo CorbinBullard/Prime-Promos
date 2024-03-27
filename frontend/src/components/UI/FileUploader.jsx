@@ -89,7 +89,6 @@ const FileUploader = ({ callback, initialUrl }) => {
     });
 
     if (uploadResponse.ok) {
-      console.log("File uploaded successfully");
 
       // Construct the file access URL
       const fileUrl = `${
@@ -134,7 +133,6 @@ const FileUploader = ({ callback, initialUrl }) => {
       console.error("Failed to delete file", error);
     }
   };
-  console.log(fileList, previewImage);
 
   return (
     <>

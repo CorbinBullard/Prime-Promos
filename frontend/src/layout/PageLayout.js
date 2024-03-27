@@ -43,11 +43,9 @@ export default function PageLayout() {
 
   useEffect(() => {
     if (!user) {
-      console.log("No user found in Dashboard");
       navigate("/login");
     }
   }, [user]);
-  console.log("USER: ", user);
   const {
     token: {
       colorBgContainer,
@@ -68,7 +66,6 @@ export default function PageLayout() {
     }
     navigate(`/${key}`);
   };
-  console.log("THEME: ", theme.useToken());
   return (
     <Layout style={{ maxHeight: "100vh", minHeight: "100vh" }}>
       <Sider

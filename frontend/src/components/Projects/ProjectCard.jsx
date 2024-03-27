@@ -41,7 +41,6 @@ export default function ProjectCard({ project, selectProject }) {
         }),
     },
   ];
-  console.log(project);
   return (
     <Card
       title={project.name}

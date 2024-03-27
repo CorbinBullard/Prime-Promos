@@ -8,7 +8,6 @@ export default function UserDropdown({
   placeholder,
   label,
 }) {
-  console.log("UserDropdown -> options", options)
   const userOptions = useMemo(() => {
     return Object.values(options).map((member) => ({
       label: `${member.firstName} ${member.lastName}`,

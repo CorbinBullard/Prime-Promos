@@ -13,7 +13,6 @@ function PDFViewer({ file }) {
     setNumPages(numPages);
     setPageNumber(1);
   }
-  console.log(numPages, pageNumber, file);
   return (
     // <div>
     <div style={{ overflow: "auto", width: "100%" }}>

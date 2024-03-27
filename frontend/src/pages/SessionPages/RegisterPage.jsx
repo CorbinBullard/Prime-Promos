@@ -6,7 +6,7 @@ import { csrfFetch } from "../../utils/csrf";
 import { GoogleLogin } from "@react-oauth/google";
 import { useSession } from "../../context/Session";
 import ImageUploader from "../../components/UI/ImageUploader";
-import NewUserForm from "../../components/Forms/NewUserForm";
+import NewUserForm from "../../components/Forms/RegisterUserForm";
 const { Item } = Form;
 
 export default function RegisterPage() {

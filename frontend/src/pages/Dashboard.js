@@ -51,7 +51,6 @@ export default function Dashboard() {
     return dataObj;
   }, [projects, teamMembers]);
 
-  console.log("Dashboard : ", dashboardData);
 
   return (
     <>

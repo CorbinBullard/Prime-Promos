@@ -4,6 +4,7 @@ import { useTeam } from "../../context/useTeam";
 import UserDropdown from "../UI/UserDropdown";
 import dayjs from "dayjs";
 import moment from "moment";
+import { formatDateForForm } from "../../utils/utilFunctions";
 const { Item } = Form;
 
 export default function CreateProjectForm({ form, initialValues }) {
@@ -11,13 +12,10 @@ export default function CreateProjectForm({ form, initialValues }) {
 
   const formattedInitialValues = {
     ...initialValues,
-    inHandsDate: initialValues?.inHandsDate
-      ? moment(initialValues.shipDate)
-      : null,
-    eventDate: initialValues?.inHandsDate
-      ? moment(initialValues.shipDate)
-      : null,
+    inHandsDate: formatDateForForm(initialValues?.inHandsDate),
+    eventDate: formatDateForForm(initialValues?.eventDate),
   };
+  console.log("formattedInitialValues : ", formattedInitialValues);
   return (
     <Form form={form} initialValues={formattedInitialValues}>
       <Item
@@ -39,7 +37,11 @@ export default function CreateProjectForm({ form, initialValues }) {
             },
             () => ({
               validator(_, value) {
-                if (!value || dayjs().isBefore(value, "day")) {
+                if (
+                  !value ||
+                  dayjs().isBefore(value, "day") ||
+                  !!initialValues
+                ) {
                   return Promise.resolve();
                 }
                 return Promise.reject(
@@ -73,7 +75,11 @@ export default function CreateProjectForm({ form, initialValues }) {
             }),
             () => ({
               validator(_, value) {
-                if (!value || dayjs().isBefore(value, "day")) {
+                if (
+                  !value ||
+                  dayjs().isBefore(value, "day") ||
+                  !!initialValues
+                ) {
                   return Promise.resolve();
                 }
                 return Promise.reject(

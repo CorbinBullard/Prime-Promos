@@ -43,7 +43,6 @@ export default function AdminFullItemForm({ form, item }) {
       ),
     },
   ];
-  console.log(itemValues);
   return (
     <>
       <Form form={form} initialValues={{ name: item.name }}>

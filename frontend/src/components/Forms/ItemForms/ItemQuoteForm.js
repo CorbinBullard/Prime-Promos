@@ -43,8 +43,8 @@ export default function ItemQuoteForm({ form, onValuesChange, initialValues }) {
       <Item name="logoColor">
         <Input addonBefore="Logo Color" style={{ width: "100%" }} />
       </Item>
-      <Item name="stockCheck">
-        <Input addonBefore="Stock Check" style={{ width: "100%" }} />
+      <Item name="stockCheck" label="Stock Check" tooltip="CHECK">
+        <Input.TextArea placeholder="Stock Check"/>
       </Item>
       <Item name="netUnitPrice">
         <InputNumber addonBefore="Net Unit Price" style={{ width: "100%" }} />

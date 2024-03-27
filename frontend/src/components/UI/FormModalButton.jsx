@@ -20,7 +20,6 @@ const FormModalButton = ({
   const handleOk = async () => {
     try {
       const values = await form.validateFields(); // Attempt to validate fields
-      console.log("Received values of form: ", values);
       setSubmitting(true); // Indicate start of submission process
       await onSubmit(values); // Wait for submission to complete
       // If successful:

@@ -1,9 +1,9 @@
 import { Form, Input, Select } from "antd";
 import React from "react";
 const { Item } = Form;
-export default function NewMemberForm({ form }) {
+export default function NewMemberForm({ form, initialValues }) {
   return (
-    <Form form={form}>
+    <Form form={form} initialValues={initialValues}>
       <Item
         name="email"
         label="Email"

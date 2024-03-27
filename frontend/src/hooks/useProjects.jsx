@@ -60,7 +60,7 @@ export function useProjects() {
   // Update project
   const updateProjectMutation = useMutation({
     mutationKey: ["updateProject"],
-    mutationFn: async ({ project }) => {
+    mutationFn: async (project) => {
       const response = await csrfFetch(`/api/projects/${project.id}`, {
         method: "PUT",
         headers: {
@@ -201,8 +201,7 @@ export function useProjects() {
 
   // Function wrappers for mutations
   const createProject = (project) => createProjectMutation.mutate(project);
-  const updateProject = ({ projectId, project }) =>
-    updateProjectMutation.mutate({ projectId, project });
+  const updateProject = (project) => updateProjectMutation.mutate(project);
   const deleteProject = (projectId) => deleteProjectMutation.mutate(projectId);
   const addUsersToProject = ({ projectId, users }) =>
     addUsersToProjectMutation.mutate({ projectId, users });

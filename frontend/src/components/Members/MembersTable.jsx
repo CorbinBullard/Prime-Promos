@@ -1,11 +1,42 @@
 import React, { useMemo } from "react";
 import MemberOptions from "./MemberOptions";
+import { DeleteOutlined, EditOutlined, SendOutlined } from "@ant-design/icons";
 import UserIcon from "./UserIcon";
-import { Avatar, Table } from "antd";
+import { Avatar, Table, Modal } from "antd";
 import { UserOutlined } from "@ant-design/icons";
 import { capitalize } from "../../utils/utilFunctions";
+import OptionsButton from "../UI/OptionsButton";
+import { useTeam } from "../../context/useTeam";
 
-export default function MembersTable({ members, dispatch }) {
+export default function MembersTable({ members, selectMember }) {
+  const { deleteMember, reinvite } = useTeam();
+  const UserOptions = (user) => [
+    {
+      key: "edit",
+      label: "Edit User",
+      icon: <EditOutlined style={{ color: "skyblue" }} />,
+      onClick: () => selectMember(user),
+    },
+    {
+      key: "resend",
+      label: "Resend Invite",
+      icon: <SendOutlined style={{ color: "skyblue" }} />,
+      disabled: user.validated === "Active",
+      onClick: () => reinvite(user.id),
+    },
+    {
+      key: "delete",
+      label: "Remove Member",
+      icon: <DeleteOutlined style={{ color: "red" }} />,
+      onClick: () =>
+        Modal.confirm({
+          title: "Remove Member",
+          content: "Are you sure you want to remove this member?",
+          onOk: deleteMember(user.id),
+        }),
+    },
+  ];
+
   const columns = [
     {
       title: <Avatar icon={<UserOutlined />} />,
@@ -66,7 +97,8 @@ export default function MembersTable({ members, dispatch }) {
       dataIndex: "action",
       key: "action",
       render: (text, record) => (
-        <MemberOptions user={record} dispatch={dispatch} />
+        <OptionsButton items={UserOptions(record)} />
+        // <MemberOptions user={record} dispatch={dispatch} />
       ),
     },
   ];

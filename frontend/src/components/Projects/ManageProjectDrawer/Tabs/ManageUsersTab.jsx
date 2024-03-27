@@ -14,7 +14,6 @@ export default function ManageUsersTab({ project }) {
   const { Users: users } = project;
 
   const handleRemoveUser = (userId) => {
-    console.log("Remove user with id: ", userId);
     // Remove user from project
     Modal.confirm({
       title: "Remove User",
@@ -25,7 +24,6 @@ export default function ManageUsersTab({ project }) {
   const handleAddUsers = () => {
     form.validateFields().then((values) => {
       const { users } = values;
-      console.log("Add users: ", users);
       addUsersToProject({ projectId: project.id, users });
       form.resetFields();
     });

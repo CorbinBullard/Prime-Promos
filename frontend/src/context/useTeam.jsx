@@ -81,6 +81,38 @@ export const TeamProvider = ({ children }) => {
     },
   });
 
+  const updateMemberMutation = useMutation({
+    mutationKey: ["updateMember"],
+    mutationFn: async (member) => {
+      const response = await csrfFetch(`/api/users/${member.id}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(member),
+      });
+      if (!response.ok) {
+        const errorResult = await response.json();
+        throw new Error(errorResult.error || "Failed to update member");
+      }
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries(["teamMembers"]);
+      openNotification({
+        message: "Success",
+        description: "Member updated successfully",
+        type: "success",
+      });
+    },
+    onError: (error) => {
+      openNotification({
+        message: "Error",
+        description: error.message,
+        type: "error",
+      });
+    },
+  });
+
   const deleteMemberMutation = useMutation({
     mutationKey: ["deleteMember"],
     mutationFn: async (id) => {
@@ -106,12 +138,15 @@ export const TeamProvider = ({ children }) => {
     },
   });
 
+
+
   const value = {
     teamMembers: teamMembersQuery.data || [],
     isLoading: teamMembersQuery.isLoading,
     addMember: addMemberMutation.mutate,
     reinvite: reinviteMutation.mutate,
     deleteMember: deleteMemberMutation.mutate,
+    updateMember: updateMemberMutation.mutate,
     errors: {
       fetchError: teamMembersQuery.error,
       addMemberError: addMemberMutation.error,

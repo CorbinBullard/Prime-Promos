@@ -28,7 +28,7 @@ router.get("/", requireAuth, async (req, res) => {
     ],
     required: false,
   });
-  
+
   return res.json(projects);
 });
 
@@ -88,7 +88,10 @@ router.delete("/:projectId", requireOwnerAuth, async (req, res) => {
 // Update Project
 router.put("/:projectId", async (req, res) => {
   const { projectId } = req.params;
-  const { name } = req.body;
+  const { name, inHandsDate, eventDate, customerPO, salesConfirmation } =
+    req.body;
+
+    console.log("REQ BODY", req.body)
 
   const project = await Project.findByPk(projectId, {
     include: User,
@@ -100,9 +103,14 @@ router.put("/:projectId", async (req, res) => {
   if (!project.Users.find((user) => user.id === req.user.id)) {
     return res.json({ message: "Unauthorized" });
   }
-  project.name = name;
-  await project.save();
-  return res.json(project);
+  const updatedProject = await project.update({
+    name,
+    inHandsDate,
+    eventDate,
+    customerPO,
+    salesConfirmation,
+  });
+  return res.json(updatedProject);
 });
 
 // USERS SECTION

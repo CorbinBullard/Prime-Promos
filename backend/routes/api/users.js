@@ -182,6 +182,17 @@ router.post("/google-register", async (req, res) => {
   return res.json(user);
 });
 
+router.put("/:id", requireOwnerAuth, async (req, res) => {
+  const { id } = req.params;
+  const { email, firstName, lastName, role } = req.body;
+  const user = await User.findByPk(id);
+  if (!user) {
+    return res.status(404).json({ message: "User not found" });
+  }
+  const updatedUser = await user.update({ email, firstName, lastName, role });
+  return res.json(updatedUser);
+});
+
 // Delete a user
 router.delete("/:id", requireOwnerAuth, async (req, res, next) => {
   const { id } = req.params;

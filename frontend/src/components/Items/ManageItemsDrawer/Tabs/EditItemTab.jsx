@@ -13,7 +13,6 @@ export default function EditItem({ item }) {
 
   const handleUpdateItem = async () => {
     form.validateFields().then((values) => {
-      console.log(values);
       updateItem(values);
     });
   };

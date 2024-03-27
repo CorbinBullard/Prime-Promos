@@ -5,7 +5,7 @@ const { TabPane } = Tabs;
 
 const ManagerDrawer = ({ open, onClose, item, tabItems }) => {
   return (
-    <Drawer placement="right" onClose={onClose} open={open} width={720}>
+    <Drawer placement="right" onClose={onClose} open={open} width={700}>
       {item && <Tabs item={item} items={tabItems} />}
     </Drawer>
   );
