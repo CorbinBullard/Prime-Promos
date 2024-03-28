@@ -1,5 +1,5 @@
 import React, { useMemo } from "react";
-import { DatePicker, Form, Input, Select, Space } from "antd";
+import { DatePicker, Form, Input, Select, Space, Flex } from "antd";
 import { useTeam } from "../../context/useTeam";
 import UserDropdown from "../UI/UserDropdown";
 import dayjs from "dayjs";
@@ -27,10 +27,10 @@ export default function CreateProjectForm({ form, initialValues }) {
       </Item>
       {/* Add with users only When Creating a project, not when editting! */}
       {!initialValues && <UserDropdown options={teamMembers} />}
-      <Space size="middle" style={{ display: "flex" }}>
+      <Flex justify="space-between" flex={1} gap={5}>
         <Item
+          style={{ flex: 1 }}
           name="inHandsDate"
-          label="In Hands Date"
           rules={[
             {
               required: true,
@@ -52,11 +52,15 @@ export default function CreateProjectForm({ form, initialValues }) {
             }),
           ]}
         >
-          <DatePicker format={dateFormat} />
+          <DatePicker
+            format={dateFormat}
+            style={{ width: "100%" }}
+            placeholder="In Hands Date"
+          />
         </Item>
         <Item
+          style={{ flex: 1 }}
           name="eventDate"
-          label="Event Date"
           dependencies={["inHandsDate"]} // Declare dependency to revalidate when inHandsDate changes
           rules={[
             {
@@ -90,9 +94,13 @@ export default function CreateProjectForm({ form, initialValues }) {
             }),
           ]}
         >
-          <DatePicker format={dateFormat} />
+          <DatePicker
+            format={dateFormat}
+            style={{ width: "100%" }}
+            placeholder="Event Date"
+          />
         </Item>
-      </Space>
+      </Flex>
       <Item name="customerPO" label="Customer PO">
         <Input placeholder="Enter Customer PO" />
       </Item>
