@@ -5,6 +5,7 @@ import UserDropdown from "../UI/UserDropdown";
 import dayjs from "dayjs";
 import moment from "moment";
 import { formatDateForForm } from "../../utils/utilFunctions";
+import { dateFormat } from "../../utils/constants";
 const { Item } = Form;
 
 export default function CreateProjectForm({ form, initialValues }) {
@@ -51,7 +52,7 @@ export default function CreateProjectForm({ form, initialValues }) {
             }),
           ]}
         >
-          <DatePicker />
+          <DatePicker format={dateFormat} />
         </Item>
         <Item
           name="eventDate"
@@ -89,7 +90,7 @@ export default function CreateProjectForm({ form, initialValues }) {
             }),
           ]}
         >
-          <DatePicker />
+          <DatePicker format={dateFormat} />
         </Item>
       </Space>
       <Item name="customerPO" label="Customer PO">

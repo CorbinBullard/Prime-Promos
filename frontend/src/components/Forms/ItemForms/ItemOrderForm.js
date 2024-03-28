@@ -2,6 +2,7 @@ import { Checkbox, DatePicker, Form, Input } from "antd";
 import React from "react";
 import moment from "moment";
 import { formatDateForForm } from "../../../utils/utilFunctions";
+import { dateFormat } from "../../../utils/constants";
 
 const { Item } = Form;
 
@@ -29,7 +30,7 @@ export default function ItemOrderForm({ form, onValuesChange, initialValues }) {
         <Checkbox>Pre-Virtual</Checkbox>
       </Item>
       <Item name="shipDate" label="Ship Date">
-        <DatePicker style={{ width: "100%" }} />
+        <DatePicker style={{ width: "100%" }} format={dateFormat} />
       </Item>
       <Item name="tracking">
         <Input addonBefore="Tracking #" style={{ width: "100%" }} />

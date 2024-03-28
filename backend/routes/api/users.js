@@ -86,6 +86,10 @@ router.put("/invite/:id", requireOwnerAuth, async (req, res) => {
   if (!user) {
     return res.status(404).json({ message: "User not found" });
   }
+  const UserJSON = user.toJSON();
+  if (UserJSON.validated) {
+    return res.status(400).json({ message: "User already validated" });
+  }
   const invitationToken = crypto.randomBytes(20).toString("hex");
   const tokenExpiration = new Date(Date.now() + 48 * 3600000); // 48 hours from now
 
@@ -189,7 +193,12 @@ router.put("/:id", requireOwnerAuth, async (req, res) => {
   if (!user) {
     return res.status(404).json({ message: "User not found" });
   }
-  const updatedUser = await user.update({ email, firstName, lastName, role });
+  const updatedUser = await user.update({
+    email,
+    firstName,
+    lastName,
+    role: role.toLowerCase(),
+  });
   return res.json(updatedUser);
 });
 

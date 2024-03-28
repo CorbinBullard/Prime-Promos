@@ -93,3 +93,5 @@ export const monthColors = {
   November: "#00FF80",
   December: "#00FFBF",
 };
+
+export const dateFormat = "MM/DD/YYYY";

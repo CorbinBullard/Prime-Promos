@@ -87,22 +87,24 @@ router.delete("/:projectId", requireOwnerAuth, async (req, res) => {
 
 // Update Project
 router.put("/:projectId", async (req, res) => {
+  const { role } = req.user;
   const { projectId } = req.params;
   const { name, inHandsDate, eventDate, customerPO, salesConfirmation } =
     req.body;
 
-    console.log("REQ BODY", req.body)
-
+  console.log("REQ BODY", req.body);
+  console.log("ROLE ", role);
   const project = await Project.findByPk(projectId, {
     include: User,
     required: false,
   });
   if (!project) {
-    return res.json({ message: "Project not found" });
+    return res.status(404).json({ message: "Project not found" });
   }
-  if (!project.Users.find((user) => user.id === req.user.id)) {
-    return res.json({ message: "Unauthorized" });
+  if (role !== "owner" && !project.Users.find((user) => user.id === req.user.id)) {
+    return res.status(405).json({ message: "Unauthorized" });
   }
+
   const updatedProject = await project.update({
     name,
     inHandsDate,
@@ -110,6 +112,7 @@ router.put("/:projectId", async (req, res) => {
     customerPO,
     salesConfirmation,
   });
+  console.log("UPDATED PROJECT", updatedProject);
   return res.json(updatedProject);
 });
 

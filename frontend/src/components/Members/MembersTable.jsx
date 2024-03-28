@@ -10,6 +10,7 @@ import { useTeam } from "../../context/useTeam";
 
 export default function MembersTable({ members, selectMember }) {
   const { deleteMember, reinvite } = useTeam();
+
   const UserOptions = (user) => [
     {
       key: "edit",
@@ -32,7 +33,7 @@ export default function MembersTable({ members, selectMember }) {
         Modal.confirm({
           title: "Remove Member",
           content: "Are you sure you want to remove this member?",
-          onOk: deleteMember(user.id),
+          onOk: () => deleteMember(user.id),
         }),
     },
   ];

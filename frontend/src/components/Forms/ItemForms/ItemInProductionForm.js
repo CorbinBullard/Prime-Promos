@@ -3,6 +3,7 @@ import React from "react";
 import moment from "moment";
 import FileUploader from "../../UI/FileUploader";
 import { formatDateForForm } from "../../../utils/utilFunctions";
+import { dateFormat } from "../../../utils/constants";
 
 const { Item } = Form;
 
@@ -40,7 +41,7 @@ export default function ItemInProductionForm({
       initialValues={formattedInitialValues}
     >
       <Item name="recieveOrderAcknowledge" label="Recieved Order Date">
-        <DatePicker style={{ width: "100%" }} />
+        <DatePicker style={{ width: "100%" }} format={dateFormat} />
       </Item>
       <Item name="proofForAprovalFile" label="Proof For Aproval">
         <FileUploader
@@ -50,7 +51,7 @@ export default function ItemInProductionForm({
       </Item>
       {form.getFieldsValue("proofForAprovalFile") && (
         <Item name="proofForAprovalDate" label="Proof For Aproval">
-          <DatePicker style={{ width: "100%" }} />
+          <DatePicker style={{ width: "100%" }} format={dateFormat} />
         </Item>
       )}
       <Item name="delivered" label="Delivery Date">
