@@ -4,9 +4,9 @@ import useItems from "../hooks/useItems";
 import { Flex, Modal, Space } from "antd";
 import ItemCard from "../components/Items/ItemCard";
 import FormModalButton from "../components/UI/FormModalButton";
-import { AppstoreAddOutlined } from "@ant-design/icons";
+import { AppstoreAddOutlined, SaveOutlined } from "@ant-design/icons";
 import CreateItemForm from "../components/Forms/ItemForms/CreateItemForm";
-import CurrentItemModal from "../components/Items/CurrentItemModal";
+import ItemDetailAutoSave from "../components/Items/ItemDetailAutoSave";
 import DrawerManager from "../components/UI/DrawerManager";
 import { itemManagerTabs } from "../components/Items/ManageItemsDrawer/itemManager";
 
@@ -46,12 +46,17 @@ export default function ProjectDetailsPage({ children }) {
             );
           })}
       </Flex>
-      {selectedItem && (
-        <CurrentItemModal
-          item={selectedItem}
-          setSelectedItem={setSelectedItem}
-        />
-      )}
+      <Modal
+        open={selectedItem}
+        onCancel={() => setSelectedItem(null)}
+        title={selectedItem?.name || null}
+        width={1000}
+        footer={null}
+        icon={<SaveOutlined />}
+        header="HELLO"
+      >
+        <ItemDetailAutoSave item={selectedItem} />
+      </Modal>
       <DrawerManager
         item={manageItem}
         open={!!manageItem}

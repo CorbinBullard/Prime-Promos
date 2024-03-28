@@ -15,7 +15,7 @@ export default function ItemShippedForm() {
         <DatePicker format={dateFormat} />
       </Form.Item>
       <Form.Item label="Expected Delivery Date" name="expectedDeliveryDate">
-        <DatePicker format={dateFormat} />
+        <DatePicker format={dateFormat}  />
       </Form.Item>
     </Form>
   );

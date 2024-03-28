@@ -16,6 +16,6 @@ export function debounce(func, wait) {
   };
 }
 
-export function formatDateForForm(value) {
-  return value ? moment(value) : null;
+export function formatDateForForm(date) {
+  return date ? moment(date) : null;
 }

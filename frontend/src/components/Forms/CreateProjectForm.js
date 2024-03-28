@@ -3,7 +3,6 @@ import { DatePicker, Form, Input, Select, Space, Flex } from "antd";
 import { useTeam } from "../../context/useTeam";
 import UserDropdown from "../UI/UserDropdown";
 import dayjs from "dayjs";
-import moment from "moment";
 import { formatDateForForm } from "../../utils/utilFunctions";
 import { dateFormat } from "../../utils/constants";
 const { Item } = Form;
