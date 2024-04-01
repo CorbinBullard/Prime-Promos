@@ -1,17 +1,18 @@
 import { Route, Routes, useNavigate } from "react-router-dom";
 import { Suspense, lazy, useEffect, useState } from "react";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
-import TeamPage from "./pages/TeamPage";
-import LoginPage from "./pages/SessionPages/LoginPage";
-import ProjectsPage from "./pages/ProjectsPage";
+
 import { csrfFetch } from "./utils/csrf";
 import { useSession } from "./context/Session";
 import Loader from "./components/UI/Loader";
-import Dashboard from "./pages/Dashboard";
+import Dashboard from "./pages/DashboardPage";
 
 const RegisterPage = lazy(() => import("./pages/SessionPages/RegisterPage"));
 const Layout = lazy(() => import("./layout/PageLayout"));
 const ProjectDetailsPage = lazy(() => import("./pages/ProjectDetailsPage"));
+const TeamPage = lazy(() => import("./pages/TeamPage"));
+const ProjectsPage = lazy(() => import("./pages/ProjectsPage"));
+const LoginPage = lazy(() => import("./pages/SessionPages/LoginPage"));
 
 function App() {
   const { isLoading } = useSession();

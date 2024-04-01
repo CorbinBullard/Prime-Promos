@@ -2,6 +2,7 @@
 
 import ManageUsersTab from "./Tabs/ManageUsersTab";
 import EditProject from "./Tabs/EditProjectTab";
+import ProjectStatusTab from "./Tabs/ProjectStatusTab";
 export const projectManagerTabs = (project) => [
   {
     key: "details",
@@ -13,4 +14,9 @@ export const projectManagerTabs = (project) => [
     label: "Manage Users",
     children: <ManageUsersTab project={project} />,
   },
+  {
+    key: "status",
+    label: "Project Status",
+    children: <ProjectStatusTab project={project} />,
+  }
 ];

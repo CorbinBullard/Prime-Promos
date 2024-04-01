@@ -98,6 +98,8 @@ export const SessionProvider = ({ children }) => {
         login,
         logout,
         loginGoogle,
+        isAdmin: user?.user?.role === "admin" || user?.user?.role === "owner",
+        isOwner: user?.user?.role === "owner",
       }}
     >
       {children}

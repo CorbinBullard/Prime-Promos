@@ -17,7 +17,8 @@
     "react-pdf": "^7.7.1",
     "react-router-dom": "^6.22.2",
     "react-scripts": "5.0.1",
-    "web-vitals": "^2.1.4"
+    "web-vitals": "^2.1.4",
+    "why-did-you-render": "^1.0.1"
   },
   "scripts": {
     "start": "react-scripts start",
@@ -43,5 +44,8 @@
       "last 1 safari version"
     ]
   },
-  "proxy": "http://localhost:8000"
+  "proxy": "http://localhost:8000",
+  "devDependencies": {
+    "@welldone-software/why-did-you-render": "^8.0.1"
+  }
 }

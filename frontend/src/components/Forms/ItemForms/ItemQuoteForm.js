@@ -28,7 +28,11 @@ export default function ItemQuoteForm({ form, onValuesChange, initialValues }) {
         <InputNumber addonBefore="Quantity" style={{ width: "100%" }} />
       </Item>
       <Item name="sellUnitPrice">
-        <InputNumber addonBefore="Sell Unit Price" style={{ width: "100%" }} />
+        <InputNumber
+          addonBefore="Sell Unit Price"
+          style={{ width: "100%" }}
+          prefix="$"
+        />
       </Item>
       <Item name="itemColor">
         <Input addonBefore="Item Color" style={{ width: "100%" }} />
@@ -44,19 +48,35 @@ export default function ItemQuoteForm({ form, onValuesChange, initialValues }) {
         <Input addonBefore="Logo Color" style={{ width: "100%" }} />
       </Item>
       <Item name="stockCheck" label="Stock Check" tooltip="CHECK">
-        <Input.TextArea placeholder="Stock Check"/>
+        <Input.TextArea placeholder="Stock Check" />
       </Item>
       <Item name="netUnitPrice">
-        <InputNumber addonBefore="Net Unit Price" style={{ width: "100%" }} />
+        <InputNumber
+          addonBefore="Net Unit Price"
+          style={{ width: "100%" }}
+          prefix="$"
+        />
       </Item>
       <Item name="netSetup">
-        <InputNumber addonBefore="Net Setup" style={{ width: "100%" }} />
+        <InputNumber
+          addonBefore="Net Setup"
+          style={{ width: "100%" }}
+          prefix="$"
+        />
       </Item>
       <Item name="proofCharge">
-        <InputNumber addonBefore="Proof Charge" style={{ width: "100%" }} />
+        <InputNumber
+          addonBefore="Proof Charge"
+          style={{ width: "100%" }}
+          prefix="$"
+        />
       </Item>
       <Item name="pmsCharge">
-        <InputNumber addonBefore="PMS Charge" style={{ width: "100%" }} />
+        <InputNumber
+          addonBefore="PMS Charge"
+          style={{ width: "100%" }}
+          prefix="$"
+        />
       </Item>
       <Item name="decorationMethod">
         <Input addonBefore="Decoration Method" style={{ width: "100%" }} />
@@ -74,6 +94,7 @@ export default function ItemQuoteForm({ form, onValuesChange, initialValues }) {
         <InputNumber
           addonBefore="Shipping Estimate"
           style={{ width: "100%" }}
+          prefix="$"
         />
       </Item>
     </Form>

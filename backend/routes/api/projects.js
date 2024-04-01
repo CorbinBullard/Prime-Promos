@@ -1,6 +1,6 @@
 const router = require("express").Router();
 const { Op } = require("sequelize");
-const { Project, User, Item } = require("../../db/models");
+const { Project, User, Item, Note } = require("../../db/models");
 const {
   requireOwnerAuth,
   requireAuth,
@@ -13,23 +13,36 @@ router.get("/", requireAuth, async (req, res) => {
   const { user } = req;
   const UserJSON = user.toJSON();
   const { id, role } = UserJSON;
-  console.log("USER", user.toJSON());
-  console.log("ID", id);
-  const where = {};
-  if (role !== "owner" && role !== "admin") {
-    where.id = id;
+
+  try {
+    let projects;
+    if (role === "owner" || role === "admin") {
+      // For 'owner' or 'admin', fetch all projects
+      projects = await Project.findAll({
+        include: [
+          { model: User, required: false }, // Assuming User-Project is a many-to-many relationship
+          { model: Item, required: false },
+        ],
+      });
+    } else {
+      // For other roles, only fetch projects associated with the user
+      projects = await Project.findAll({
+        include: [
+          {
+            model: User,
+            where: { id }, // Filter to include only projects of this user
+            required: true,
+          },
+          { model: Item, required: false },
+        ],
+      });
+    }
+
+    return res.json(projects);
+  } catch (error) {
+    console.error("Failed to get projects", error);
+    return res.status(500).send("Internal Server Error");
   }
-
-  const projects = await Project.findAll({
-    where,
-    include: [
-      { model: User, required: false },
-      { model: Item, required: false },
-    ],
-    required: false,
-  });
-
-  return res.json(projects);
 });
 
 // Create Project
@@ -89,11 +102,15 @@ router.delete("/:projectId", requireOwnerAuth, async (req, res) => {
 router.put("/:projectId", async (req, res) => {
   const { role } = req.user;
   const { projectId } = req.params;
-  const { name, inHandsDate, eventDate, customerPO, salesConfirmation } =
-    req.body;
+  const {
+    name,
+    inHandsDate,
+    eventDate,
+    customerPO,
+    salesConfirmation,
+    status,
+  } = req.body;
 
-  console.log("REQ BODY", req.body);
-  console.log("ROLE ", role);
   const project = await Project.findByPk(projectId, {
     include: User,
     required: false,
@@ -101,7 +118,10 @@ router.put("/:projectId", async (req, res) => {
   if (!project) {
     return res.status(404).json({ message: "Project not found" });
   }
-  if (role !== "owner" && !project.Users.find((user) => user.id === req.user.id)) {
+  if (
+    role !== "owner" &&
+    !project.Users.find((user) => user.id === req.user.id)
+  ) {
     return res.status(405).json({ message: "Unauthorized" });
   }
 
@@ -114,6 +134,19 @@ router.put("/:projectId", async (req, res) => {
   });
   console.log("UPDATED PROJECT", updatedProject);
   return res.json(updatedProject);
+});
+
+// Update Project Status
+router.patch("/:projectId/status", requireAdminAuth, async (req, res) => {
+  const { projectId } = req.params;
+  const { status } = req.body;
+
+  const project = await Project.findByPk(projectId);
+  if (!project) {
+    return res.json({ message: "Project not found" });
+  }
+  await project.update({ status });
+  return res.json({ message: "Project status updated" });
 });
 
 // USERS SECTION
@@ -228,7 +261,10 @@ router.get(
       return res.json({ message: "Project not found" });
     }
 
-    const items = await project.getItems();
+    const items = await project.getItems({
+      include: Note,
+      required: false,
+    });
 
     const formattedItems = items.map((item) => {
       const itemJSON = item.toJSON();

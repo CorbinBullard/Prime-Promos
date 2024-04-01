@@ -10,6 +10,7 @@ import { restoreCSRF } from "./utils/csrf";
 import { TeamProvider } from "./context/useTeam";
 import { SessionProvider } from "./context/Session";
 import { GoogleOAuthProvider } from "@react-oauth/google";
+import whyDidYouRender from "@welldone-software/why-did-you-render";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -23,6 +24,11 @@ const root = ReactDOM.createRoot(document.getElementById("root"));
 
 if (process.env.NODE_ENV !== "production") {
   restoreCSRF();
+
+
+  whyDidYouRender(React, {
+    trackAllPureComponents: true,
+  });
 }
 
 root.render(

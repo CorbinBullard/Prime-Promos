@@ -42,20 +42,42 @@ router.put("/:id", requireAuth, async (req, res) => {
   return res.json(newItem);
 });
 
-router.post(
-  "/:id/image",
-  requireAuth,
-  async (req, res) => {
-
-    const { id } = req.params;
-    const item = await Item.findByPk(id);
-    console.log("REQ FILE", req.file);
-    if (!item) {
-      return res.status(404).send("Item not found");
-    }
-
-    return res.json(item);
+router.post("/:id/image", requireAuth, async (req, res) => {
+  const { id } = req.params;
+  const item = await Item.findByPk(id);
+  console.log("REQ FILE", req.file);
+  if (!item) {
+    return res.status(404).send("Item not found");
   }
-);
+
+  return res.json(item);
+});
+
+// Notes
+router.get("/:id/notes", requireAuth, async (req, res) => {
+  const { id } = req.params;
+  const item = await Item.findByPk(id);
+  if (!item) {
+    return res.status(404).send("Item not found");
+  }
+
+  const notes = await item.getNotes();
+  return res.json(notes);
+});
+
+router.post("/:id/notes", requireAuth, async (req, res) => {
+  const { id } = req.params;
+  const item = await Item.findByPk(id);
+  if (!item) {
+    return res.status(404).send("Item not found");
+  }
+
+  const note = await item.createNote({
+    ...req.body,
+    userId: req.user.id,
+  });
+
+  return res.json(note);
+});
 
 module.exports = router;

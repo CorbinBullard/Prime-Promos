@@ -46,9 +46,6 @@ module.exports = {
         logoColor: {
           type: Sequelize.STRING,
         },
-        quoteNotes: {
-          type: Sequelize.TEXT,
-        },
         stockCheck: {
           type: Sequelize.STRING,
         },
@@ -75,9 +72,6 @@ module.exports = {
         },
         shippingEstimate: {
           type: Sequelize.DECIMAL,
-        },
-        factoryNotes: {
-          type: Sequelize.TEXT,
         },
         factory: {
           type: Sequelize.STRING,

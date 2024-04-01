@@ -4,9 +4,11 @@ import ItemQuoteForm from "./ItemQuoteForm";
 import ItemOrderForm from "./ItemOrderForm";
 import ItemInProductionForm from "./ItemInProductionForm";
 import {
+  FORM_COMPONENTS,
   ItemStatusFields,
   ItemStatusProgression,
 } from "../../../utils/constants";
+import ItemDetailAutoSave from "../../Items/ItemDetailAutoSave";
 const { Item } = Form;
 export default function AdminFullItemForm({ form, item }) {
   const current = ItemStatusProgression.indexOf(item.status);
@@ -24,21 +26,30 @@ export default function AdminFullItemForm({ form, item }) {
     {
       title: "Quote",
       description: (
-        <ItemQuoteForm form={form} initialValues={itemValues.quote} />
+        <ItemDetailAutoSave
+          FormComponent={FORM_COMPONENTS.quote}
+          initialValues={itemValues.quote}
+          item={item}
+        />
       ),
     },
     {
       title: "Order",
       description: (
-        <ItemOrderForm form={form} initialValues={itemValues.order} />
+        <ItemDetailAutoSave
+          FormComponent={FORM_COMPONENTS.order}
+          initialValues={itemValues.order}
+          item={item}
+        />
       ),
     },
     {
       title: "In Production",
       description: (
-        <ItemInProductionForm
-          form={form}
-          initialValues={itemValues.inProduction}
+        <ItemDetailAutoSave
+          FormComponent={FORM_COMPONENTS.isProduction}
+          initialValues={itemValues.isProduction}
+          item={item}
         />
       ),
     },

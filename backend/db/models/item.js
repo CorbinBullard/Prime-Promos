@@ -15,6 +15,11 @@ module.exports = (sequelize, DataTypes) => {
         foreignKey: "projectId",
         onDelete: "CASCADE",
       });
+
+      Item.hasMany(models.Note, {
+        foreignKey: "itemId",
+        onDelete: "CASCADE",
+      });
     }
 
     // Adding a static method to advance the status of an item
@@ -67,7 +72,6 @@ module.exports = (sequelize, DataTypes) => {
       itemColor: DataTypes.STRING,
       logo: DataTypes.STRING,
       logoColor: DataTypes.STRING,
-      quoteNotes: DataTypes.TEXT,
       stockCheck: DataTypes.STRING,
       netUnitPrice: DataTypes.DECIMAL,
       netSetup: DataTypes.DECIMAL,
@@ -77,7 +81,6 @@ module.exports = (sequelize, DataTypes) => {
       numberOfImprintColors: DataTypes.INTEGER,
       productionTime: DataTypes.STRING,
       shippingEstimate: DataTypes.DECIMAL,
-      factoryNotes: DataTypes.TEXT,
       factory: DataTypes.STRING,
       primePO: DataTypes.STRING,
       orderSent: DataTypes.DATE,

@@ -94,6 +94,55 @@ export default function useItems({ projectId, itemId }) {
     onError: handleError,
   }).mutate;
 
+  const createItemNote = useMutation({
+    mutationFn: async (note) => {
+      const response = await csrfFetch(`/api/items/${itemId}/notes`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(note),
+      });
+      if (!response.ok) {
+        const errorResult = await response.json();
+        throw new Error(errorResult.error || "Failed to create note");
+      }
+      return response.json();
+    },
+    onSuccess: () => handleSuccess("Note created successfully"),
+    onError: handleError,
+  }).mutate;
+
+  const updateItemNote = useMutation({
+    mutationFn: async (note) => {
+      const response = await csrfFetch(`/api/notes/${note.id}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(note),
+      });
+      if (!response.ok) {
+        const errorResult = await response.json();
+        throw new Error(errorResult.error || "Failed to update note");
+      }
+      return response.json();
+    },
+    onSuccess: () => handleSuccess("Note updated successfully"),
+    onError: handleError,
+  }).mutate;
+
+  const deleteItemNote = useMutation({
+    mutationFn: async (id) => {
+      const response = await csrfFetch(`/api/notes/${id}`, {
+        method: "DELETE",
+      });
+      if (!response.ok) throw new Error("Failed to delete note");
+    },
+    onSuccess: () => handleSuccess("Note deleted successfully"),
+    onError: handleError,
+  }).mutate;
+
   return {
     items,
     selectedItem,
@@ -103,5 +152,8 @@ export default function useItems({ projectId, itemId }) {
     updateItem,
     deleteItem,
     setSelectedItem,
+    createItemNote,
+    updateItemNote,
+    deleteItemNote,
   };
 }

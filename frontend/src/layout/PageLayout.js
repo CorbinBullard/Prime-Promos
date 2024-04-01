@@ -22,17 +22,9 @@ function getItem(label, key, icon, children) {
     label,
   };
 }
-const items = [
-  getItem("My Account", "account", <UserOutlined />, [
-    getItem("Logout", "logout"),
-  ]),
-  getItem("Dashboard", "", <DashboardOutlined />),
-  getItem("Projects", "projects", <PieChartOutlined />),
-  getItem("My Team", "members", <TeamOutlined />), // Owner Only
-];
 
 export default function PageLayout() {
-  const { user, logout } = useSession();
+  const { user, logout, isOwner } = useSession();
   const navigate = useNavigate();
   const location = useLocation();
   const [collapsed, setCollapsed] = useState(false);
@@ -41,6 +33,14 @@ export default function PageLayout() {
     ? "/pp_icon_transparent.png"
     : "/pp_horizontal_logo_transparent.png";
 
+  const items = [
+    getItem("My Account", "account", <UserOutlined />, [
+      getItem("Logout", "logout"),
+    ]),
+    getItem("Dashboard", "", <DashboardOutlined />),
+    getItem("Projects", "projects", <PieChartOutlined />),
+    ...(isOwner ? [getItem("My Team", "members", <TeamOutlined />)] : []), // Conditionally add this item
+  ];
   useEffect(() => {
     if (!user) {
       navigate("/login");

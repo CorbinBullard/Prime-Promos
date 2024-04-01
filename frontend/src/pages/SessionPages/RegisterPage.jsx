@@ -106,7 +106,7 @@ export default function RegisterPage() {
         >
           <NewUserForm form={form} initialValues={unvalidatedUser} />
           <Button block type="primary" onClick={registerUser}>
-            Register User
+            Register
           </Button>
           <Divider>or</Divider>
           <GoogleLogin

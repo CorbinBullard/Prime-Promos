@@ -55,7 +55,7 @@ export default function ItemInProductionForm({
         </Item>
       )}
       <Item name="delivered" label="Delivery Date">
-        <DatePicker style={{ width: "100%" }} />
+        <DatePicker style={{ width: "100%" }} format={dateFormat} />
       </Item>
       <Item name="tracking">
         <InputNumber addonBefore="Tracking #" style={{ width: "100%" }} />
