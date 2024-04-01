@@ -6,9 +6,11 @@ import OptionsButton from "../UI/OptionsButton";
 import { useProjects } from "../../hooks/useProjects";
 import { useNavigate } from "react-router-dom";
 import { ItemStatusColors } from "../../utils/constants";
+import { useSession } from "../../context/Session";
 
 export default function ProjectCard({ project, selectProject }) {
   const { deleteProject } = useProjects();
+  const { isAdmin } = useSession();
   const navigate = useNavigate();
   const projectUsers = project.Users;
   const handleProjectSelect = () => {
@@ -49,14 +51,16 @@ export default function ProjectCard({ project, selectProject }) {
       onClick={handleProjectSelect}
       style={{ width: 500, minWidth: 300 }}
       extra={
-        <Flex align="center" gap={2}>
-          <Avatar.Group size="small" maxCount={4}>
-            {projectUsers.map((user) => (
-              <UserIcon key={user.id} user={user} />
-            ))}
-          </Avatar.Group>
-          <OptionsButton items={projectOptions} />
-        </Flex>
+        isAdmin && (
+          <Flex align="center" gap={2}>
+            <Avatar.Group size="small" maxCount={4}>
+              {projectUsers.map((user) => (
+                <UserIcon key={user.id} user={user} />
+              ))}
+            </Avatar.Group>
+            <OptionsButton items={projectOptions} />
+          </Flex>
+        )
       }
     >
       <List

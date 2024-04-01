@@ -51,7 +51,6 @@ export default function Dashboard() {
     return dataObj;
   }, [projects, teamMembers]);
 
-
   return (
     <>
       <Row gutter={15}>
@@ -105,7 +104,7 @@ export default function Dashboard() {
                 />
                 <Avatar.Group maxCount={4}>
                   {project.Users.map((user) => (
-                    <UserIcon user={user} />
+                    <UserIcon user={user} key={user.id} />
                   ))}
                 </Avatar.Group>
               </List.Item>

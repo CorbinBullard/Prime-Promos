@@ -1,4 +1,4 @@
-import {  Tabs } from "antd";
+import { Tabs } from "antd";
 import React, { useMemo } from "react";
 import ProjectCardsContainer from "../components/Projects/ProjectCardsContainer";
 import { FolderAddOutlined } from "@ant-design/icons";
@@ -7,6 +7,7 @@ import CreateProjectForm from "../components/Forms/CreateProjectForm";
 import { useProjects } from "../hooks/useProjects";
 import DrawerManager from "../components/UI/DrawerManager";
 import { projectManagerTabs } from "../components/Projects/ManageProjectDrawer/ProjectManager";
+import { useSession } from "../context/Session";
 
 export default function ProjectsPage() {
   const {
@@ -17,6 +18,7 @@ export default function ProjectsPage() {
     currentProjectId,
     clearCurrentProject,
   } = useProjects();
+  const { isAdmin } = useSession();
 
   const items = [
     {
@@ -52,16 +54,18 @@ export default function ProjectsPage() {
           <Tabs
             items={items}
             tabBarExtraContent={
-              <FormModalButton
-                icon={<FolderAddOutlined />}
-                type="primary"
-                form={CreateProjectForm}
-                title="Create New Project"
-                submitText="Create"
-                onSubmit={handleCreateProject}
-              >
-                Create New Project
-              </FormModalButton>
+              isAdmin && (
+                <FormModalButton
+                  icon={<FolderAddOutlined />}
+                  type="primary"
+                  form={CreateProjectForm}
+                  title="Create New Project"
+                  submitText="Create"
+                  onSubmit={handleCreateProject}
+                >
+                  Create New Project
+                </FormModalButton>
+              )
             }
           />
           <ProjectCardsContainer

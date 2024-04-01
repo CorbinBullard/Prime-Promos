@@ -26,9 +26,9 @@ if (process.env.NODE_ENV !== "production") {
   restoreCSRF();
 
 
-  whyDidYouRender(React, {
-    trackAllPureComponents: true,
-  });
+  // whyDidYouRender(React, {
+  //   trackAllPureComponents: true,
+  // });
 }
 
 root.render(

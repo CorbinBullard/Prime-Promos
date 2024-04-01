@@ -18,10 +18,11 @@ export default function EditItem({ item }) {
   };
   return (
     <div>
-      <AdminFullItemForm form={form}  item={item} />
-      <Button type="primary" onClick={handleUpdateItem}>
-        Update Item
-      </Button>
+      <AdminFullItemForm
+        form={form}
+        item={item}
+        updateItem={handleUpdateItem}
+      />
     </div>
   );
 }

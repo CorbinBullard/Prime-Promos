@@ -1,4 +1,4 @@
-import { Form, Input, Steps } from "antd";
+import { Form, Input, Steps, Button } from "antd";
 import React, { useMemo, useState } from "react";
 import ItemQuoteForm from "./ItemQuoteForm";
 import ItemOrderForm from "./ItemOrderForm";
@@ -9,6 +9,7 @@ import {
   ItemStatusProgression,
 } from "../../../utils/constants";
 import ItemDetailAutoSave from "../../Items/ItemDetailAutoSave";
+import CreateItemForm from "./CreateItemForm";
 const { Item } = Form;
 export default function AdminFullItemForm({ form, item }) {
   const current = ItemStatusProgression.indexOf(item.status);
@@ -56,11 +57,7 @@ export default function AdminFullItemForm({ form, item }) {
   ];
   return (
     <>
-      <Form form={form} initialValues={{ name: item.name }}>
-        <Item name="name">
-          <Input addonBefore="Item Name" />
-        </Item>
-      </Form>
+      <ItemDetailAutoSave FormComponent={CreateItemForm} item={item} />
       <Steps
         direction="vertical"
         items={items}

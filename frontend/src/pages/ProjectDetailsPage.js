@@ -11,9 +11,12 @@ import DrawerManager from "../components/UI/DrawerManager";
 import { itemManagerTabs } from "../components/Items/ManageItemsDrawer/itemManager";
 import { FORM_COMPONENTS } from "../utils/constants";
 import NotesList from "../components/Notes/NotesList";
+import BackButton from "../components/UI/BackButton";
+import { useSession } from "../context/Session";
 
 export default function ProjectDetailsPage({ children }) {
   const { projectId } = useParams();
+  const { isAdmin } = useSession();
   const [manageItemId, setManageItemId] = useState(null);
 
   const { items, itemsLoading, createItem, selectedItem, setSelectedItem } =
@@ -35,17 +38,22 @@ export default function ProjectDetailsPage({ children }) {
 
   console.log(itemsObj, itemsObj[manageItemId]);
   return (
-    <Space direction="vertical">
-      <FormModalButton
-        form={CreateItemForm}
-        onSubmit={handleCreateItem}
-        type="primary"
-        title="Create New Item"
-        submitText="Create"
-        icon={<AppstoreAddOutlined />}
-      >
-        Add New Item
-      </FormModalButton>
+    <Space direction="vertical" style={{ width: "100%" }}>
+      <Flex justify="space-between">
+        <BackButton text="Projects" type="text" />
+        {isAdmin && (
+          <FormModalButton
+            form={CreateItemForm}
+            onSubmit={handleCreateItem}
+            type="primary"
+            title="Create New Item"
+            submitText="Create"
+            icon={<AppstoreAddOutlined />}
+          >
+            Add New Item
+          </FormModalButton>
+        )}
+      </Flex>
       <Flex gap={20} wrap="wrap">
         {!itemsLoading &&
           items.map((item) => {
