@@ -7,6 +7,8 @@ import { useProjects } from "../../hooks/useProjects";
 import { useNavigate } from "react-router-dom";
 import { ItemStatusColors } from "../../utils/constants";
 import { useSession } from "../../context/Session";
+import { capitalize } from "../../utils/utilFunctions";
+import ProjectItemStatus from "./ProjectItemStatus";
 
 export default function ProjectCard({ project, selectProject }) {
   const { deleteProject } = useProjects();
@@ -67,16 +69,8 @@ export default function ProjectCard({ project, selectProject }) {
         size="small"
         dataSource={project.Items}
         renderItem={(item) => (
-          <List.Item
-            style={{ display: "flex" }}
-            key={item.name}
-            extra={
-              <>
-                <Tag color={ItemStatusColors[item.status]}>{item.status}</Tag>
-              </>
-            }
-          >
-            <List.Item.Meta title={item.name} />
+          <List.Item style={{ display: "flex" }} key={item.name}>
+            <ProjectItemStatus item={item} key={item.id} style={{justifyContent: "space-between"}} />
           </List.Item>
         )}
       />

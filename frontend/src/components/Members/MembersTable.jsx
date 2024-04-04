@@ -10,6 +10,7 @@ import UserIcon from "./UserIcon";
 import OptionsButton from "../UI/OptionsButton";
 import { useTeam } from "../../context/useTeam";
 import { getColumns } from "./UserOptions"; // Assuming columns are moved to a separate file
+import { capitalize } from "../../utils/utilFunctions";
 
 export default function MembersTable({ members, selectMember }) {
   const { deleteMember, reinvite } = useTeam();
@@ -35,7 +36,7 @@ export default function MembersTable({ members, selectMember }) {
         key: member.id,
         name: `${member.firstName} ${member.lastName}`,
         email: member.email,
-        role: member.role,
+        role: capitalize(member.role),
         validated: member.validated ? "Active" : "Pending",
       })),
     [members]

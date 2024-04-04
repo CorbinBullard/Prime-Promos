@@ -30,7 +30,6 @@ router.delete("/:id", requireAdminAuth, async (req, res) => {
 router.put("/:id", requireAuth, async (req, res) => {
   const { id } = req.params;
 
-  console.log("\nREQ BODY", req.body, id, "\n");
   // check if user is apart of the current project
   const item = await Item.findByPk(id);
   if (!item) {

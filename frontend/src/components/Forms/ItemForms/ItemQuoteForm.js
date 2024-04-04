@@ -2,12 +2,11 @@ import { Button, Form, Input, InputNumber, Upload } from "antd";
 import React from "react";
 import { UploadOutlined } from "@ant-design/icons";
 import ImageUploader from "../../UI/ImageUploader";
+import { formItemLayout } from "../../../utils/constants";
 const { Item } = Form;
 
 export default function ItemQuoteForm({ form, onValuesChange, initialValues }) {
-  const formItemLayout = {
-    style: { width: "100%", marginBottom: "2px" }, // Apply width to the layout
-  };
+
 
   const handleImageUpload = (url) => {
     form.setFieldsValue({ logo: url });

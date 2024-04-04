@@ -1,5 +1,5 @@
 import { Button, Input, Form, Flex, Card, Divider } from "antd";
-import React, { useEffect, useState } from "react";
+import React, { Suspense, useEffect, useState } from "react";
 import { LockOutlined, WarningOutlined } from "@ant-design/icons";
 import { useNavigate, useParams } from "react-router-dom";
 import { csrfFetch } from "../../utils/csrf";
@@ -7,6 +7,7 @@ import { GoogleLogin } from "@react-oauth/google";
 import { useSession } from "../../context/Session";
 import ImageUploader from "../../components/UI/ImageUploader";
 import NewUserForm from "../../components/Forms/RegisterUserForm";
+import Loader from "../../components/UI/Loader";
 const { Item } = Form;
 
 export default function RegisterPage() {
@@ -82,62 +83,67 @@ export default function RegisterPage() {
     console.log(response);
   };
   return (
-    <div
-      style={{
-        width: "100vw",
-        height: "100vh",
-        position: "relative",
-        background: "gray",
-      }}
-    >
-      {!loading && unvalidatedUser ? (
-        <Card
-          title="Register Prime Promo Account"
-          style={{
-            width: 300,
-            height: "fit-content",
-            position: "absolute",
-            margin: "auto",
-            top: 0,
-            bottom: 0,
-            left: 0,
-            right: 0,
-          }}
-        >
-          <NewUserForm form={form} initialValues={unvalidatedUser} />
-          <Button block type="primary" onClick={registerUser}>
-            Register
-          </Button>
-          <Divider>or</Divider>
-          <GoogleLogin
-            onSuccess={handleGoogleSucess}
-            onError={handleGoogleFailure}
-            text="signup_with"
-            width={250}
-          />
-        </Card>
-      ) : (
-        <Card
-          title={"Invalid Login"}
-          extra={<WarningOutlined style={{ fontSize: "20px", color: "red" }} />}
-          style={{
-            width: 300,
-            height: 300,
-            position: "absolute",
-            margin: "auto",
-            top: 0,
-            bottom: 0,
-            left: 0,
-            right: 0,
-          }}
-        >
-          <p>
-            Either the link is invalid or the user has already been registered.
-          </p>
-          <Divider />
-          <p>If you believe this is an error, please contact support.</p>
-        </Card>
-      )}
-    </div>
+    <Suspense fallback={<Loader />}>
+      <div
+        style={{
+          width: "100vw",
+          height: "100vh",
+          position: "relative",
+          background: "gray",
+        }}
+      >
+        {!loading && unvalidatedUser ? (
+          <Card
+            title="Register Prime Promo Account"
+            style={{
+              width: 300,
+              height: "fit-content",
+              position: "absolute",
+              margin: "auto",
+              top: 0,
+              bottom: 0,
+              left: 0,
+              right: 0,
+            }}
+          >
+            <NewUserForm form={form} initialValues={unvalidatedUser} />
+            <Button block type="primary" onClick={registerUser}>
+              Register
+            </Button>
+            <Divider>or</Divider>
+            <GoogleLogin
+              onSuccess={handleGoogleSucess}
+              onError={handleGoogleFailure}
+              text="signup_with"
+              width={250}
+            />
+          </Card>
+        ) : (
+          <Card
+            title={"Invalid Login"}
+            extra={
+              <WarningOutlined style={{ fontSize: "20px", color: "red" }} />
+            }
+            style={{
+              width: 300,
+              height: 300,
+              position: "absolute",
+              margin: "auto",
+              top: 0,
+              bottom: 0,
+              left: 0,
+              right: 0,
+            }}
+          >
+            <p>
+              Either the link is invalid or the user has already been
+              registered.
+            </p>
+            <Divider />
+            <p>If you believe this is an error, please contact support.</p>
+          </Card>
+        )}
+      </div>
+    </Suspense>
   );
 }

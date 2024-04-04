@@ -114,7 +114,7 @@ router.put("/invite/:id", requireOwnerAuth, async (req, res) => {
 
 // user registration
 router.post("/register", async (req, res) => {
-  const { token, password, firstName, lastName } = req.body;
+  const { token, password, firstName, lastName, profileImageUrl } = req.body;
 
   // try {
   const user = await User.findOne({
@@ -136,6 +136,7 @@ router.post("/register", async (req, res) => {
     validated: true,
     invitationToken: null,
     tokenExpiration: null,
+    profileImageUrl,
     firstName,
     lastName,
   });

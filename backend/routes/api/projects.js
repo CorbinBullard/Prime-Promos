@@ -6,6 +6,7 @@ const {
   requireAuth,
   requireAdminAuth,
   validateProjectUser,
+  canUpdateProject,
 } = require("../../utils/auth");
 
 // Get all projects
@@ -99,7 +100,7 @@ router.delete("/:projectId", requireOwnerAuth, async (req, res) => {
 });
 
 // Update Project
-router.put("/:projectId", async (req, res) => {
+router.put("/:projectId", canUpdateProject, async (req, res) => {
   const { role } = req.user;
   const { projectId } = req.params;
   const {
@@ -108,7 +109,6 @@ router.put("/:projectId", async (req, res) => {
     eventDate,
     customerPO,
     salesConfirmation,
-    status,
   } = req.body;
 
   const project = await Project.findByPk(projectId, {
@@ -136,18 +136,44 @@ router.put("/:projectId", async (req, res) => {
   return res.json(updatedProject);
 });
 
-// Update Project Status
-router.patch("/:projectId/status", requireAdminAuth, async (req, res) => {
-  const { projectId } = req.params;
-  const { status } = req.body;
+// Update Project Status completed
+router.patch(
+  "/:projectId/status-completed",
+  requireAdminAuth,
+  async (req, res) => {
+    const { projectId } = req.params;
 
-  const project = await Project.findByPk(projectId);
-  if (!project) {
-    return res.json({ message: "Project not found" });
+    const project = await Project.findByPk(projectId);
+    if (!project) {
+      return res.json({ message: "Project not found" });
+    }
+    const isComplete = await project.isComplete();
+    if (!isComplete) {
+      return res.json({ message: "Project is not complete" });
+    }
+    await project.update({ status: "completed" });
+    return res.json({ message: "Project status updated" });
   }
-  await project.update({ status });
-  return res.json({ message: "Project status updated" });
-});
+);
+// Update Project Status archived
+router.patch(
+  "/:projectId/status-archived",
+  requireAdminAuth,
+  async (req, res) => {
+    const { projectId } = req.params;
+
+    const project = await Project.findByPk(projectId);
+    if (!project) {
+      return res.json({ message: "Project not found" });
+    }
+    if (project.status !== "completed") {
+      return res.json({ message: "Project must be completed before archiving" });
+    }
+    await project.archive();
+
+    return res.json({ message: "Project status updated" });
+  }
+);
 
 // USERS SECTION
 

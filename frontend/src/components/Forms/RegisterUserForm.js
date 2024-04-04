@@ -6,11 +6,15 @@ import { useSession } from "../../context/Session";
 const { Item } = Form;
 
 export default function NewUserForm({ form, onValuesChange, initialValues }) {
-    const { user } = useSession();
+  const { user } = useSession();
+
   const handleImageUpload = (url) => {
     form.setFieldsValue({ profileImageUrl: url });
     onValuesChange &&
-      onValuesChange({ logo: url }, { ...form.getFieldsValue(), logo: url });
+      onValuesChange(
+        { profileImageUrl: url },
+        { ...form.getFieldsValue(), profileImageUrl: url }
+      );
   };
   return (
     <Form initialValues={initialValues} form={form}>
@@ -43,16 +47,18 @@ export default function NewUserForm({ form, onValuesChange, initialValues }) {
           <Input placeholder="Last Name" />
         </Item>
       </Flex>
-      {!user && <Item
-        name="password"
-        rules={[{ required: true, message: "Please enter your password" }]}
-      >
-        <Input.Password
-          prefix={<LockOutlined style={{ color: "gray" }} />}
-          type="password"
-          placeholder="Password"
-        />
-      </Item>}
+      {!user && (
+        <Item
+          name="password"
+          rules={[{ required: true, message: "Please enter your password" }]}
+        >
+          <Input.Password
+            prefix={<LockOutlined style={{ color: "gray" }} />}
+            type="password"
+            placeholder="Password"
+          />
+        </Item>
+      )}
     </Form>
   );
 }

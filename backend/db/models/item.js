@@ -50,7 +50,8 @@ module.exports = (sequelize, DataTypes) => {
 
     getCurrentStatusPercentage(item) {
       let total = 0;
-      console.log("\n\nITEM", item);
+      if (item.status === "delivered") return 100;
+
       const list = ItemStatusFields[item.status];
       list.forEach((key) => {
         if (item[key] !== null && item[key] !== "") {

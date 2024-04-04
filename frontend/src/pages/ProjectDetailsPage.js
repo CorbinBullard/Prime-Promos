@@ -68,13 +68,13 @@ export default function ProjectDetailsPage({ children }) {
           })}
       </Flex>
       <Modal
-        open={selectedItem}
+        // Is This the best way to handle this?
+        open={selectedItem && selectedItem.status !== "delivered"}
         onCancel={() => setSelectedItem(null)}
         title={selectedItem?.name || null}
         width={1000}
         footer={null}
         icon={<SaveOutlined />}
-        header="HELLO"
       >
         {selectedItem && (
           <Flex justify="space-between" gap={15}>

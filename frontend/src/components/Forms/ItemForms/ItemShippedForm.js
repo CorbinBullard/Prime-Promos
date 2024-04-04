@@ -1,22 +1,29 @@
-import { DatePicker, Form, Input } from 'antd'
-import React from 'react'
-import { dateFormat } from '../../../utils/constants';
+import { DatePicker, Form, Input } from "antd";
+import React from "react";
+import { dateFormat, formItemLayout } from "../../../utils/constants";
+import { formatDateForForm } from "../../../utils/utilFunctions";
 
-export default function ItemShippedForm() {
+const { Item } = Form;
+export default function ItemShippedForm({
+  form,
+  onValuesChange,
+  initialValues,
+}) {
+  const formattedInitialValues = {
+    ...initialValues,
+    delivered: formatDateForForm(initialValues?.delivered),
+  };
+
   return (
-    <Form>
-      <Form.Item label="Tracking Number" name="trackingNumber">
-        <Input />
-      </Form.Item>
-      <Form.Item label="Carrier" name="carrier">
-        <Input />
-      </Form.Item>
-      <Form.Item label="Shipped Date" name="shippedDate">
-        <DatePicker format={dateFormat} />
-      </Form.Item>
-      <Form.Item label="Expected Delivery Date" name="expectedDeliveryDate">
-        <DatePicker format={dateFormat}  />
-      </Form.Item>
+    <Form
+      form={form}
+      onValuesChange={onValuesChange}
+      initialValues={initialValues}
+      {...formItemLayout}
+    >
+      <Item name="delivered" label="Delivery Date">
+        <DatePicker style={{ width: "100%" }} format={dateFormat} />
+      </Item>
     </Form>
   );
 }

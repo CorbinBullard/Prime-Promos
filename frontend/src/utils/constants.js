@@ -65,16 +65,16 @@ const isProductionItemList = [
   "proofForAprovalFile",
   "proofForAprovalDate",
   "prepaymentConfirmed",
-  "delivered",
   "invoice",
   "tracking",
 ];
+const shippedItemList = ["delivered"];
 
 export const ItemStatusFields = {
   quote: quoteItemList,
   order: orderItemList,
   isProduction: isProductionItemList,
-  shipped: [],
+  shipped: shippedItemList,
   delivered: [],
 };
 
@@ -95,3 +95,7 @@ export const monthColors = {
 };
 
 export const dateFormat = "MM/DD/YYYY";
+
+export const formItemLayout = {
+  style: { width: "100%", marginBottom: "2px" }, // Apply width to the layout
+};

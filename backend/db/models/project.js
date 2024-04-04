@@ -21,6 +21,24 @@ module.exports = (sequelize, DataTypes) => {
         onDelete: "CASCADE",
       });
     }
+    async isComplete() {
+      const items = await this.getItems();
+      for (let item of items) {
+        const itemJSON = await item.toJSON();
+        console.log(itemJSON.status);
+        if (itemJSON.status !== "delivered") {
+          return false; // As soon as one item is not delivered, return false
+        }
+      }
+      return true; // If all items are delivered, return true
+    }
+    async archive() {
+      const project = await this.toJSON();
+      if (project.status !== "completed") {
+        throw new Error("Project must be completed before archiving");
+      }
+      await this.update({ status: "archived" });
+    }
   }
   Project.init(
     {

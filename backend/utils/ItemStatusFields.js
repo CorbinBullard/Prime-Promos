@@ -18,7 +18,6 @@ const quoteItemList = [
 const orderItemList = [
   "factory",
   "primePO",
-  // "orderSent",
   "preVirtual",
   "shipDate",
   "tracking",
@@ -28,18 +27,17 @@ const isProductionItemList = [
   "proofForAprovalFile",
   "proofForAprovalDate",
   "prepaymentConfirmed",
-  "delivered",
   "invoice",
-  "tracking"
+  "tracking",
 ];
+
+const shippedItemList = ["delivered"];
 
 const ItemStatusFields = {
   quote: quoteItemList,
   order: orderItemList,
   isProduction: isProductionItemList,
-  shipped: [],
-  delivered: [],
+  shipped: shippedItemList,
 };
-
 
 module.exports = { ItemStatusFields };

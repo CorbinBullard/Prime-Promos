@@ -2,7 +2,7 @@ import { Checkbox, DatePicker, Form, Input } from "antd";
 import React from "react";
 import moment from "moment";
 import { formatDateForForm } from "../../../utils/utilFunctions";
-import { dateFormat } from "../../../utils/constants";
+import { dateFormat, formItemLayout } from "../../../utils/constants";
 
 const { Item } = Form;
 
@@ -19,6 +19,7 @@ export default function ItemOrderForm({ form, onValuesChange, initialValues }) {
       form={form}
       onValuesChange={onValuesChange}
       initialValues={formattedInitialValues}
+      {...formItemLayout}
     >
       <Item name="factory">
         <Input addonBefore="Factory" style={{ width: "100%" }} />

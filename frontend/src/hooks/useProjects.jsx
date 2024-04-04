@@ -2,8 +2,10 @@ import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { csrfFetch } from "../utils/csrf";
 import { useNotification } from "../context/Notification";
 import { useCallback, useState } from "react";
+import { useSession } from "../context/Session";
 
 export function useProjects() {
+  const { user } = useSession();
   const queryClient = useQueryClient();
   const openNotification = useNotification();
   const [currentProjectId, setCurrentProjectId] = useState(null);
@@ -20,6 +22,7 @@ export function useProjects() {
       if (!response.ok) throw new Error("Failed to fetch projects");
       return response.json();
     },
+    enabled: !!user,
   });
 
   // Create project

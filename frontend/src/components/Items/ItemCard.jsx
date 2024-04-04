@@ -18,6 +18,10 @@ export default function ItemCard({ item, setItem, setItemManager }) {
   const handleDelete = async () => {
     deleteItem(item.id);
   };
+  const handleClick = () => {
+    if (item.status === "delivered") return;
+    setItem(item);
+  };
 
   const itemOptions = [
     {
@@ -45,7 +49,7 @@ export default function ItemCard({ item, setItem, setItemManager }) {
         style={{ width: 300 }}
         title={item.name}
         hoverable
-        onClick={() => setItem(item)}
+        onClick={handleClick}
         extra={
           <>
             <Tag

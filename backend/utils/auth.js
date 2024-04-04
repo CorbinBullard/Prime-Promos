@@ -106,24 +106,27 @@ const requireOwnerAuth = function (req, _res, next) {
   }
   return next();
 };
-const validateProjectUser = async (req, res, next) => {
+
+const canUpdateProject = async (req, res, next) => {
+  const { role } = req.user;
   const { projectId } = req.params;
-  const { user } = req;
-  const { role } = user;
+
   const project = await Project.findByPk(projectId, {
     include: User,
     required: false,
   });
-
   if (!project) {
-    return res.json({ message: "Project not found" });
+    return res.status(404).json({ message: "Project not found" });
+  }
+  if (project.status === "archived") {
+    return res.status(405).json({ message: "Project is archived" });
   }
   if (
-    role !== "admin" &&
     role !== "owner" &&
-    !project.Users.find((u) => u.id === user.id)
+    role !== "admin" &&
+    !project.Users.find((user) => user.id === req.user.id)
   ) {
-    return res.json({ message: "Unauthorized" });
+    return res.status(405).json({ message: "Unauthorized" });
   }
   return next();
 };
@@ -134,5 +137,5 @@ module.exports = {
   requireAuth,
   requireOwnerAuth,
   requireAdminAuth,
-  validateProjectUser,
+  canUpdateProject,
 };

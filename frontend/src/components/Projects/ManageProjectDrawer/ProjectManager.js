@@ -14,9 +14,4 @@ export const projectManagerTabs = (project) => [
     label: "Manage Users",
     children: <ManageUsersTab project={project} />,
   },
-  {
-    key: "status",
-    label: "Project Status",
-    children: <ProjectStatusTab project={project} />,
-  }
 ];
