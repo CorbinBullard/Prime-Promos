@@ -4,14 +4,6 @@ import { Button, Modal, Upload } from "antd";
 import { csrfFetch } from "../../utils/csrf";
 import PDFViewer from "./PDFViewer";
 
-const getBase64 = (file) =>
-  new Promise((resolve, reject) => {
-    const reader = new FileReader();
-    reader.readAsDataURL(file);
-    reader.onload = () => resolve(reader.result);
-    reader.onerror = (error) => reject(error);
-  });
-
 const FileUploader = ({ callback, initialUrl }) => {
   const [previewOpen, setPreviewOpen] = useState(false);
   const [previewImage, setPreviewImage] = useState("");
@@ -62,9 +54,7 @@ const FileUploader = ({ callback, initialUrl }) => {
   const handleCancel = () => setPreviewOpen(false);
 
   const handlePreview = async (file) => {
-    if (!file.url && !file.preview) {
-      file.preview = await getBase64(file.originFileObj);
-    }
+    // Directly use the file URL if available, bypassing base64 conversion
     setPreviewImage(file.url || file.preview);
     setPreviewOpen(true);
     setPreviewTitle(
@@ -83,13 +73,15 @@ const FileUploader = ({ callback, initialUrl }) => {
     );
     const url = await response.json();
 
-    const uploadResponse = await csrfFetch(url, {
+    const uploadResponse = await fetch(url, {
       method: "PUT",
       body: file,
+      headers: {
+        "Content-Type": file.type,
+      },
     });
 
     if (uploadResponse.ok) {
-
       // Construct the file access URL
       const fileUrl = `${
         process.env.REACT_APP_S3_BUCKET_URL
@@ -155,7 +147,7 @@ const FileUploader = ({ callback, initialUrl }) => {
         onCancel={handleCancel}
         width={700}
       >
-        {fileList.length && <PDFViewer file={previewImage} />}
+         <PDFViewer file={previewImage} />
       </Modal>
     </>
   );

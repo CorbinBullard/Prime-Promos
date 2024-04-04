@@ -82,9 +82,12 @@ const ImageUploader = ({ callback, initialUrl, buttonText }) => {
     );
     const url = await response.json();
 
-    const uploadResponse = await csrfFetch(url, {
+    const uploadResponse = await fetch(url, {
       method: "PUT",
       body: file,
+      headers: {
+        "Content-Type": file.type,
+      },
     });
 
     if (uploadResponse.ok) {

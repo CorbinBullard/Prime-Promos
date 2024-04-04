@@ -1,48 +1,38 @@
+import { Button } from "antd";
 import React, { useState } from "react";
 import { Document, Page, pdfjs } from "react-pdf";
-import "react-pdf/dist/esm/Page/AnnotationLayer.css";
+// import "react-pdf/dist/esm/Page/AnnotationLayer.css";
 
-// You need to manually set the workerSrc to point to the PDF.js worker script.
-pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
+// Set the workerSrc property to ensure PDF.js worker is loaded
+pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.min.js`;
 
-function PDFViewer({ file }) {
+const PDFViewer = ({ file }) => {
+  const [currentPage, setCurrentPage] = useState(1);
   const [numPages, setNumPages] = useState(null);
-  const [pageNumber, setPageNumber] = useState(1); // Set the initial page to the first page
 
   function onDocumentLoadSuccess({ numPages }) {
     setNumPages(numPages);
-    setPageNumber(1);
   }
+  const handlePageSelect = (offset) => {
+    const newPage = currentPage + offset;
+    if (newPage >= 1 && newPage <= numPages) {
+      setCurrentPage(newPage);
+    }
+  };
+
   return (
-    // <div>
-    <div style={{ overflow: "auto", width: "100%" }}>
+    <div>
+      <Button onClick={() => handlePageSelect(-1)}>PREVIOUS</Button>
+      <Button onClick={() => handlePageSelect(1)}>NEXT</Button>
       <Document
         file={file}
-        // onLoadSuccess={onDocumentLoadSuccess}
-        // options={{ workerSrc: "/pdf.worker.js" }}
+        onLoadSuccess={onDocumentLoadSuccess}
+        options={{ workerSrc: "/pdf.worker.min.js" }}
       >
-        <Page pageNumber={pageNumber} />
+        <Page pageNumber={currentPage} renderTextLayer={false} renderAnnotationLayer={false} />
       </Document>
     </div>
-    //   <div>
-    //     <p>
-    //       Page {pageNumber} of {numPages}
-    //     </p>
-    //     <button
-    //       onClick={() => setPageNumber(pageNumber - 1)}
-    //       disabled={pageNumber <= 1}
-    //     >
-    //       Previous
-    //     </button>
-    //     <button
-    //       onClick={() => setPageNumber(pageNumber + 1)}
-    //       disabled={pageNumber >= numPages}
-    //     >
-    //       Next
-    //     </button>
-    //   </div>
-    // </div>
   );
-}
+};
 
 export default PDFViewer;
