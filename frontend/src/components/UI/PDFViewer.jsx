@@ -1,35 +1,39 @@
-import { Button } from "antd";
+import { Button, Pagination } from "antd";
 import React, { useState } from "react";
 import { Document, Page, pdfjs } from "react-pdf";
-// import "react-pdf/dist/esm/Page/AnnotationLayer.css";
 
 // Set the workerSrc property to ensure PDF.js worker is loaded
 pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.min.js`;
 
 const PDFViewer = ({ file }) => {
   const [currentPage, setCurrentPage] = useState(1);
-  const [numPages, setNumPages] = useState(null);
+  const [numPages, setNumPages] = useState(0);
 
-  function onDocumentLoadSuccess({ numPages }) {
+  const onDocumentLoadSuccess = ({ numPages }) => {
     setNumPages(numPages);
-  }
-  const handlePageSelect = (offset) => {
-    const newPage = currentPage + offset;
-    if (newPage >= 1 && newPage <= numPages) {
-      setCurrentPage(newPage);
-    }
   };
 
   return (
     <div>
-      <Button onClick={() => handlePageSelect(-1)}>PREVIOUS</Button>
-      <Button onClick={() => handlePageSelect(1)}>NEXT</Button>
+      <Pagination
+        simple
+        defaultCurrent={1}
+        current={currentPage}
+        total={numPages}
+        onChange={(page) => setCurrentPage(page)}
+        pageSize={1}
+      />
       <Document
         file={file}
         onLoadSuccess={onDocumentLoadSuccess}
-        options={{ workerSrc: "/pdf.worker.min.js" }}
+        // Does not seem to be needed. Uncomment if you run into issues
+        // options={{ workerSrc: "/pdf.worker.min.js" }}
       >
-        <Page pageNumber={currentPage} renderTextLayer={false} renderAnnotationLayer={false} />
+        <Page
+          pageNumber={currentPage}
+          renderTextLayer={false}
+          renderAnnotationLayer={false}
+        />
       </Document>
     </div>
   );
