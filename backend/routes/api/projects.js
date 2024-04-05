@@ -20,6 +20,11 @@ router.get("/", requireAuth, async (req, res) => {
     if (role === "owner" || role === "admin") {
       // For 'owner' or 'admin', fetch all projects
       projects = await Project.findAll({
+        where: {
+          status: {
+            [Op.not]: "archived",
+          },
+        },
         include: [
           { model: User, required: false }, // Assuming User-Project is a many-to-many relationship
           { model: Item, required: false },
@@ -28,6 +33,9 @@ router.get("/", requireAuth, async (req, res) => {
     } else {
       // For other roles, only fetch projects associated with the user
       projects = await Project.findAll({
+        where: {
+          status: "active", // Filter to include only active projects
+        },
         include: [
           {
             model: User,
@@ -44,6 +52,20 @@ router.get("/", requireAuth, async (req, res) => {
     console.error("Failed to get projects", error);
     return res.status(500).send("Internal Server Error");
   }
+});
+
+// Get archived projects
+router.get("/archived", requireAdminAuth, async (req, res) => {
+  const projects = await Project.findAll({
+    where: {
+      status: "archived",
+    },
+    include: [
+      { model: User, required: false }, // Assuming User-Project is a many-to-many relationship
+      { model: Item, required: false },
+    ],
+  });
+  res.json(projects);
 });
 
 // Create Project
@@ -103,13 +125,8 @@ router.delete("/:projectId", requireOwnerAuth, async (req, res) => {
 router.put("/:projectId", canUpdateProject, async (req, res) => {
   const { role } = req.user;
   const { projectId } = req.params;
-  const {
-    name,
-    inHandsDate,
-    eventDate,
-    customerPO,
-    salesConfirmation,
-  } = req.body;
+  const { name, inHandsDate, eventDate, customerPO, salesConfirmation } =
+    req.body;
 
   const project = await Project.findByPk(projectId, {
     include: User,
@@ -155,6 +172,7 @@ router.patch(
     return res.json({ message: "Project status updated" });
   }
 );
+
 // Update Project Status archived
 router.patch(
   "/:projectId/status-archived",
@@ -167,7 +185,9 @@ router.patch(
       return res.json({ message: "Project not found" });
     }
     if (project.status !== "completed") {
-      return res.json({ message: "Project must be completed before archiving" });
+      return res.json({
+        message: "Project must be completed before archiving",
+      });
     }
     await project.archive();
 
@@ -311,7 +331,10 @@ router.post("/:projectId/items", requireAdminAuth, async (req, res) => {
 
   const project = await Project.findByPk(projectId);
   if (!project) {
-    return res.json({ message: "Project not found" });
+    return res.status(404).json({ message: "Project not found" });
+  }
+  if (project.status !== "active") {
+    return res.status(405).json({ message: "Project is not active" });
   }
   const item = await project.createItem({ name, projectId: project.id });
   res.json(item);

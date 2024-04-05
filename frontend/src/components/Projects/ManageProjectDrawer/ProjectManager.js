@@ -2,7 +2,7 @@
 
 import ManageUsersTab from "./Tabs/ManageUsersTab";
 import EditProject from "./Tabs/EditProjectTab";
-import ProjectStatusTab from "./Tabs/ProjectStatusTab";
+import ProjectStatusTab from "./Tabs/ProjectStatusSection";
 export const projectManagerTabs = (project) => [
   {
     key: "details",

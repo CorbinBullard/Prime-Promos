@@ -14,7 +14,7 @@ import NotesList from "../components/Notes/NotesList";
 import BackButton from "../components/UI/BackButton";
 import { useSession } from "../context/Session";
 
-export default function ProjectDetailsPage({ children }) {
+export default function ProjectDetailsPage() {
   const { projectId } = useParams();
   const { isAdmin } = useSession();
   const [manageItemId, setManageItemId] = useState(null);

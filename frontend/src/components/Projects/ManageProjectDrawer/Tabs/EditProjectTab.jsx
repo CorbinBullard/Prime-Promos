@@ -8,6 +8,7 @@ import {
   ItemStatusProgression,
 } from "../../../../utils/constants";
 import ProjectItemStatus from "../../ProjectItemStatus";
+import ProjectStatusSection from "./ProjectStatusSection";
 
 export default function EditProjectTab({ project }) {
   const { updateProject } = useProjects();
@@ -26,6 +27,7 @@ export default function EditProjectTab({ project }) {
     }
   };
 
+
   return (
     <>
       <Divider>Project Details</Divider>
@@ -36,17 +38,7 @@ export default function EditProjectTab({ project }) {
         </Button>
       </Flex>
       <Divider>Project Status</Divider>
-      <Flex vertical gap={15}>
-        {project.Items.map((item) => (
-          <ProjectItemStatus key={item.id} item={item} />
-        ))}
-        <Button
-          type="primary"
-          disabled={!project.Items.every((item) => item.status === "delivered")}
-        >
-          Mark as Complete
-        </Button>
-      </Flex>
+      <ProjectStatusSection project={project} />
     </>
   );
 }

@@ -1,5 +1,13 @@
 import React, { useMemo } from "react";
-import { DatePicker, Form, Input, Select, Space, Flex } from "antd";
+import {
+  DatePicker,
+  Form,
+  Input,
+  Select,
+  Space,
+  Flex,
+  InputNumber,
+} from "antd";
 import { useTeam } from "../../context/useTeam";
 import UserDropdown from "../UI/UserDropdown";
 import dayjs from "dayjs";
@@ -101,10 +109,16 @@ export default function CreateProjectForm({ form, initialValues }) {
         </Item>
       </Flex>
       <Item name="customerPO" label="Customer PO">
-        <Input placeholder="Enter Customer PO" />
+        <InputNumber
+          placeholder="Enter Customer PO"
+          style={{ width: "100%" }}
+        />
       </Item>
       <Item name="salesConfirmation" label="Sales Confirmation">
-        <Input placeholder="Enter Sales Confirmation" />
+        <InputNumber
+          placeholder="Enter Sales Confirmation"
+          style={{ width: "100%" }}
+        />
       </Item>
     </Form>
   );

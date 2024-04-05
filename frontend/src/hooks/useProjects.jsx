@@ -196,6 +196,39 @@ export function useProjects() {
     },
   });
 
+  // Mark Project status as completed
+  const projectCompleted = useMutation({
+    mutationKey: ["markProjectAsCompleted"],
+    mutationFn: async (projectId) => {
+      const response = await csrfFetch(
+        `/api/projects/${projectId}/status-completed`,
+        {
+          method: "PATCH",
+        }
+      );
+      if (!response.ok) {
+        const error = await response.json();
+        throw new Error(error.message || "Failed to mark project as completed");
+      }
+      return response.json();
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries(["projects"]);
+      openNotification({
+        message: "Success",
+        description: "Project marked as completed successfully",
+        type: "success",
+      });
+    },
+    onError: (error) => {
+      openNotification({
+        message: "Error",
+        description: error.message || "Failed to mark project as completed",
+        type: "error",
+      });
+    },
+  });
+
   const selectProject = useCallback(
     (project) => setCurrentProjectId(project.id),
     []
@@ -210,6 +243,8 @@ export function useProjects() {
     addUsersToProjectMutation.mutate({ projectId, users });
   const removeUserFromProject = ({ projectId, userId }) =>
     removeUserFromProjectMutation.mutate({ projectId, userId });
+  const markProjectAsCompleted = (projectId) =>
+    projectCompleted.mutate(projectId);
 
   return {
     projects,
@@ -223,5 +258,6 @@ export function useProjects() {
     removeUserFromProject,
     selectProject,
     clearCurrentProject,
+    markProjectAsCompleted,
   };
 }

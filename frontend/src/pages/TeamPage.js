@@ -14,9 +14,8 @@ export default function TeamPage() {
   const [selectedMember, setSelectedMember] = useState(null);
 
   return (
-    <div>
+    <Flex vertical gap={15}>
       <Flex align="center" justify="space-between">
-        <h1>My Team</h1>
         <FormModalButton
           icon={<UserAddOutlined />}
           form={NewMemberForm}
@@ -33,6 +32,6 @@ export default function TeamPage() {
         item={selectedMember}
         tabItems={userManagerTabs(selectedMember)}
       />
-    </div>
+    </Flex>
   );
 }

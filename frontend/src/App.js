@@ -13,14 +13,13 @@ const ProjectDetailsPage = lazy(() => import("./pages/ProjectDetailsPage"));
 const TeamPage = lazy(() => import("./pages/TeamPage"));
 const ProjectsPage = lazy(() => import("./pages/ProjectsPage"));
 const LoginPage = lazy(() => import("./pages/SessionPages/LoginPage"));
+const CalendarPage = lazy(() => import("./pages/CalendarPage"));
 
 function App() {
   const { isLoading } = useSession();
   const navigate = useNavigate();
 
-
   return (
-    // ! Create better loading component
     <Suspense fallback={<Loader />}>
       <ReactQueryDevtools initialIsOpen={false} />
       {!isLoading && (
@@ -34,6 +33,7 @@ function App() {
               path="projects/:projectId"
               element={<ProjectDetailsPage />}
             />
+            <Route path="calendar" element={<CalendarPage />} />
           </Route>
           <Route path="/register/:token" element={<RegisterPage />} />
         </Routes>

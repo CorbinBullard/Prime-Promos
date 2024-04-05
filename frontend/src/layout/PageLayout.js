@@ -1,17 +1,16 @@
 import React, { useEffect, useState } from "react";
 import {
-  DesktopOutlined,
-  FileOutlined,
+  CalendarOutlined,
   PieChartOutlined,
   TeamOutlined,
   UserOutlined,
   DashboardOutlined,
 } from "@ant-design/icons";
-import { Breadcrumb, Layout, Menu, theme } from "antd";
+import { Breadcrumb, Divider, Image, Layout, Menu, theme } from "antd";
 import { Outlet, useLocation, useNavigate } from "react-router-dom";
 import { csrfFetch } from "../utils/csrf";
 import { useSession } from "../context/Session";
-import HeaderBreadcrumb from "../components/UI/HeaderBreadcrumb";
+import HeaderComponent from "../components/UI/Header";
 const { Header, Content, Footer, Sider } = Layout;
 
 function getItem(label, key, icon, children) {
@@ -34,11 +33,9 @@ export default function PageLayout() {
     : "/pp_horizontal_logo_transparent.png";
 
   const items = [
-    getItem("My Account", "account", <UserOutlined />, [
-      getItem("Logout", "logout"),
-    ]),
     getItem("Dashboard", "", <DashboardOutlined />),
     getItem("Projects", "projects", <PieChartOutlined />),
+    getItem("Calendar", "calendar", <CalendarOutlined />),
     ...(isOwner ? [getItem("My Team", "members", <TeamOutlined />)] : []), // Conditionally add this item
   ];
   useEffect(() => {
@@ -75,7 +72,8 @@ export default function PageLayout() {
         onCollapse={(value) => setCollapsed(value)}
       >
         <div style={{ padding: "1.3rem" }}>
-          <img
+          <Image
+            preview={false}
             src={logoSrc}
             alt="Company Logo"
             style={{ width: "100%", display: "block" }}
@@ -99,7 +97,7 @@ export default function PageLayout() {
             display: "flex",
           }}
         >
-          <HeaderBreadcrumb />
+          <HeaderComponent />
         </Header>
         <Content
           style={{

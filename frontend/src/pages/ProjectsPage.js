@@ -20,20 +20,7 @@ export default function ProjectsPage() {
   } = useProjects();
   const { isAdmin } = useSession();
 
-  const items = [
-    {
-      key: "active",
-      label: "Active",
-    },
-    {
-      key: "completed",
-      label: "Completed",
-    },
-    {
-      key: "archived",
-      label: "Archived",
-    },
-  ];
+  console.log("projects : ", projects);
 
   const projectsObj = useMemo(() => {
     if (!projects) return {};
@@ -46,6 +33,39 @@ export default function ProjectsPage() {
   const handleCreateProject = async (form) => {
     await createProject(form);
   };
+
+  const items = [
+    {
+      key: "active",
+      label: "Active",
+      children: (
+        <ProjectCardsContainer
+          projects={projects?.filter((project) => project.status === "active")}
+          selectProject={selectProject}
+        />
+      ),
+    },
+    {
+      key: "completed",
+      label: "Completed",
+      children: (
+        <ProjectCardsContainer
+          projects={projects?.filter(
+            (project) => project.status === "completed"
+          )}
+          selectProject={selectProject}
+        />
+      ),
+    },
+    ...(isAdmin
+      ? [
+          {
+            key: "archived",
+            label: "Archived",
+          },
+        ]
+      : []),
+  ];
 
   return (
     <>
@@ -68,10 +88,7 @@ export default function ProjectsPage() {
               )
             }
           />
-          <ProjectCardsContainer
-            projects={projects}
-            selectProject={selectProject}
-          />
+
           <DrawerManager
             open={!!currentProjectId}
             onClose={clearCurrentProject}

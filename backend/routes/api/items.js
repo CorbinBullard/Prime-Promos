@@ -33,7 +33,7 @@ router.put("/:id", requireAuth, async (req, res) => {
   // check if user is apart of the current project
   const item = await Item.findByPk(id);
   if (!item) {
-    return res.status(404).send("Item not found");
+    return res.status(404).json({ message: "Item not found" });
   }
 
   const newItem = await item.update({ ...req.body });
