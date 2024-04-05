@@ -22,7 +22,6 @@ export default function ProjectStatusSection({ project }) {
       }
     }
   };
-  console.log(project);
   return (
     <Flex vertical gap={15}>
       {project.Items.map((item) => (

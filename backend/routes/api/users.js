@@ -53,7 +53,6 @@ router.post("/invite", requireOwnerAuth, async (req, res) => {
 
   const userExists = await User.findOne({ where: { email } });
   if (userExists) {
-    console.log("\nUser already exists\n");
     return res.status(400).json({ error: "User already exists" });
   }
 
@@ -146,7 +145,6 @@ router.post("/register", async (req, res) => {
 
 // Google Register
 router.post("/google-register", async (req, res) => {
-  console.log("\nREQ : ", req.body, "\n");
   const { response, token } = req.body;
 
   const ticket = await client.verifyIdToken({
@@ -158,8 +156,6 @@ router.post("/google-register", async (req, res) => {
   const firstName = payload.given_name;
   const lastName = payload.family_name;
   const profileImageUrl = payload.picture;
-
-  console.log("\nPAYLOAD : ", payload, "\n");
 
   const user = await User.findOne({
     where: {
@@ -194,7 +190,6 @@ router.put("/self", requireAuth, async (req, res) => {
   if (!user) {
     return res.status(404).json({ message: "User not found" });
   }
-  console.log("\nUSER : ", req.body, "\n");
   const updatedUser = await user.update({
     profileImageUrl,
     firstName,

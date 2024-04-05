@@ -70,7 +70,6 @@ router.get("/archived", requireAdminAuth, async (req, res) => {
 
 // Create Project
 router.post("/", requireOwnerAuth, async (req, res) => {
-  console.log("REQ BODY", req.body);
   const { name, users, inHandsDate, eventDate, customerPO, salesConfirmation } =
     req.body;
 
@@ -108,6 +107,19 @@ router.post("/", requireOwnerAuth, async (req, res) => {
     console.error("Error creating project:", error);
     return res.status(500).send("Server Error");
   }
+});
+
+// Get Project by ID
+router.get("/:projectId", requireAuth, async (req, res) => {
+  const { projectId } = req.params;
+  const project = await Project.findByPk(projectId, {
+    include: User,
+    required: false,
+  });
+  if (!project) {
+    return res.json({ message: "Project not found" });
+  }
+  return res.json(project);
 });
 
 // Delete Project
@@ -149,7 +161,6 @@ router.put("/:projectId", canUpdateProject, async (req, res) => {
     customerPO,
     salesConfirmation,
   });
-  console.log("UPDATED PROJECT", updatedProject);
   return res.json(updatedProject);
 });
 
@@ -319,7 +330,6 @@ router.get(
         currentPercentage: item.getCurrentStatusPercentage(itemJSON),
       };
     });
-    console.log("FORMATTED ITEMS", formattedItems);
     res.json(formattedItems);
   }
 );

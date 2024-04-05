@@ -30,12 +30,10 @@ export default function AccountDropdown() {
   ];
   const handleUpdateUser = () => {
     form.validateFields().then((values) => {
-      console.log("values : ", values);
       updateUser(values);
       setModalOpen(false);
     });
   };
-  console.log("user : ", user);
   return (
     <>
       <Dropdown menu={{ items }} trigger={["click"]}>

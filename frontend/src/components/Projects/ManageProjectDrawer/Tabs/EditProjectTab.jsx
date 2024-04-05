@@ -18,7 +18,6 @@ export default function EditProjectTab({ project }) {
     try {
       // Validate fields and attempt to update project
       const values = await form.validateFields();
-      console.log({ id: project.id, ...values });
       await updateProject({ id: project.id, ...values });
       // message.success("Project updated successfully"); // Show success message
     } catch (error) {

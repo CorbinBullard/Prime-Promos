@@ -1,13 +1,11 @@
 import React from "react";
-import { Avatar, Modal } from "antd";
+import { Avatar } from "antd";
 import {
   UserOutlined,
   EditOutlined,
   SendOutlined,
   DeleteOutlined,
 } from "@ant-design/icons";
-import UserIcon from "./UserIcon"; // Update the path as necessary
-import OptionsButton from "../UI/OptionsButton"; // Update the path as necessary
 
 /**
  * Generates columns for the MembersTable.

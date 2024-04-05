@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { PlusOutlined } from "@ant-design/icons";
 import { Modal, Upload } from "antd";
 import { csrfFetch } from "../../utils/csrf";
+import ModalHeader from "./ModalHeader";
 
 const getBase64 = (file) =>
   new Promise((resolve, reject) => {
@@ -91,8 +92,6 @@ const ImageUploader = ({ callback, initialUrl, buttonText }) => {
     });
 
     if (uploadResponse.ok) {
-      console.log("File uploaded successfully");
-
       // Construct the file access URL
       const fileUrl = `${
         process.env.REACT_APP_S3_BUCKET_URL
@@ -129,7 +128,6 @@ const ImageUploader = ({ callback, initialUrl, buttonText }) => {
           method: "DELETE",
         }
       );
-      console.log("File deleted successfully");
       callback(null); // Notify parent component
       setFileList([]);
     } catch (error) {
@@ -166,7 +164,7 @@ const ImageUploader = ({ callback, initialUrl, buttonText }) => {
       </Upload>
       <Modal
         open={previewOpen}
-        title={previewTitle}
+        title={<ModalHeader title={previewTitle} />}
         footer={null}
         onCancel={handleCancel}
       >

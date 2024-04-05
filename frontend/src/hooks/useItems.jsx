@@ -22,6 +22,20 @@ export default function useItems({ projectId, itemId }) {
     },
     enabled: !!projectId, // Fetch only if projectId is provided
   });
+  // Fetch project name
+  const {
+    data: projectName,
+    error: projectNameError,
+    isLoading: projectNameLoading,
+  } = useQuery({
+    queryKey: ["projectName", projectId],
+    queryFn: async () => {
+      const response = await csrfFetch(`/api/projects/${projectId}`);
+      if (!response.ok) throw new Error("Failed to fetch project name");
+      return response.json();
+    },
+    enabled: !!projectId,
+  });
 
   // Generic success handler for mutations
   const handleSuccess = (message) => {
@@ -148,6 +162,7 @@ export default function useItems({ projectId, itemId }) {
     selectedItem,
     itemsError,
     itemsLoading,
+    projectName,
     createItem,
     updateItem,
     deleteItem,

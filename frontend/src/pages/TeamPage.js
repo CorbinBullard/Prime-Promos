@@ -1,5 +1,5 @@
 import React, { useState, useMemo } from "react";
-import { Button, Flex, Modal, Space, Table } from "antd";
+import { Button, Flex } from "antd";
 import { UserAddOutlined } from "@ant-design/icons";
 import MembersTable from "../components/Members/MembersTable";
 
@@ -15,7 +15,7 @@ export default function TeamPage() {
 
   return (
     <Flex vertical gap={15}>
-      <Flex align="center" justify="space-between">
+      <Flex align="center" justify="end">
         <FormModalButton
           icon={<UserAddOutlined />}
           form={NewMemberForm}

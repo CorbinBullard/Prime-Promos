@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Modal, Button, Form } from "antd";
+import ModalHeader from "./ModalHeader";
 
 const FormModalButton = ({
   children,
@@ -51,13 +52,13 @@ const FormModalButton = ({
         {children}
       </Button>
       <Modal
-        title={props.title || "Form"} // You can pass a title prop for customization
+        {...props}
+        title={<ModalHeader title={props.title || "Form"} />} // You can pass a title prop for customization
         open={isVisible}
         onOk={handleOk}
         onCancel={handleCancel}
         okText={submitText || "Submit"}
         confirmLoading={submitting} // Ant Design's Modal property to indicate loading state
-        {...props}
       >
         <FormComponent form={form} />
       </Modal>

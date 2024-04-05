@@ -1,11 +1,6 @@
 import React, { useMemo, useCallback } from "react";
-import { Avatar, Table, Modal } from "antd";
-import {
-  UserOutlined,
-  EditOutlined,
-  SendOutlined,
-  DeleteOutlined,
-} from "@ant-design/icons";
+import { Table, Modal } from "antd";
+
 import UserIcon from "./UserIcon";
 import OptionsButton from "../UI/OptionsButton";
 import { useTeam } from "../../context/useTeam";

@@ -25,7 +25,6 @@ module.exports = (sequelize, DataTypes) => {
       const items = await this.getItems();
       for (let item of items) {
         const itemJSON = await item.toJSON();
-        console.log(itemJSON.status);
         if (itemJSON.status !== "delivered") {
           return false; // As soon as one item is not delivered, return false
         }

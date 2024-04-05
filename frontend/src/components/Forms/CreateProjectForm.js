@@ -23,7 +23,6 @@ export default function CreateProjectForm({ form, initialValues }) {
     inHandsDate: formatDateForForm(initialValues?.inHandsDate),
     eventDate: formatDateForForm(initialValues?.eventDate),
   };
-  console.log("formattedInitialValues : ", formattedInitialValues);
   return (
     <Form form={form} initialValues={formattedInitialValues}>
       <Item

@@ -3,6 +3,7 @@ import { UploadOutlined } from "@ant-design/icons";
 import { Button, Modal, Upload } from "antd";
 import { csrfFetch } from "../../utils/csrf";
 import PDFViewer from "./PDFViewer";
+import ModalHeader from "./ModalHeader";
 
 const FileUploader = ({ callback, initialUrl }) => {
   const [previewOpen, setPreviewOpen] = useState(false);
@@ -118,7 +119,6 @@ const FileUploader = ({ callback, initialUrl }) => {
           method: "DELETE",
         }
       );
-      console.log("File deleted successfully");
       callback(null); // Notify parent component
       setFileList([]);
     } catch (error) {
@@ -142,12 +142,12 @@ const FileUploader = ({ callback, initialUrl }) => {
       </Upload>
       <Modal
         open={previewOpen}
-        title={previewTitle}
+        title={<ModalHeader title={previewTitle} />}
         footer={null}
         onCancel={handleCancel}
         width={700}
       >
-         <PDFViewer file={previewImage} />
+        <PDFViewer file={previewImage} />
       </Modal>
     </>
   );

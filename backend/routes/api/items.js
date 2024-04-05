@@ -44,7 +44,6 @@ router.put("/:id", requireAuth, async (req, res) => {
 router.post("/:id/image", requireAuth, async (req, res) => {
   const { id } = req.params;
   const item = await Item.findByPk(id);
-  console.log("REQ FILE", req.file);
   if (!item) {
     return res.status(404).send("Item not found");
   }
