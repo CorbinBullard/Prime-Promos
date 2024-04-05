@@ -86,6 +86,27 @@ export const SessionProvider = ({ children }) => {
 
   const logout = () => logoutMutation.mutate();
 
+  // Update User Settings
+  const updateUserMutation = useMutation({
+    mutationKey: ["updateUser"],
+    mutationFn: async (values) => {
+      const response = await csrfFetch("/api/users/self", {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(values),
+      });
+      if (!response.ok) throw new Error("Failed to update user");
+      return response.json();
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries(["session"]);
+    },
+    // onError to handle update user errors specifically can be defined here
+  });
+  const updateUser = (values) => updateUserMutation.mutate(values);
+
   return (
     <SessionContext.Provider
       value={{
@@ -97,6 +118,7 @@ export const SessionProvider = ({ children }) => {
         error: sessionError || loginMutation.error || logoutMutation.error,
         login,
         logout,
+        updateUser,
         loginGoogle,
         isAdmin: user?.user?.role === "admin" || user?.user?.role === "owner",
         isOwner: user?.user?.role === "owner",

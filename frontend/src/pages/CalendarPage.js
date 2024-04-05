@@ -30,7 +30,7 @@ export default function CalendarPage() {
 
   const cellRender = (value) => {
     const projects = projectsObj[value.format("YYYY-MM-DD")];
-    
+
     if (!projects) return null;
     return (
       <List>

@@ -187,9 +187,25 @@ router.post("/google-register", async (req, res) => {
   return res.json(user);
 });
 
+router.put("/self", requireAuth, async (req, res) => {
+  const { id } = req.user;
+  const { firstName, lastName, profileImageUrl } = req.body;
+  const user = await User.findByPk(id);
+  if (!user) {
+    return res.status(404).json({ message: "User not found" });
+  }
+  console.log("\nUSER : ", req.body, "\n");
+  const updatedUser = await user.update({
+    profileImageUrl,
+    firstName,
+    lastName,
+  });
+  return res.json(updatedUser);
+});
+
 router.put("/:id", requireOwnerAuth, async (req, res) => {
   const { id } = req.params;
-  const { email, firstName, lastName, role } = req.body;
+  const { email, firstName, lastName, role, profileImageUrl } = req.body;
   const user = await User.findByPk(id);
   if (!user) {
     return res.status(404).json({ message: "User not found" });
@@ -198,6 +214,7 @@ router.put("/:id", requireOwnerAuth, async (req, res) => {
     email,
     firstName,
     lastName,
+    profileImageUrl,
     role: role.toLowerCase(),
   });
   return res.json(updatedUser);

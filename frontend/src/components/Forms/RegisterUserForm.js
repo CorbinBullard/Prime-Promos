@@ -5,7 +5,11 @@ import { LockOutlined } from "@ant-design/icons";
 import { useSession } from "../../context/Session";
 const { Item } = Form;
 
-export default function NewUserForm({ form, onValuesChange, initialValues }) {
+export default function RegisterUserForm({
+  form,
+  onValuesChange,
+  initialValues,
+}) {
   const { user } = useSession();
 
   const handleImageUpload = (url) => {
@@ -23,6 +27,7 @@ export default function NewUserForm({ form, onValuesChange, initialValues }) {
           <ImageUploader
             buttonText={"Profile Image"}
             callback={handleImageUpload}
+            initialUrl={initialValues?.profileImageUrl}
           />
         </Item>
       </Divider>
