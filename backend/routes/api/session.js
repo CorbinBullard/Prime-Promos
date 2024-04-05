@@ -83,7 +83,7 @@ router.post("/", validateLogin, async (req, res, next) => {
 });
 
 // LOGIN WITH GOOGLE
-router.post("/google-login", async (req, res) => {
+router.post("/google-login", async (req, res, next) => {
   console.log("\nREQ : ", req, "\n");
   console.log("\nREQ BODY : ", req.body, "\n");
   const { credential } = req.body;

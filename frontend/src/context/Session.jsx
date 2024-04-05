@@ -115,7 +115,12 @@ export const SessionProvider = ({ children }) => {
           isLoadingSession ||
           loginMutation.isLoading ||
           logoutMutation.isLoading,
-        error: sessionError || loginMutation.error || logoutMutation.error,
+        error:
+          sessionError ||
+          loginMutation.error ||
+          logoutMutation.error ||
+          loginGoogleMutation.error ||
+          updateUserMutation.error,
         login,
         logout,
         updateUser,
