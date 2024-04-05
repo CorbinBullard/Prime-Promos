@@ -10,7 +10,7 @@ import { Breadcrumb, Divider, Image, Layout, Menu, theme } from "antd";
 import { Outlet, useLocation, useNavigate } from "react-router-dom";
 import { csrfFetch } from "../utils/csrf";
 import { useSession } from "../context/Session";
-import HeaderComponent from "../components/UI/Header";
+import HeaderComponent from "../components/HeaderComponents/Header";
 const { Header, Content, Footer, Sider } = Layout;
 
 function getItem(label, key, icon, children) {

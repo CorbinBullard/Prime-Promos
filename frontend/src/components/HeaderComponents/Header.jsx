@@ -4,6 +4,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { capitalize } from "../../utils/utilFunctions";
 import UserIcon from "../Members/UserIcon";
 import { useSession } from "../../context/Session";
+import AccountDropdown from "./AccountDropdown";
 const { Title, Paragraph, Text } = Typography;
 
 export default function HeaderBreadcrumb() {
@@ -20,16 +21,8 @@ export default function HeaderBreadcrumb() {
       <Title level={2} style={{ textAlign: "center" }}>
         {capitalize(path)}
       </Title>
-      <Flex align="center">
-        <UserIcon user={user} />
-        <Flex vertical>
-          <Title level={5} style={{ margin: "0 1rem" }}>
-            Welcome,
-          </Title>
-          <Title level={5} italic style={{ margin: "0 1rem" }}>
-            {user?.firstName} {user?.lastName}
-          </Title>
-        </Flex>
+      <Flex gap={5}>
+        <AccountDropdown user={user} />
       </Flex>
     </Flex>
   );

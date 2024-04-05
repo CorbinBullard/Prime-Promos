@@ -3,7 +3,7 @@ import { MenuOutlined } from "@ant-design/icons";
 import React from "react";
 import { useSession } from "../../context/Session";
 
-export default function OptionsButton({ items = [] }) {
+export default function OptionsButton({ items: _items = [] }) {
   const { isAdmin } = useSession();
   const handleClick = (e) => {
     e.stopPropagation();
@@ -12,20 +12,17 @@ export default function OptionsButton({ items = [] }) {
     e.domEvent.stopPropagation();
     if (onClick) onClick(e);
   };
-  const menu = (
-    <Menu
-      items={items.map(({ key, label, onClick, icon, disabled }) => ({
-        icon,
-        key,
-        label,
-        onClick: (e) => handleMenuItemClick(e, onClick),
-        disabled,
-      }))}
-    />
-  );
+  const items = _items.map(({ key, label, onClick, icon, disabled }) => ({
+    icon,
+    key,
+    label,
+    onClick: (e) => handleMenuItemClick(e, onClick),
+    disabled,
+  }));
+
   if (!isAdmin) return null;
   return (
-    <Dropdown overlay={menu} placement="bottomRight" trigger={["click"]}>
+    <Dropdown menu={{ items }} placement="bottomRight" trigger={["click"]}>
       <Button type="text" icon={<MenuOutlined />} onClick={handleClick} />
     </Dropdown>
   );
