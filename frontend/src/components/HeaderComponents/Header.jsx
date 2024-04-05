@@ -22,7 +22,7 @@ export default function HeaderBreadcrumb() {
         {capitalize(path)}
       </Title>
       <Flex gap={5}>
-        <AccountDropdown user={user} />
+        <AccountDropdown />
       </Flex>
     </Flex>
   );

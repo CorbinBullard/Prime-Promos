@@ -72,6 +72,7 @@ router.post("/", validateLogin, async (req, res, next) => {
     firstName: user.firstName,
     lastName: user.lastName,
     role: user.role,
+    profileImageUrl: user.profileImageUrl,
   };
 
   await setTokenCookie(res, safeUser);
@@ -121,6 +122,7 @@ router.post("/google-login", async (req, res) => {
     firstName: user.firstName,
     lastName: user.lastName,
     role: user.role,
+    profileImageUrl: user.profileImageUrl,
   };
 
   await setTokenCookie(res, safeUser);

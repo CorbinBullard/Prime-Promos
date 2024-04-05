@@ -9,8 +9,8 @@ import {
 import { useSession } from "../../context/Session";
 import RegisterUserForm from "../Forms/RegisterUserForm";
 const { Title } = Typography;
-export default function AccountDropdown({ user }) {
-  const { logout, updateUser } = useSession();
+export default function AccountDropdown() {
+  const { user, logout, updateUser } = useSession();
   const [modalOpen, setModalOpen] = useState(false);
   const [form] = Form.useForm();
   const items = [
@@ -35,7 +35,7 @@ export default function AccountDropdown({ user }) {
       setModalOpen(false);
     });
   };
-
+  console.log("user : ", user);
   return (
     <>
       <Dropdown menu={{ items }} trigger={["click"]}>
