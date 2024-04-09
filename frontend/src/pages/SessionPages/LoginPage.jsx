@@ -1,11 +1,11 @@
-import { Button, Card, Divider, Form, Input } from "antd";
+import { Button, Card, Divider, Form, Input, Typography } from "antd";
 import React, { Suspense, useEffect, useState } from "react";
 import { LockOutlined } from "@ant-design/icons";
 import { useNavigate } from "react-router-dom";
-import { csrfFetch } from "../../utils/csrf";
 import { useSession } from "../../context/Session";
 import { GoogleLogin } from "@react-oauth/google";
 import Loader from "../../components/UI/Loader";
+const { Paragraph } = Typography;
 
 export default function LoginPage() {
   const { user, login, error, isLoading, loginGoogle } = useSession();
@@ -90,7 +90,7 @@ export default function LoginPage() {
             onSuccess={handleGoogleSucess}
             onError={handleGoogleFailure}
           />
-          {error && <p style={{ color: "red" }}>Invalid Login</p>}
+          {error && <Paragraph style={{ color: "red" }}>Invalid Login</Paragraph>}
         </Card>
       </div>
     </Suspense>

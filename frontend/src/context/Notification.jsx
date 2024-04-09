@@ -1,5 +1,6 @@
 import React, { Children, useContext } from "react";
 import { notification } from "antd";
+import { duration, max } from "moment";
 
 const NotificationContext = React.createContext();
 
@@ -10,6 +11,7 @@ export default function NotificationProvider({ children }) {
     notification[type]({
       message,
       description,
+      duration: 1,
     });
   };
   return (

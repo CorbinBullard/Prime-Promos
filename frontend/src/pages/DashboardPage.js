@@ -8,7 +8,7 @@ import {
   Flex,
   List,
   Row,
-  Space,
+  Typography,
   Statistic,
 } from "antd";
 import { useProjects } from "../hooks/useProjects";
@@ -17,11 +17,11 @@ import dayjs from "dayjs";
 import {
   CalendarOutlined,
   UsergroupAddOutlined,
-  UserOutlined,
 } from "@ant-design/icons";
 import VerticalBlock from "../components/DashboardComponents/VerticalBlock";
 import { Link } from "react-router-dom";
 import UserIcon from "../components/Members/UserIcon";
+const { Title } = Typography;
 
 export default function Dashboard() {
   const { projects } = useProjects();
@@ -79,7 +79,7 @@ export default function Dashboard() {
             header={
               <Flex gap={10}>
                 <CalendarOutlined style={{ fontSize: "1.5rem" }} />
-                <h2>Upcoming Events</h2>
+                <Title level={2}>Upcoming Events</Title>
               </Flex>
             }
             data={dashboardData.projects.active}
@@ -116,7 +116,7 @@ export default function Dashboard() {
             header={
               <Flex gap={10}>
                 <UsergroupAddOutlined style={{ fontSize: "1.5rem" }} />
-                <h2>Pending Users</h2>
+                <Title level={2}>Pending Users</Title>
               </Flex>
             }
             data={dashboardData.members.pending}

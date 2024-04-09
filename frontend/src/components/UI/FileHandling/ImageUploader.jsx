@@ -1,11 +1,18 @@
 import React, { useState } from "react";
-import { UploadOutlined } from "@ant-design/icons";
-import { Button, Modal, Upload } from "antd";
-import { csrfFetch } from "../../utils/csrf";
-import PDFViewer from "./PDFViewer";
-import ModalHeader from "./ModalHeader";
+import { PlusOutlined } from "@ant-design/icons";
+import { Modal, Upload } from "antd";
+import { csrfFetch } from "../../../utils/csrf";
+import ModalHeader from "../ModalHeader";
 
-const FileUploader = ({ callback, initialUrl }) => {
+const getBase64 = (file) =>
+  new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onload = () => resolve(reader.result);
+    reader.onerror = (error) => reject(error);
+  });
+
+const ImageUploader = ({ callback, initialUrl, buttonText }) => {
   const [previewOpen, setPreviewOpen] = useState(false);
   const [previewImage, setPreviewImage] = useState("");
   const [previewTitle, setPreviewTitle] = useState("");
@@ -14,7 +21,7 @@ const FileUploader = ({ callback, initialUrl }) => {
       ? [
           {
             uid: "-1", // Ensure a unique ID
-            name: initialUrl.split("/uploads/")[1].split("%20").join(" "), // Optionally set a meaningful name
+            name: "Preview Image", // Optionally set a meaningful name
             status: "done",
             url: initialUrl,
           },
@@ -55,7 +62,9 @@ const FileUploader = ({ callback, initialUrl }) => {
   const handleCancel = () => setPreviewOpen(false);
 
   const handlePreview = async (file) => {
-    // Directly use the file URL if available, bypassing base64 conversion
+    if (!file.url && !file.preview) {
+      file.preview = await getBase64(file.originFileObj);
+    }
     setPreviewImage(file.url || file.preview);
     setPreviewOpen(true);
     setPreviewTitle(
@@ -126,31 +135,43 @@ const FileUploader = ({ callback, initialUrl }) => {
     }
   };
 
+  const uploadButton = (
+    <div
+      style={{
+        border: 0,
+        background: "none",
+        cursor: "pointer",
+      }}
+    >
+      <PlusOutlined />
+      <div style={{ marginTop: 8 }}>{buttonText}</div>
+    </div>
+  );
   return (
     <>
       <Upload
         maxCount={1}
         multiple={false}
         customRequest={handleUpload}
+        listType="picture-card"
         onPreview={handlePreview}
         fileList={fileList}
         onChange={handleChange}
         onRemove={handleDelete}
         progress={{ strokeColor: { "0%": "#108ee9", "100%": "#87d068" } }}
       >
-        <Button icon={<UploadOutlined />}>Click to Upload</Button>
+        {uploadButton}
       </Upload>
       <Modal
         open={previewOpen}
         title={<ModalHeader title={previewTitle} />}
         footer={null}
         onCancel={handleCancel}
-        width={700}
       >
-        <PDFViewer file={previewImage} />
+        <img alt="example" style={{ width: "100%" }} src={previewImage} />
       </Modal>
     </>
   );
 };
 
-export default FileUploader;
+export default ImageUploader;

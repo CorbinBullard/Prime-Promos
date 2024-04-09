@@ -1,6 +1,6 @@
 import { Divider, Flex, Form, Input, Button } from "antd";
 import React from "react";
-import ImageUploader from "../UI/ImageUploader";
+import ImageUploader from "../UI/FileHandling/ImageUploader";
 import { LockOutlined } from "@ant-design/icons";
 import { useSession } from "../../context/Session";
 const { Item } = Form;

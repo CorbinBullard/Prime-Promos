@@ -1,7 +1,7 @@
 import { Checkbox, DatePicker, Form, Input, InputNumber } from "antd";
 import React from "react";
 import moment from "moment";
-import FileUploader from "../../UI/FileUploader";
+import FileUploader from "../../UI/FileHandling/FileUploader";
 import { formatDateForForm } from "../../../utils/utilFunctions";
 import { dateFormat, formItemLayout } from "../../../utils/constants";
 
@@ -55,7 +55,7 @@ export default function ItemInProductionForm({
         <DatePicker style={{ width: "100%" }} format={dateFormat} />
       </Item>
       <Item name="tracking">
-        <InputNumber addonBefore="Tracking #" style={{ width: "100%" }} />
+        <Input addonBefore="Tracking #" style={{ width: "100%" }} />
       </Item>
       <Item name="invoice">
         <Input addonBefore="Invoice #" />

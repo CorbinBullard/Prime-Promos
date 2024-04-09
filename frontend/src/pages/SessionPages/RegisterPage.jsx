@@ -1,13 +1,14 @@
-import { Button, Input, Form, Flex, Card, Divider } from "antd";
+import { Button, Input, Form, Typography, Card, Divider } from "antd";
 import React, { Suspense, useEffect, useState } from "react";
 import { LockOutlined, WarningOutlined } from "@ant-design/icons";
 import { useNavigate, useParams } from "react-router-dom";
 import { csrfFetch } from "../../utils/csrf";
 import { GoogleLogin } from "@react-oauth/google";
 import { useSession } from "../../context/Session";
-import ImageUploader from "../../components/UI/ImageUploader";
+import ImageUploader from "../../components/UI/FileHandling/ImageUploader";
 import NewUserForm from "../../components/Forms/RegisterUserForm";
 import Loader from "../../components/UI/Loader";
+const { Paragraph } = Typography;
 const { Item } = Form;
 
 export default function RegisterPage() {
@@ -135,12 +136,14 @@ export default function RegisterPage() {
               right: 0,
             }}
           >
-            <p>
+            <Paragraph>
               Either the link is invalid or the user has already been
               registered.
-            </p>
+            </Paragraph>
             <Divider />
-            <p>If you believe this is an error, please contact support.</p>
+            <Paragraph>
+              If you believe this is an error, please contact support.
+            </Paragraph>
           </Card>
         )}
       </div>

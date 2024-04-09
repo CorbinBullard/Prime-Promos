@@ -33,9 +33,6 @@ export default function ItemOrderForm({ form, onValuesChange, initialValues }) {
       <Item name="shipDate" label="Ship Date">
         <DatePicker style={{ width: "100%" }} format={dateFormat} />
       </Item>
-      <Item name="tracking">
-        <Input addonBefore="Tracking #" style={{ width: "100%" }} />
-      </Item>
     </Form>
   );
 }
