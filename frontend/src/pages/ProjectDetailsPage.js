@@ -13,7 +13,6 @@ import { FORM_COMPONENTS } from "../utils/constants";
 import NotesList from "../components/Notes/NotesList";
 import BackButton from "../components/UI/BackButton";
 import { useSession } from "../context/Session";
-import { useProjects } from "../hooks/useProjects";
 import ModalHeader from "../components/UI/ModalHeader";
 
 export default function ProjectDetailsPage() {
@@ -51,7 +50,7 @@ export default function ProjectDetailsPage() {
           <Flex justify="space-between" align="start">
             <BackButton text="Projects" type="text" />
             <Typography.Title level={2} style={{ margin: "0" }}>
-              {projectName.name}
+              {projectName?.name}
             </Typography.Title>
             {isAdmin && (
               <FormModalButton

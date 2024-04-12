@@ -1,9 +1,7 @@
 // Use Drawer Manager to manage the drawer in the ManageProjectDrawer component.
-
 import ManageUsersTab from "./Tabs/ManageUsersTab";
 import EditProject from "./Tabs/EditProjectTab";
-import ProjectStatusTab from "./Tabs/ProjectStatusSection";
-import ArchivedProjectPDF from "../../UI/FileHandling/ArchivedProjectPDF";
+import ArchivedProjectPDF from "../Archived/ArchivedProjectPDF";
 import { PDFViewer } from "@react-pdf/renderer";
 export const projectManagerTabs = (project) => [
   {

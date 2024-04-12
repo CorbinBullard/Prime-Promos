@@ -25,6 +25,7 @@ export function useProjects() {
     enabled: !!user,
   });
 
+
   // Create project
   const createProjectMutation = useMutation({
     mutationKey: ["createProject"],
@@ -229,6 +230,38 @@ export function useProjects() {
     },
   });
 
+  const archiveProjectMutation = useMutation({
+    mutationKey: ["archiveProject"],
+    mutationFn: async (projectId) => {
+      const response = await csrfFetch(
+        `/api/projects/${projectId}/status-archived`,
+        {
+          method: "PATCH",
+        }
+      );
+      if (!response.ok) {
+        const error = await response.json();
+        throw new Error(error.message || "Failed to archive project");
+      }
+      return response.json();
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries(["projects"]);
+      openNotification({
+        message: "Success",
+        description: "Project archived successfully",
+        type: "success",
+      });
+    },
+    onError: (error) => {
+      openNotification({
+        message: "Error",
+        description: error.message || "Failed to archive project",
+        type: "error",
+      });
+    },
+  });
+
   const selectProject = useCallback(
     (project) => setCurrentProjectId(project.id),
     []
@@ -245,6 +278,8 @@ export function useProjects() {
     removeUserFromProjectMutation.mutate({ projectId, userId });
   const markProjectAsCompleted = (projectId) =>
     projectCompleted.mutate(projectId);
+  const archiveProject = (projectId) =>
+    archiveProjectMutation.mutate(projectId);
 
   return {
     projects,
@@ -259,5 +294,6 @@ export function useProjects() {
     selectProject,
     clearCurrentProject,
     markProjectAsCompleted,
+    archiveProject,
   };
 }

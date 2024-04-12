@@ -85,7 +85,7 @@ module.exports = (sequelize, DataTypes) => {
       factory: DataTypes.STRING,
       primePO: DataTypes.STRING,
       orderSent: DataTypes.DATE,
-      preVirtual: DataTypes.BOOLEAN,
+      preVirtual: { type: DataTypes.BOOLEAN, defaultValue: false },
       shipDate: DataTypes.DATE,
       tracking: DataTypes.STRING,
       delivered: DataTypes.DATE,

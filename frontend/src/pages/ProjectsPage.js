@@ -8,6 +8,7 @@ import { useProjects } from "../hooks/useProjects";
 import DrawerManager from "../components/UI/DrawerManager";
 import { projectManagerTabs } from "../components/Projects/ManageProjectDrawer/ProjectManager";
 import { useSession } from "../context/Session";
+import ArchivedProjectsTable from "../components/Projects/Archived/ArchivedProjectsTable";
 
 export default function ProjectsPage() {
   const {
@@ -19,8 +20,6 @@ export default function ProjectsPage() {
     clearCurrentProject,
   } = useProjects();
   const { isAdmin } = useSession();
-
-  console.log("projects : ", projects);
 
   const projectsObj = useMemo(() => {
     if (!projects) return {};
@@ -62,6 +61,7 @@ export default function ProjectsPage() {
           {
             key: "archived",
             label: "Archived",
+            children: <ArchivedProjectsTable />,
           },
         ]
       : []),

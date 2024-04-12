@@ -20,7 +20,7 @@ const orderItemList = [
   "primePO",
   "preVirtual",
   "shipDate",
-  "tracking",
+  // "tracking",
 ];
 const isProductionItemList = [
   "recieveOrderAcknowledge",

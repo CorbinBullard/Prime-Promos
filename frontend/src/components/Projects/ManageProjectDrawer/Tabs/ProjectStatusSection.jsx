@@ -9,16 +9,21 @@ import { useProjects } from "../../../../hooks/useProjects";
 import ProjectItemStatus from "../../ProjectItemStatus";
 
 export default function ProjectStatusSection({ project }) {
-  const { markProjectAsCompleted } = useProjects();
+  const { markProjectAsCompleted, archiveProject } = useProjects();
 
   const handleUpdateProjectStatus = async () => {
     if (project.status === "active") {
       try {
         await markProjectAsCompleted(project.id);
-        // message.success("Project marked as completed"); // Show success message
       } catch (error) {
         console.error(error);
-        // Handle validation errors from form.validateFields()
+      }
+    }
+    if (project.status === "completed") {
+      try {
+        await archiveProject(project.id);
+      } catch (error) {
+        console.error(error);
       }
     }
   };

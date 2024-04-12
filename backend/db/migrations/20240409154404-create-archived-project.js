@@ -7,7 +7,7 @@ if (process.env.NODE_ENV === "production") {
 module.exports = {
   async up(queryInterface, Sequelize) {
     await queryInterface.createTable(
-      "Projects",
+      "ArchivedProjects",
       {
         id: {
           allowNull: false,
@@ -17,15 +17,9 @@ module.exports = {
         },
         name: {
           type: Sequelize.STRING,
-          allowNull: false,
-        },
-        inHandsDate: {
-          type: Sequelize.DATE,
-          allowNull: false,
         },
         eventDate: {
           type: Sequelize.DATE,
-          allowNull: false,
         },
         customerPO: {
           type: Sequelize.INTEGER,
@@ -33,9 +27,8 @@ module.exports = {
         salesConfirmation: {
           type: Sequelize.INTEGER,
         },
-        status: {
-          type: Sequelize.ENUM("active", "completed"),
-          defaultValue: "active",
+        itemData: {
+          type: Sequelize.JSON,
         },
         createdAt: {
           allowNull: false,
@@ -52,7 +45,6 @@ module.exports = {
     );
   },
   async down(queryInterface, Sequelize) {
-    options.tableName = "Projects";
-    await queryInterface.dropTable(options);
+    await queryInterface.dropTable("ArchivedProjects");
   },
 };

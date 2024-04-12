@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useMemo } from "react";
 import {
   Page,
   Text,
@@ -20,8 +20,8 @@ const styles = StyleSheet.create({
     paddingBottom: 30,
   },
   logo: {
-    width: 74,
-    height: 66,
+    width: 50,
+    height: 60,
     marginBottom: 20,
   },
   titleContainer: {
@@ -103,15 +103,18 @@ const styles = StyleSheet.create({
 });
 
 // Create Document Component
-const InvoicePDF = ({ project }) => {
-  console.log(project);
+const ArchivedProjectPDF = ({ project }) => {
+  const items = useMemo(() => JSON.parse(project.itemData), [project]);
+
   return (
     <Document>
       <Page size="A4" style={styles.page}>
         <Image style={styles.logo} src="/pp_icon_transparent.png" />
         <View style={styles.invoiceNoContainer}>
           <Text>Invoice No: </Text>
-          <Text>Event Date: {dayjs(project.eventDate).format("dd, MMM DD YYYY")}</Text>
+          <Text>
+            Event Date: {dayjs(project.eventDate, "DD/MM/YYYY").format("MMM DD, YYYY")}
+          </Text>
         </View>
         <View style={styles.headerContainer}>
           <Text style={styles.billTo}>Bill To:</Text>
@@ -129,11 +132,13 @@ const InvoicePDF = ({ project }) => {
             <Text style={{ ...styles.qty, ...styles.header }}>QTY</Text>
             <Text style={{ ...styles.amount, ...styles.header }}>Subtotal</Text>
           </View>
-          {project.Items.map((item) => (
+          {items.map((item) => (
             <View key={item.id} style={styles.row}>
               <Text style={styles.description}>{item.name}</Text>
               <Text style={styles.qty}>{item.quantity}</Text>
-              <Text style={styles.amount}>${item.sellUnitPrice * item.quantity}</Text>
+              <Text style={styles.amount}>
+                ${item.sellUnitPrice * item.quantity}
+              </Text>
             </View>
           ))}
         </View>
@@ -147,4 +152,4 @@ const InvoicePDF = ({ project }) => {
   );
 };
 
-export default InvoicePDF;
+export default ArchivedProjectPDF;

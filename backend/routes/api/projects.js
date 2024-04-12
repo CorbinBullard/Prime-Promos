@@ -1,6 +1,12 @@
 const router = require("express").Router();
 const { Op } = require("sequelize");
-const { Project, User, Item, Note } = require("../../db/models");
+const {
+  Project,
+  User,
+  Item,
+  Note,
+  ArchivedProject,
+} = require("../../db/models");
 const {
   requireOwnerAuth,
   requireAuth,
@@ -8,6 +14,7 @@ const {
   validateProjectUser,
   canUpdateProject,
 } = require("../../utils/auth");
+const { validateProject } = require("../../utils/modelValidators");
 
 // Get all projects
 router.get("/", requireAuth, async (req, res) => {
@@ -20,11 +27,6 @@ router.get("/", requireAuth, async (req, res) => {
     if (role === "owner" || role === "admin") {
       // For 'owner' or 'admin', fetch all projects
       projects = await Project.findAll({
-        where: {
-          status: {
-            [Op.not]: "archived",
-          },
-        },
         include: [
           { model: User, required: false }, // Assuming User-Project is a many-to-many relationship
           { model: Item, required: false },
@@ -56,20 +58,12 @@ router.get("/", requireAuth, async (req, res) => {
 
 // Get archived projects
 router.get("/archived", requireAdminAuth, async (req, res) => {
-  const projects = await Project.findAll({
-    where: {
-      status: "archived",
-    },
-    include: [
-      { model: User, required: false }, // Assuming User-Project is a many-to-many relationship
-      { model: Item, required: false },
-    ],
-  });
+  const projects = await ArchivedProject.findAll();
   res.json(projects);
 });
 
 // Create Project
-router.post("/", requireOwnerAuth, async (req, res) => {
+router.post("/", requireOwnerAuth, validateProject, async (req, res) => {
   const { name, users, inHandsDate, eventDate, customerPO, salesConfirmation } =
     req.body;
 
@@ -191,7 +185,9 @@ router.patch(
   async (req, res) => {
     const { projectId } = req.params;
 
-    const project = await Project.findByPk(projectId);
+    const project = await Project.findByPk(projectId, {
+      include: { model: Item, required: false },
+    });
     if (!project) {
       return res.json({ message: "Project not found" });
     }
@@ -205,6 +201,16 @@ router.patch(
     return res.json({ message: "Project status updated" });
   }
 );
+// Delete archived project
+router.delete("/:projectId/archived", requireAdminAuth, async (req, res) => {
+  const { projectId } = req.params;
+  const project = await ArchivedProject.findByPk(projectId);
+  if (!project) {
+    return res.json({ message: "Project not found" });
+  }
+  await project.destroy();
+  return res.json({ message: "Project deleted" });
+});
 
 // USERS SECTION
 

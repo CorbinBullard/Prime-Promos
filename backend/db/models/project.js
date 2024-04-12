@@ -36,7 +36,18 @@ module.exports = (sequelize, DataTypes) => {
       if (project.status !== "completed") {
         throw new Error("Project must be completed before archiving");
       }
-      await this.update({ status: "archived" });
+      console.log("Archiving project", project);
+      const NewArchivedProject = await this.sequelize.models.ArchivedProject.create(
+        {
+          name: project.name,
+          eventDate: project.eventDate,
+          customerPO: project.customerPO,
+          salesConfirmation: project.salesConfirmation,
+          itemData: JSON.stringify(project.Items),
+        }
+      );
+      // delete project
+      await this.destroy();
     }
   }
   Project.init(
@@ -46,7 +57,7 @@ module.exports = (sequelize, DataTypes) => {
       eventDate: DataTypes.DATE,
       customerPO: DataTypes.INTEGER,
       salesConfirmation: DataTypes.INTEGER,
-      status: DataTypes.ENUM("active", "completed", "archived"),
+      status: DataTypes.ENUM("active", "completed"),
     },
     {
       sequelize,
