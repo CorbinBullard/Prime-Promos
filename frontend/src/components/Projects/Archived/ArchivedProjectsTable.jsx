@@ -11,14 +11,20 @@ import dayjs from "dayjs";
 import { getArchivedProjectsTableColumns } from "./ArchivedProjectOptions";
 import ArchivedProjectPDF from "./ArchivedProjectPDF";
 import { PDFViewer } from "@react-pdf/renderer";
+import useArchivedProjects from "../../../hooks/useArchivedProjects";
 
 export default function ArchivedProjectsTable() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedProject, setSelectedProject] = useState({}); // [1]
 
-  const { user, isAdmin } = useSession();
-  const queryClient = useQueryClient();
-  const openNotification = useNotification();
+  const [selectedRowKeys, setSelectedRowKeys] = useState([]);
+  const {
+    projects,
+    projectsError,
+    projectsLoading,
+    deleteProject,
+    deleteProjectsBulk,
+  } = useArchivedProjects();
 
   const handleViewProject = (project) => {
     console.log("project : ", project);
@@ -30,48 +36,15 @@ export default function ArchivedProjectsTable() {
     setSelectedProject({});
   };
 
-  const {
-    data: projects,
-    error: projectsError,
-    isLoading: projectsLoading,
-  } = useQuery({
-    queryKey: ["archivedProjects"],
-    queryFn: async () => {
-      const response = await csrfFetch("/api/projects/archived");
-      if (!response.ok) throw new Error("Failed to fetch projects");
-      return response.json();
-    },
-    enabled: !!user && isAdmin,
-  });
-  // delete archived project
-  const deleteProjectMutation = useMutation({
-    mutationKey: ["deleteProject"],
-    mutationFn: async (projectId) => {
-      const response = await csrfFetch(`/api/projects/${projectId}/archived`, {
-        method: "DELETE",
-      });
-      if (!response.ok) {
-        const errorResult = await response.json();
-        throw new Error(errorResult.error || "Failed to delete project");
-      }
-      return response.json();
-    },
-    onSuccess: () => {
-      queryClient.invalidateQueries(["archivedProjects"]);
-      openNotification({
-        message: "Success",
-        description: "Project deleted successfully",
-        type: "success",
-      });
-    },
-    onError: (error) => {
-      openNotification({
-        message: "Error",
-        description: error.message,
-        type: "error",
-      });
-    },
-  });
+  const onSelectChange = (newSelectedRowKeys) => {
+    console.log("selectedRowKeys changed: ", newSelectedRowKeys);
+    setSelectedRowKeys(newSelectedRowKeys);
+  };
+  const rowSelection = {
+    selectedRowKeys,
+    onChange: onSelectChange,
+  };
+
   const tableData = useMemo(() => {
     if (!projects) return [];
     return projects.map((project) => ({
@@ -83,16 +56,16 @@ export default function ArchivedProjectsTable() {
 
   const columns = useMemo(() => {
     return getArchivedProjectsTableColumns({
-      deleteProject: deleteProjectMutation.mutate,
+      deleteProject: deleteProject,
       viewProject: handleViewProject,
     });
-  }, [deleteProjectMutation.mutate]);
+  }, [deleteProject]);
 
   return (
     <Suspense fallback={<Loader />}>
       {!projectsLoading && (
         <>
-          <Table columns={columns} dataSource={tableData} />
+          <Table rowSelection={rowSelection} columns={columns} dataSource={tableData} />
           <Modal
             open={isModalOpen}
             onCancel={handleDeselectProject}

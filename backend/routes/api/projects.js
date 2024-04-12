@@ -211,6 +211,28 @@ router.delete("/:projectId/archived", requireAdminAuth, async (req, res) => {
   await project.destroy();
   return res.json({ message: "Project deleted" });
 });
+// Delete multiple archived projects
+router.delete("/archived", requireAdminAuth, async (req, res) => {
+  const { projectIds } = req.body;
+  const projects = await ArchivedProject.findAll({
+    where: {
+      id: {
+        [Op.in]: projectIds, // Corrected usage of Op.in
+      },
+    },
+  });
+  if (!projects.length) {
+    return res.json({ message: "Projects not found" });
+  }
+  await ArchivedProject.destroy({
+    where: {
+      id: {
+        [Op.in]: projectIds, // Corrected usage of Op.in
+      },
+    },
+  });
+  return res.json({ message: "Projects deleted" });
+});
 
 // USERS SECTION
 

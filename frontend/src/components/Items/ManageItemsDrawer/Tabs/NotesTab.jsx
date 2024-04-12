@@ -24,6 +24,7 @@ export default function NotesTab({ item }) {
         form={CreateNoteForm}
         submitText="Create Note"
         onSubmit={handleCreateNote}
+        title="Create Note"
       >
         Create Note
       </FormModalButton>
