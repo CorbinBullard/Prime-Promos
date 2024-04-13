@@ -8,6 +8,7 @@ import {
   Image,
 } from "@react-pdf/renderer";
 import dayjs from "dayjs";
+import { Typography } from "antd";
 
 // Create styles
 const styles = StyleSheet.create({
@@ -113,7 +114,8 @@ const ArchivedProjectPDF = ({ project }) => {
         <View style={styles.invoiceNoContainer}>
           <Text>Invoice No: </Text>
           <Text>
-            Event Date: {dayjs(project.eventDate, "DD/MM/YYYY").format("MMM DD, YYYY")}
+            Event Date:{" "}
+            {dayjs(project.eventDate, "DD/MM/YYYY").format("MMM DD, YYYY")}
           </Text>
         </View>
         <View style={styles.headerContainer}>

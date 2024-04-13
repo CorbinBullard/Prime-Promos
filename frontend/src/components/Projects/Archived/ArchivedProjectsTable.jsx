@@ -76,6 +76,7 @@ export default function ArchivedProjectsTable() {
             onCancel={handleDeselectProject}
             footer={null}
             width={800}
+            closable={false}
           >
             {!!selectedProject && (
               <PDFViewer style={{ width: "100%", height: "45rem" }}>

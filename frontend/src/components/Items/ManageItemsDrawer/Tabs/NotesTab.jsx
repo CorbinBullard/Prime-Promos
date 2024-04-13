@@ -5,6 +5,7 @@ import { FileAddOutlined } from "@ant-design/icons";
 import CreateNoteForm from "../../../Forms/CreateNoteForm";
 import useItems from "../../../../hooks/useItems";
 import NotesList from "../../../Notes/NotesList";
+import { Flex } from "antd";
 
 export default function NotesTab({ item }) {
 
@@ -18,17 +19,18 @@ export default function NotesTab({ item }) {
   };
 
   return (
-    <>
+    <Flex vertical gap={15}>
       <FormModalButton
         icon={<FileAddOutlined />}
         form={CreateNoteForm}
         submitText="Create Note"
         onSubmit={handleCreateNote}
         title="Create Note"
+
       >
         Create Note
       </FormModalButton>
       <NotesList item={item} />
-    </>
+    </Flex>
   );
 }

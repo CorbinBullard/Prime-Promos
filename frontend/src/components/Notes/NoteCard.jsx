@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import dayjs from "dayjs";
-import { Card, Flex, Modal, Form } from "antd";
+import { Card, Flex, Modal, Form, Typography } from "antd";
 import {
   DeleteOutlined,
   EditOutlined,
@@ -26,7 +26,7 @@ export default function NoteCard({ note, updateNote, deleteNote }) {
       onOk: () => deleteNote(note.id),
     });
   };
-  
+
   const noteOptions = [
     {
       key: "edit",
@@ -50,7 +50,10 @@ export default function NoteCard({ note, updateNote, deleteNote }) {
         title={note.title}
         extra={
           <Flex align="center" gap={2}>
+            <Typography.Text italic>
+
             {dayjs(note.updatedAt).format("ddd, MMM D")}
+            </Typography.Text>
             <OptionsButton items={noteOptions} />
           </Flex>
         }
