@@ -48,6 +48,7 @@ export default function ArchivedProjectsTable() {
   const tableData = useMemo(() => {
     if (!projects) return [];
     return projects.map((project) => ({
+      key: project.id,
       ...project,
       name: project.name,
       eventDate: dayjs(project.eventDate).format("DD/MM/YYYY"),
@@ -65,7 +66,11 @@ export default function ArchivedProjectsTable() {
     <Suspense fallback={<Loader />}>
       {!projectsLoading && (
         <>
-          <Table rowSelection={rowSelection} columns={columns} dataSource={tableData} />
+          <Table
+            rowSelection={rowSelection}
+            columns={columns}
+            dataSource={tableData}
+          />
           <Modal
             open={isModalOpen}
             onCancel={handleDeselectProject}
