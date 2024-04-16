@@ -19,7 +19,6 @@ export default function ProjectCard({ project, selectProject }) {
     navigate(`/projects/${project.id}`);
   };
   const handleProjectOptionsSelect = () => {
-    // e.stopPropagation();
     selectProject(project);
   };
   const handleDeleteProject = () => {

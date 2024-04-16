@@ -89,8 +89,11 @@ export default function LoginPage() {
           <GoogleLogin
             onSuccess={handleGoogleSucess}
             onError={handleGoogleFailure}
+            width={250}
           />
-          {error && <Paragraph style={{ color: "red" }}>Invalid Login</Paragraph>}
+          {error && (
+            <Paragraph style={{ color: "red" }}>Invalid Login</Paragraph>
+          )}
         </Card>
       </div>
     </Suspense>

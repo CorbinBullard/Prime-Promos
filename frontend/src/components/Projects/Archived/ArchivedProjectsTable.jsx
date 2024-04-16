@@ -1,17 +1,14 @@
 import React, { Suspense, useMemo, useState } from "react";
 import { Table } from "antd";
-import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { Modal } from "antd";
-import { capitalize } from "../../../utils/utilFunctions";
-import { useSession } from "../../../context/Session";
-import { csrfFetch } from "../../../utils/csrf";
-import { useNotification } from "../../../context/Notification";
 import Loader from "../../UI/Loader";
 import dayjs from "dayjs";
 import { getArchivedProjectsTableColumns } from "./ArchivedProjectOptions";
 import ArchivedProjectPDF from "./ArchivedProjectPDF";
 import { PDFViewer } from "@react-pdf/renderer";
 import useArchivedProjects from "../../../hooks/useArchivedProjects";
+import { Button } from "antd";
+import { DeleteOutlined } from "@ant-design/icons";
 
 export default function ArchivedProjectsTable() {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -25,6 +22,17 @@ export default function ArchivedProjectsTable() {
     deleteProject,
     deleteProjectsBulk,
   } = useArchivedProjects();
+
+  const handleBulkDelete = () => {
+    Modal.confirm({
+      title: "Delete Projects",
+      content: "Are you sure you want to delete these projects?",
+      onOk: () => {
+        deleteProjectsBulk(selectedRowKeys);
+        setSelectedRowKeys([]);
+      },
+    });
+  };
 
   const handleViewProject = (project) => {
     console.log("project : ", project);
@@ -64,6 +72,13 @@ export default function ArchivedProjectsTable() {
 
   return (
     <Suspense fallback={<Loader />}>
+      <Button
+        danger
+        disabled={!selectedRowKeys.length}
+        onClick={handleBulkDelete}
+      >
+        <DeleteOutlined />
+      </Button>
       {!projectsLoading && (
         <>
           <Table

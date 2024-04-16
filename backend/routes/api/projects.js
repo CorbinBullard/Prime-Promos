@@ -201,18 +201,9 @@ router.patch(
     return res.json({ message: "Project status updated" });
   }
 );
-// Delete archived project
-router.delete("/:projectId/archived", requireAdminAuth, async (req, res) => {
-  const { projectId } = req.params;
-  const project = await ArchivedProject.findByPk(projectId);
-  if (!project) {
-    return res.json({ message: "Project not found" });
-  }
-  await project.destroy();
-  return res.json({ message: "Project deleted" });
-});
+
 // Delete multiple archived projects
-router.delete("/archived", requireAdminAuth, async (req, res) => {
+router.delete("/archived/bulk", requireAdminAuth, async (req, res) => {
   const { projectIds } = req.body;
   const projects = await ArchivedProject.findAll({
     where: {
@@ -232,6 +223,16 @@ router.delete("/archived", requireAdminAuth, async (req, res) => {
     },
   });
   return res.json({ message: "Projects deleted" });
+});
+// Delete archived project
+router.delete("/:projectId/archived", requireAdminAuth, async (req, res) => {
+  const { projectId } = req.params;
+  const project = await ArchivedProject.findByPk(projectId);
+  if (!project) {
+    return res.json({ message: "Project not found" });
+  }
+  await project.destroy();
+  return res.json({ message: "Project deleted" });
 });
 
 // USERS SECTION

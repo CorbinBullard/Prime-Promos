@@ -55,7 +55,7 @@ export default function useArchivedProjects() {
   const deleteProjectsBulk = useMutation({
     mutationKey: ["deleteBulkProjects"],
     mutationFn: async (projectIds) => {
-      const response = await csrfFetch("/api/projects/archived", {
+      const response = await csrfFetch("/api/projects/archived/bulk", {
         method: "DELETE",
         headers: {
           "Content-Type": "application/json",
