@@ -1,15 +1,15 @@
 import React from "react";
-import { Progress, Flex, Tag, Button } from "antd";
+import { Progress, Flex, Tag, Button, Modal } from "antd";
 import {
   ItemStatusColors,
   ItemStatusProgression,
 } from "../../../../utils/constants";
-import { capitalize } from "../../../../utils/utilFunctions";
 import { useProjects } from "../../../../hooks/useProjects";
 import ProjectItemStatus from "../../ProjectItemStatus";
 
 export default function ProjectStatusSection({ project }) {
-  const { markProjectAsCompleted, archiveProject } = useProjects();
+  const { markProjectAsCompleted, archiveProject } =
+    useProjects();
 
   const handleUpdateProjectStatus = async () => {
     if (project.status === "active") {
@@ -20,11 +20,17 @@ export default function ProjectStatusSection({ project }) {
       }
     }
     if (project.status === "completed") {
-      try {
-        await archiveProject(project.id);
-      } catch (error) {
-        console.error(error);
-      }
+      Modal.confirm({
+        title: "Archive Project",
+        content: "Are you sure you want to archive this project?",
+        onOk: async () => {
+          try {
+            await archiveProject(project.id);
+          } catch (error) {
+            console.error(error);
+          }
+        },
+      });
     }
   };
   return (
@@ -34,6 +40,7 @@ export default function ProjectStatusSection({ project }) {
       ))}
       <Button
         type="primary"
+        danger={project.status === "completed"}
         disabled={!project.Items.every((item) => item.status === "delivered")}
         onClick={handleUpdateProjectStatus}
       >

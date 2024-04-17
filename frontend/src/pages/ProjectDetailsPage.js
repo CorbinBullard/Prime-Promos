@@ -14,6 +14,7 @@ import NotesList from "../components/Notes/NotesList";
 import BackButton from "../components/UI/BackButton";
 import { useSession } from "../context/Session";
 import ModalHeader from "../components/UI/ModalHeader";
+import CardsContainer from "../components/UI/CardsContainer";
 
 export default function ProjectDetailsPage() {
   const { projectId } = useParams();
@@ -42,6 +43,8 @@ export default function ProjectDetailsPage() {
       return acc;
     }, {});
   }, [items]);
+
+  console.log(selectedItem, "selectedItem")
 
   return (
     <Space direction="vertical" style={{ width: "100%" }}>
@@ -87,6 +90,7 @@ export default function ProjectDetailsPage() {
             width={1000}
             footer={null}
             icon={<SaveOutlined />}
+            destroyOnClose
           >
             {selectedItem && (
               <Flex justify="space-between" gap={15}>
