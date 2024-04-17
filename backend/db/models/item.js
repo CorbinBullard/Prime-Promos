@@ -2,7 +2,10 @@
 const { Model } = require("sequelize");
 const { ItemStatusFields } = require("../../utils/ItemStatusFields");
 const { s3 } = require("../../utils/aws");
-const { DeleteObjectsCommand } = require("@aws-sdk/client-s3");
+const {
+  DeleteObjectsCommand,
+  ListObjectsCommand,
+} = require("@aws-sdk/client-s3");
 require("dotenv").config();
 
 module.exports = (sequelize, DataTypes) => {
@@ -113,12 +116,16 @@ module.exports = (sequelize, DataTypes) => {
         afterDestroy: async (item, options) => {
           const itemJSON = await item.toJSON();
           const bucketName = process.env.AWS_BUCKET_NAME; // Ensure you have this in your .env
-          console.log("Item afterDestroy hook called", itemJSON.logo, s3);
+          const logoKey = itemJSON.logo?.split("/").pop(); // Get the key of the image from the URL
+          const invoiceKey = itemJSON.invoice?.split("/").pop(); // Get the key of the invoice from the URL
+          const ObjectArr = [];
+          if (logoKey) ObjectArr.push({ Key: `uploads/${logoKey}` });
+          if (invoiceKey) ObjectArr.push({ Key: `uploads/${invoiceKey}` });
           const input = {
             Bucket: bucketName,
             Delete: {
               // Structure required by DeleteObjectsCommand
-              Objects: [{ Key: itemJSON.logo }, { Key: itemJSON.invoice }],
+              Objects: ObjectArr,
               Quiet: false, // Can set to true if you don't need information about each delete in the response
             },
           };
