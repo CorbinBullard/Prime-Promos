@@ -8,13 +8,22 @@ import { useProjects } from "../../../../hooks/useProjects";
 import ProjectItemStatus from "../../ProjectItemStatus";
 
 export default function ProjectStatusSection({ project }) {
-  const { markProjectAsCompleted, archiveProject } =
-    useProjects();
+  const { markProjectAsCompleted, archiveProject } = useProjects();
 
   const handleUpdateProjectStatus = async () => {
     if (project.status === "active") {
       try {
-        await markProjectAsCompleted(project.id);
+        Modal.confirm({
+          title: "Mark Project as Completed",
+          content: "Are you sure you want to mark this project as complete?",
+          onOk: async () => {
+            try {
+              await markProjectAsCompleted(project.id);
+            } catch (error) {
+              console.error(error);
+            }
+          },
+        });
       } catch (error) {
         console.error(error);
       }

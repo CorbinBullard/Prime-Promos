@@ -9,7 +9,7 @@ import { Flex } from "antd";
 
 export default function NotesTab({ item }) {
 
-  const { createItemNote, updateItemNote } = useItems({
+  const { createItemNote } = useItems({
     projectId: item.projectId,
     itemId: item.id,
   });
