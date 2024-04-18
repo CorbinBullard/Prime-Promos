@@ -12,7 +12,7 @@ export default function ArchivedProjectsTable() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedProject, setSelectedProject] = useState({});
   const [selectedRowKeys, setSelectedRowKeys] = useState([]);
-  const { projects, projectsLoading, deleteProjectsBulk } =
+  const { projects, projectsLoading, deleteProjectsBulk, deleteProject } =
     useArchivedProjects();
 
   const handleBulkDelete = () => {
@@ -57,7 +57,11 @@ export default function ArchivedProjectsTable() {
   );
 
   const columns = useMemo(
-    () => getArchivedProjectsTableColumns({ deleteProject: handleViewProject }),
+    () =>
+      getArchivedProjectsTableColumns({
+        deleteProject,
+        viewProject: handleViewProject,
+      }),
     []
   );
 
