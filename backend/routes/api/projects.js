@@ -160,10 +160,11 @@ router.put("/:projectId", canUpdateProject, async (req, res) => {
 
 // Update Project Status completed
 router.patch(
-  "/:projectId/status-completed",
+  "/:projectId/status/complete",
   requireAdminAuth,
   async (req, res) => {
     const { projectId } = req.params;
+    const { status } = req.body;
 
     const project = await Project.findByPk(projectId);
     if (!project) {
@@ -177,10 +178,24 @@ router.patch(
     return res.json({ message: "Project status updated" });
   }
 );
+// Revert Project Status to active
+router.patch(
+  "/:projectId/status/active",
+  requireAdminAuth,
+  async (req, res) => {
+    const { projectId } = req.params;
+    const project = await Project.findByPk(projectId);
+    if (!project) {
+      return res.json({ message: "Project not found or Project is Archived" });
+    }
+    await project.update({ status: "active" });
+    return res.json({ message: "Project status updated" });
+  }
+);
 
 // Update Project Status archived
 router.patch(
-  "/:projectId/status-archived",
+  "/:projectId/status/archive",
   requireAdminAuth,
   async (req, res) => {
     const { projectId } = req.params;

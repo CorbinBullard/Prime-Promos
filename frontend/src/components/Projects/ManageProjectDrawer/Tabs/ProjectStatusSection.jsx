@@ -8,7 +8,7 @@ import { useProjects } from "../../../../hooks/useProjects";
 import ProjectItemStatus from "../../ProjectItemStatus";
 
 export default function ProjectStatusSection({ project }) {
-  const { markProjectAsCompleted, archiveProject } = useProjects();
+  const { markProjectAsCompleted, archiveProject, revertProjectToActive } = useProjects();
 
   const handleUpdateProjectStatus = async () => {
     if (project.status === "active") {
@@ -42,20 +42,43 @@ export default function ProjectStatusSection({ project }) {
       });
     }
   };
+  const handleRevertProjectToActive = async () => {
+    try {
+      Modal.confirm({
+        title: "Revert Project to Active",
+        content: "Are you sure you want to revert this project to active?",
+        onOk: async () => {
+          try {
+            await revertProjectToActive(project.id);
+          } catch (error) {
+            console.error(error);
+          }
+        },
+      });
+    } catch (error) {
+      console.error(error);
+    }
+  }
   return (
     <Flex vertical gap={15}>
       {project.Items.map((item) => (
         <ProjectItemStatus key={item.id} item={item} />
       ))}
-      <Button
-        type="primary"
-        danger={project.status === "completed"}
-        disabled={!project.Items.every((item) => item.status === "delivered")}
-        onClick={handleUpdateProjectStatus}
-      >
-        {project.status === "active" && "Mark Project as Completed"}
-        {project.status === "completed" && "Archive Project"}
-      </Button>
+      <Flex style={{ width: "100%" }} gap={10}>
+        {project.status === "completed" && (
+          <Button onClick={handleRevertProjectToActive} style={{ width: "100%" }}>Revert Project To Active</Button>
+        )}
+        <Button
+          type="primary"
+          danger={project.status === "completed"}
+          disabled={!project.Items.every((item) => item.status === "delivered")}
+          onClick={handleUpdateProjectStatus}
+          style={{ width: "100%" }}
+        >
+          {project.status === "active" && "Mark Project as Completed"}
+          {project.status === "completed" && "Archive Project"}
+        </Button>
+      </Flex>
     </Flex>
   );
 }

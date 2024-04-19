@@ -25,7 +25,6 @@ export function useProjects() {
     enabled: !!user,
   });
 
-
   // Create project
   const createProjectMutation = useMutation({
     mutationKey: ["createProject"],
@@ -202,7 +201,7 @@ export function useProjects() {
     mutationKey: ["markProjectAsCompleted"],
     mutationFn: async (projectId) => {
       const response = await csrfFetch(
-        `/api/projects/${projectId}/status-completed`,
+        `/api/projects/${projectId}/status/complete`,
         {
           method: "PATCH",
         }
@@ -230,11 +229,44 @@ export function useProjects() {
     },
   });
 
+  // Revert Project back to active status
+  const projectActive = useMutation({
+    mutationKey: ["markProjectAsActive"],
+    mutationFn: async (projectId) => {
+      const response = await csrfFetch(
+        `/api/projects/${projectId}/status/active`,
+        {
+          method: "PATCH",
+        }
+      );
+      if (!response.ok) {
+        const error = await response.json();
+        throw new Error(error.message || "Failed to mark project as active");
+      }
+      return response.json();
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries(["projects"]);
+      openNotification({
+        message: "Success",
+        description: "Project marked as active successfully",
+        type: "success",
+      });
+    },
+    onError: (error) => {
+      openNotification({
+        message: "Error",
+        description: error.message || "Failed to mark project as active",
+        type: "error",
+      });
+    },
+  });
+
   const archiveProjectMutation = useMutation({
     mutationKey: ["archiveProject"],
     mutationFn: async (projectId) => {
       const response = await csrfFetch(
-        `/api/projects/${projectId}/status-archived`,
+        `/api/projects/${projectId}/status/archive`,
         {
           method: "PATCH",
         }
@@ -280,6 +312,7 @@ export function useProjects() {
     projectCompleted.mutate(projectId);
   const archiveProject = (projectId) =>
     archiveProjectMutation.mutate(projectId);
+  const revertProjectToActive = (projectId) => projectActive.mutate(projectId);
 
   return {
     projects,
@@ -295,5 +328,6 @@ export function useProjects() {
     clearCurrentProject,
     markProjectAsCompleted,
     archiveProject,
+    revertProjectToActive,
   };
 }

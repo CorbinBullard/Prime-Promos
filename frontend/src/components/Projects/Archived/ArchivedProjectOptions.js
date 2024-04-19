@@ -2,6 +2,7 @@ import React, { useMemo } from "react";
 import { Modal } from "antd";
 import { FilePdfOutlined, DeleteOutlined } from "@ant-design/icons";
 import OptionsButton from "../../UI/OptionsButton";
+import dayjs from "dayjs";
 
 const generateArchivedProjectOptions = (
   project,
@@ -42,7 +43,11 @@ export const getArchivedProjectsTableColumns = ({
     title: "Event Date",
     dataIndex: "eventDate",
     key: "eventDate",
-    sorter: (a, b) => new Date(a.eventDate) - new Date(b.eventDate),
+    sorter: (a, b) => {
+      const aTime = +dayjs(a.eventDate, "DD/MM/YYYY").format("YYYYMMDD");
+      const bTime = +dayjs(b.eventDate, "DD/MM/YYYY").format("YYYYMMDD");
+      return aTime - bTime;
+    },
   },
   {
     title: "",
