@@ -15,6 +15,7 @@ const {
   canUpdateProject,
 } = require("../../utils/auth");
 const { validateProject } = require("../../utils/modelValidators");
+const item = require("../../db/models/item");
 
 // Get all projects
 router.get("/", requireAuth, async (req, res) => {
@@ -63,9 +64,18 @@ router.get("/archived", requireAdminAuth, async (req, res) => {
 });
 
 // Create Project
-router.post("/", requireOwnerAuth, validateProject, async (req, res) => {
-  const { name, users, inHandsDate, eventDate, customerPO, salesConfirmation } =
-    req.body;
+router.post("/", requireAdminAuth, async (req, res) => {
+  const {
+    name,
+    users,
+    inHandsDate,
+    eventDate,
+    customerPO,
+    salesConfirmation,
+    collegeName,
+    contactName,
+    items,
+  } = req.body;
 
   try {
     // Create the project without including users in this step
@@ -75,8 +85,10 @@ router.post("/", requireOwnerAuth, validateProject, async (req, res) => {
       eventDate,
       customerPO,
       salesConfirmation,
+      collegeName,
+      contactName,
     });
-
+    // Add Users
     if (users && users.length) {
       // Find users based on IDs provided in the request
       const dbUsers = await User.findAll({
@@ -89,6 +101,14 @@ router.post("/", requireOwnerAuth, validateProject, async (req, res) => {
 
       // Associate found users with the project
       await project.addUsers(dbUsers);
+    }
+    // Add Items
+    if (items && items.length) {
+      // Create items for the project
+      for (let i = 0; i < items.length; i++) {
+        const itemName = items[i];
+        await project.createItem({ name: itemName });
+      }
     }
 
     // Retrieve the newly created project with associated users
@@ -131,8 +151,15 @@ router.delete("/:projectId", requireOwnerAuth, async (req, res) => {
 router.put("/:projectId", canUpdateProject, async (req, res) => {
   const { role } = req.user;
   const { projectId } = req.params;
-  const { name, inHandsDate, eventDate, customerPO, salesConfirmation } =
-    req.body;
+  const {
+    name,
+    inHandsDate,
+    eventDate,
+    customerPO,
+    salesConfirmation,
+    collegeName,
+    contactName,
+  } = req.body;
 
   const project = await Project.findByPk(projectId, {
     include: User,
@@ -154,6 +181,8 @@ router.put("/:projectId", canUpdateProject, async (req, res) => {
     eventDate,
     customerPO,
     salesConfirmation,
+    collegeName,
+    contactName,
   });
   return res.json(updatedProject);
 });

@@ -1,11 +1,26 @@
 import React from "react";
-import { Divider, Typography } from "antd";
+import { Divider, Flex, Typography } from "antd";
 const { Title } = Typography;
-export default function ModalHeader({ title }) {
+
+// Main parent component
+const ModalHeader = ({ children }) => {
   return (
     <>
-      <Title level={4} style={{margin: ".6rem"}}>{title}</Title>
+      <Flex gap={15} align="center">{children}</Flex>
       <Divider />
     </>
   );
-}
+};
+
+// Sub-component for the title
+ModalHeader.Title = ({ title }) => (
+  <Title level={4} style={{ margin: ".6rem" }}>
+    {title}
+  </Title>
+);
+
+// Sub-component for an icon, if needed
+ModalHeader.Icon = ({ Icon, iconProps }) => <Icon {...iconProps} />;
+
+// Exporting the compound component
+export default ModalHeader;

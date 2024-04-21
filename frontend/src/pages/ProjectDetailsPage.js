@@ -15,7 +15,9 @@ import BackButton from "../components/UI/BackButton";
 import { useSession } from "../context/Session";
 import ModalHeader from "../components/UI/ModalHeader";
 import CardsContainer from "../components/UI/CardsContainer";
-
+import dayjs from "dayjs";
+import ItemStatusTag from "../components/UI/ItemStatusTag";
+const { Title, Text } = Typography;
 export default function ProjectDetailsPage() {
   const { projectId } = useParams();
   const { isAdmin } = useSession();
@@ -27,7 +29,7 @@ export default function ProjectDetailsPage() {
     createItem,
     selectedItem,
     setSelectedItem,
-    projectName,
+    currentProject,
   } = useItems({
     projectId,
   });
@@ -44,17 +46,37 @@ export default function ProjectDetailsPage() {
     }, {});
   }, [items]);
 
-  console.log(selectedItem, "selectedItem")
-
   return (
     <Space direction="vertical" style={{ width: "100%" }}>
       {!itemsLoading && (
         <>
           <Flex justify="space-between" align="start">
             <BackButton text="Projects" type="text" />
-            <Typography.Title level={2} style={{ margin: "0" }}>
-              {projectName?.name}
-            </Typography.Title>
+            <Flex align="center" gap={10}>
+              <Flex vertical justify="center" align="start">
+                <Title level={3} style={{ margin: "0" }}>
+                  {currentProject?.name}
+                </Title>
+                <Text italic strong style={{ margin: "0", color: "#8c8c8c" }}>
+                  {currentProject?.collegeName} - {currentProject?.contactName}
+                </Text>
+              </Flex>
+              -
+              <Flex vertical align="start">
+                {currentProject?.inHandsDate && (
+                  <Text italic style={{ margin: "0 10px", color: "#8c8c8c" }}>
+                    In Hands Date:{" "}
+                    {dayjs(currentProject?.inHandsDate).format("MMM, DD")}
+                  </Text>
+                )}
+                {currentProject?.eventDate && (
+                  <Text italic style={{ margin: "0 10px", color: "#8c8c8c" }}>
+                    Event Date:{" "}
+                    {dayjs(currentProject?.eventDate).format("MMM, DD")}
+                  </Text>
+                )}
+              </Flex>
+            </Flex>
             {isAdmin && (
               <FormModalButton
                 form={CreateItemForm}
@@ -86,7 +108,15 @@ export default function ProjectDetailsPage() {
             // Is This the best way to handle this?
             open={selectedItem && selectedItem.status !== "delivered"}
             onCancel={() => setSelectedItem(null)}
-            title={<ModalHeader title={selectedItem?.name || null} />}
+            title={
+              <ModalHeader>
+                <ModalHeader.Title title={selectedItem?.name} />
+                <ModalHeader.Icon
+                  Icon={ItemStatusTag}
+                  iconProps={{ item: selectedItem }}
+                />
+              </ModalHeader>
+            }
             width={1000}
             footer={null}
             icon={<SaveOutlined />}

@@ -53,7 +53,11 @@ const FormModalButton = ({
       </Button>
       <Modal
         {...props}
-        title={<ModalHeader title={props.title || "Form"} />} // You can pass a title prop for customization
+        title={
+          <ModalHeader>
+            <ModalHeader.Title title={props.title} />
+          </ModalHeader>
+        } // You can pass a title prop for customization
         open={isVisible}
         onOk={handleOk}
         onCancel={handleCancel}

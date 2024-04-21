@@ -19,13 +19,17 @@ module.exports = {
           type: Sequelize.STRING,
           allowNull: false,
         },
+        collegeName: {
+          type: Sequelize.STRING,
+        },
+        contactName: {
+          type: Sequelize.STRING,
+        },
         inHandsDate: {
           type: Sequelize.DATE,
-          allowNull: false,
         },
         eventDate: {
           type: Sequelize.DATE,
-          allowNull: false,
         },
         customerPO: {
           type: Sequelize.INTEGER,

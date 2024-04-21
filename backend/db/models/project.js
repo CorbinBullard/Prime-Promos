@@ -53,6 +53,8 @@ module.exports = (sequelize, DataTypes) => {
   Project.init(
     {
       name: DataTypes.STRING,
+      collegeName: DataTypes.STRING,
+      contactName: DataTypes.STRING,
       inHandsDate: DataTypes.DATE,
       eventDate: DataTypes.DATE,
       customerPO: DataTypes.INTEGER,

@@ -7,7 +7,10 @@ import {
   Space,
   Flex,
   InputNumber,
+  Divider,
+  Button,
 } from "antd";
+import { MinusCircleOutlined, PlusOutlined } from "@ant-design/icons";
 import { useTeam } from "../../context/useTeam";
 import UserDropdown from "../UI/UserDropdown";
 import dayjs from "dayjs";
@@ -31,6 +34,12 @@ export default function CreateProjectForm({ form, initialValues }) {
       >
         <Input placeholder="Enter Project Name" />
       </Item>
+      <Item name="collegeName">
+        <Input placeholder="Enter College Name" />
+      </Item>
+      <Item name="contactName">
+        <Input placeholder="Enter Contact Name" />
+      </Item>
       {/* Add with users only When Creating a project, not when editting! */}
       {!initialValues && <UserDropdown options={teamMembers} />}
       <Flex justify="space-between" flex={1} gap={5}>
@@ -38,10 +47,6 @@ export default function CreateProjectForm({ form, initialValues }) {
           style={{ flex: 1 }}
           name="inHandsDate"
           rules={[
-            {
-              required: true,
-              message: "Please Enter an In Hands Date",
-            },
             () => ({
               validator(_, value) {
                 if (
@@ -69,10 +74,6 @@ export default function CreateProjectForm({ form, initialValues }) {
           name="eventDate"
           dependencies={["inHandsDate"]} // Declare dependency to revalidate when inHandsDate changes
           rules={[
-            {
-              required: true,
-              message: "Please Enter an Event Date",
-            },
             ({ getFieldValue }) => ({
               validator(_, value) {
                 const inHandsDate = getFieldValue("inHandsDate");
@@ -107,18 +108,63 @@ export default function CreateProjectForm({ form, initialValues }) {
           />
         </Item>
       </Flex>
-      <Item name="customerPO" label="Customer PO">
-        <InputNumber
-          placeholder="Enter Customer PO"
-          style={{ width: "100%" }}
-        />
-      </Item>
-      <Item name="salesConfirmation" label="Sales Confirmation">
-        <InputNumber
-          placeholder="Enter Sales Confirmation"
-          style={{ width: "100%" }}
-        />
-      </Item>
+      {initialValues && (
+        <>
+          <Item name="customerPO" label="Customer PO">
+            <InputNumber
+              placeholder="Enter Customer PO"
+              style={{ width: "100%" }}
+            />
+          </Item>
+          <Item name="salesConfirmation" label="Sales Confirmation">
+            <InputNumber
+              placeholder="Enter Sales Confirmation"
+              style={{ width: "100%" }}
+            />
+          </Item>
+        </>
+      )}
+      {!initialValues && (
+        <>
+          <Divider>Add Items</Divider>
+          <Form.List name="items">
+            {(fields, { add, remove }, { errors }) => (
+              <>
+                {fields.map((field, i) => (
+                  <Form.Item
+                    {...field}
+                    key={field.key}
+                    rules={[{ required: true, message: "Missing Item Name" }]}
+                  >
+                    <Flex gap={10}>
+                      <Input
+                        placeholder="Item Name"
+                        style={{ width: "100%" }}
+                      />
+                      <MinusCircleOutlined
+                        style={{ fontSize: "20px", color: "red" }}
+                        onClick={() => remove(field.name)}
+                      />
+                    </Flex>
+                  </Form.Item>
+                ))}
+                <Form.Item>
+                  <Button
+                    type="dashed"
+                    onClick={() => add()}
+                    style={{
+                      width: "100%",
+                    }}
+                    icon={<PlusOutlined />}
+                  >
+                    Add Item
+                  </Button>
+                </Form.Item>
+              </>
+            )}
+          </Form.List>
+        </>
+      )}
     </Form>
   );
 }

@@ -11,6 +11,7 @@ import {
   DeleteOutlined,
 } from "@ant-design/icons";
 import ItemStatusChangeButton from "./ItemStatusChangeButton";
+import ItemStatusTag from "../UI/ItemStatusTag";
 
 export default function ItemCard({ item, setItem, setItemManager }) {
   const { deleteItem } = useItems({ projectId: item.projectId });
@@ -52,12 +53,7 @@ export default function ItemCard({ item, setItem, setItemManager }) {
         onClick={handleClick}
         extra={
           <>
-            <Tag
-              color={ItemStatusColors[item.status]}
-              style={{ fontStyle: "italic" }}
-            >
-              {capitalize(item.status)}
-            </Tag>
+            <ItemStatusTag item={item} />
             <OptionsButton items={itemOptions} />
           </>
         }

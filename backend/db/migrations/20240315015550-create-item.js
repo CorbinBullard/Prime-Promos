@@ -31,6 +31,9 @@ module.exports = {
         itemNumber: {
           type: Sequelize.STRING,
         },
+        spcNumber: {
+          type: Sequelize.STRING,
+        },
         quantity: {
           type: Sequelize.INTEGER,
         },
@@ -50,6 +53,9 @@ module.exports = {
           type: Sequelize.STRING,
         },
         netUnitPrice: {
+          type: Sequelize.DECIMAL,
+        },
+        sellSetup: {
           type: Sequelize.DECIMAL,
         },
         netSetup: {

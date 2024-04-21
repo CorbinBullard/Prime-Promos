@@ -24,7 +24,7 @@ export default function useItems({ projectId, itemId }) {
   });
   // Fetch project name
   const {
-    data: projectName,
+    data: currentProject,
     error: projectNameError,
     isLoading: projectNameLoading,
   } = useQuery({
@@ -162,7 +162,7 @@ export default function useItems({ projectId, itemId }) {
     selectedItem,
     itemsError,
     itemsLoading,
-    projectName,
+    currentProject,
     createItem,
     updateItem,
     deleteItem,
