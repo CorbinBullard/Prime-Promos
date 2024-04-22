@@ -1,5 +1,5 @@
 import React from "react";
-import { Flex } from "antd";
+import { Empty, Flex } from "antd";
 import NoteCard from "./NoteCard";
 import useItems from "../../hooks/useItems";
 
@@ -19,6 +19,9 @@ export default function NotesList({ item }) {
           deleteNote={deleteItemNote}
         />
       ))}
+      {item.Notes.length === 0 && (
+        <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} />
+      )}
     </Flex>
   );
 }

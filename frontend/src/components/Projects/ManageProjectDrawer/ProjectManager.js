@@ -14,4 +14,9 @@ export const projectManagerTabs = (project) => [
     label: "Manage Users",
     children: <ManageUsersTab project={project} />,
   },
+  {
+    key: "pdf",
+    label: "PDF",
+    children: <ArchivedProjectPDF project={project} />,
+  },
 ];

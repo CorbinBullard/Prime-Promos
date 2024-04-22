@@ -36,13 +36,14 @@ export const FORM_COMPONENTS = {
 };
 
 const quoteItemList = [
+  "spcNumber",
   "itemNumber",
   "quantity",
-  "sellUnitPrice",
   "itemColor",
-  "logo",
+  "preVirtual",
   "logoColor",
   "stockCheck",
+  "sellUnitPrice",
   "netUnitPrice",
   "netSetup",
   "proofCharge",
@@ -52,16 +53,9 @@ const quoteItemList = [
   "productionTime",
   "shippingEstimate",
 ];
-const orderItemList = [
-  "factory",
-  "primePO",
-  // "orderSent",
-  "preVirtual",
-  "shipDate",
-  "tracking",
-];
+const orderItemList = ["factory", "primePO", "logo", "shipDate", "tracking"];
 const isProductionItemList = [
-  "recieveOrderAcknowledge",
+  "receivedOrder",
   "proofApprovalFileUrl",
   "proofApprovalDate",
   "prepaymentConfirmed",
@@ -98,4 +92,14 @@ export const dateFormat = "MM/DD/YYYY";
 
 export const formItemLayout = {
   style: { width: "100%", marginBottom: "2px" }, // Apply width to the layout
+};
+
+export const priceCodes = {
+  "A/P": 50,
+  "B/Q": 45,
+  "C/R": 40,
+  "D/S": 35,
+  "E/T": 30,
+  "F/U": 25,
+  "G/V": 20,
 };

@@ -3,8 +3,9 @@ const quoteItemList = [
   "spcNumber",
   "quantity",
   "sellUnitPrice",
+  "priceCode",
   "itemColor",
-  "logo",
+  "preVirtual",
   "logoColor",
   "stockCheck",
   "netUnitPrice",
@@ -20,9 +21,8 @@ const quoteItemList = [
 const orderItemList = [
   "factory",
   "primePO",
-  "preVirtual",
+  "logo",
   "shipDate",
-  // "tracking",
 ];
 const productionItemList = [
   "receivedOrder",

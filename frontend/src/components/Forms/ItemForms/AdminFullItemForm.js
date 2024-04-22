@@ -48,8 +48,8 @@ export default function AdminFullItemForm({ form, item }) {
       title: "In Production",
       description: (
         <ItemDetailAutoSave
-          FormComponent={FORM_COMPONENTS.isProduction}
-          initialValues={itemValues.isProduction}
+          FormComponent={FORM_COMPONENTS.production}
+          initialValues={itemValues.production}
           item={item}
         />
       ),

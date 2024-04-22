@@ -1,4 +1,7 @@
 "use strict";
+
+const { type } = require("os");
+
 /** @type {import('sequelize-cli').Migration} */
 let options = {};
 if (process.env.NODE_ENV === "production") {
@@ -52,6 +55,9 @@ module.exports = {
         stockCheck: {
           type: Sequelize.STRING,
         },
+        priceCode: {
+          type: Sequelize.ENUM("A/P", "B/Q", "C/R", "D/S", "E/T", "F/U", "G/V"),
+        },
         netUnitPrice: {
           type: Sequelize.DECIMAL,
         },
@@ -89,7 +95,7 @@ module.exports = {
           type: Sequelize.DATE,
         },
         preVirtual: {
-          type: Sequelize.BOOLEAN,
+          type: Sequelize.STRING,
         },
         shipDate: {
           type: Sequelize.DATE,
