@@ -8,6 +8,7 @@ import {
   Divider,
   Select,
   Flex,
+  Typography,
 } from "antd";
 import React, { useEffect, useState } from "react";
 import { CalculatorOutlined } from "@ant-design/icons";
@@ -15,13 +16,15 @@ import { formItemLayout, priceCodes } from "../../../utils/constants";
 import FileUploader from "../../UI/FileHandling/FileUploader";
 const { Item } = Form;
 const { Option } = Select;
-const { Compact } = Space;
+const { Text } = Typography;
 
 export default function ItemQuoteForm({ form, onValuesChange, initialValues }) {
   const [isSellUnitCalcButtonDisabled, setIsSellUnitCalcButtonDisabled] =
     useState(initialValues?.netUnitPrice && initialValues?.priceCode);
   const [isNetUnitCalcButtonDisabled, setIsNetUnitCalcButtonDisabled] =
     useState(initialValues?.sellUnitPrice && initialValues?.priceCode);
+
+  const [unitPriceStatus, setUnitPriceStatus] = useState(null);
 
   const handleImageUpload = (url) => {
     form.setFieldsValue({ preVirtual: url });
@@ -41,6 +44,24 @@ export default function ItemQuoteForm({ form, onValuesChange, initialValues }) {
       !form.getFieldValue("sellUnitPrice") || !form.getFieldValue("priceCode")
     );
   }, [form.getFieldValue("netUnitPrice"), form.getFieldValue("sellUnitPrice")]);
+
+  useEffect(() => {
+    validateUnitPrices();
+  });
+  const validateUnitPrices = async () => {
+    const netUnitPrice = form.getFieldValue("netUnitPrice");
+    const sellUnitPrice = form.getFieldValue("sellUnitPrice");
+    const percent = priceCodes[form.getFieldValue("priceCode")];
+
+    if (!netUnitPrice || !percent || !sellUnitPrice) {
+      return;
+    }
+
+    const calculatedSellUnitPrice = netUnitPrice / (1 - percent / 100);
+    if (calculatedSellUnitPrice !== sellUnitPrice) {
+      setUnitPriceStatus("error");
+    } else setUnitPriceStatus("success");
+  };
 
   const calculateSellUnitPrice = () => {
     const currentNetUnitPrice = form.getFieldValue("netUnitPrice");
@@ -114,14 +135,24 @@ export default function ItemQuoteForm({ form, onValuesChange, initialValues }) {
           ))}
         </Select>
       </Item>
+      {unitPriceStatus === "error" && (
+        <Text type="danger">
+          Net Unit Price and Sell Unit Price Do not Align with Price Code
+        </Text>
+      )}
       <Flex justify="space-between" gap={10}>
-        <Item name="sellUnitPrice" style={{ width: "100%" }}>
+        <Item
+          name="sellUnitPrice"
+          style={{ width: "100%" }}
+          dependencies={["netUnitPrice", "priceCode", "sellUnitPrice"]}
+        >
           <InputNumber
             style={{ width: "100%" }}
             prefix="$"
             precision={2}
             controls={false}
             addonBefore="Sell Unit Price"
+            status={unitPriceStatus}
           />
         </Item>
         <Button
@@ -129,17 +160,21 @@ export default function ItemQuoteForm({ form, onValuesChange, initialValues }) {
           icon={<CalculatorOutlined />}
           disabled={isSellUnitCalcButtonDisabled}
           onClick={calculateSellUnitPrice}
-          tooltip="Calculate Sell Unit Price"
         />
       </Flex>
       <Flex justify="space-between" gap={10}>
-        <Item name="netUnitPrice" style={{ width: "100%" }}>
+        <Item
+          name="netUnitPrice"
+          style={{ width: "100%" }}
+          dependencies={["sellUnitPrice", "priceCode", "netUnitPrice"]}
+        >
           <InputNumber
             addonBefore="Net Unit Price"
             style={{ width: "100%" }}
             prefix="$"
             precision={2}
             controls={false}
+            status={unitPriceStatus}
           />
         </Item>
         <Button
@@ -147,9 +182,9 @@ export default function ItemQuoteForm({ form, onValuesChange, initialValues }) {
           icon={<CalculatorOutlined />}
           disabled={isNetUnitCalcButtonDisabled}
           onClick={calculateNetUnitPrice}
-          tooltip="Calculate Net Unit Price"
         />
       </Flex>
+      <Divider>Additional Charges</Divider>
       <Item name="sellSetup">
         <InputNumber
           addonBefore="Sell Setup"

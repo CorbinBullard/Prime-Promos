@@ -17,6 +17,7 @@ import ModalHeader from "../components/UI/ModalHeader";
 import CardsContainer from "../components/UI/CardsContainer";
 import dayjs from "dayjs";
 import ItemStatusTag from "../components/UI/ItemStatusTag";
+import ProjectTitle from "../components/UI/ProjectTitle";
 const { Title, Text } = Typography;
 export default function ProjectDetailsPage() {
   const { projectId } = useParams();
@@ -50,33 +51,9 @@ export default function ProjectDetailsPage() {
     <Space direction="vertical" style={{ width: "100%" }}>
       {!itemsLoading && (
         <>
-          <Flex justify="space-between" align="start">
+          <Flex justify="space-between" align="center">
             <BackButton text="Projects" type="text" />
-            <Flex align="center" gap={10}>
-              <Flex vertical justify="center" align="start">
-                <Title level={3} style={{ margin: "0" }}>
-                  {currentProject?.name}
-                </Title>
-                <Text italic strong style={{ margin: "0", color: "#8c8c8c" }}>
-                  {currentProject?.collegeName} - {currentProject?.contactName}
-                </Text>
-              </Flex>
-              -
-              <Flex vertical align="start">
-                {currentProject?.inHandsDate && (
-                  <Text italic style={{ margin: "0 10px", color: "#8c8c8c" }}>
-                    In Hands Date:{" "}
-                    {dayjs(currentProject?.inHandsDate).format("MMM, DD")}
-                  </Text>
-                )}
-                {currentProject?.eventDate && (
-                  <Text italic style={{ margin: "0 10px", color: "#8c8c8c" }}>
-                    Event Date:{" "}
-                    {dayjs(currentProject?.eventDate).format("MMM, DD")}
-                  </Text>
-                )}
-              </Flex>
-            </Flex>
+            <ProjectTitle project={currentProject} />
             {isAdmin && (
               <FormModalButton
                 form={CreateItemForm}
