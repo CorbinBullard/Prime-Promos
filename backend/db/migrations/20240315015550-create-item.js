@@ -100,13 +100,13 @@ module.exports = {
         delivered: {
           type: Sequelize.DATE,
         },
-        recieveOrderAcknowledge: {
+        receivedOrder: {
           type: Sequelize.DATE,
         },
-        proofForAprovalFile: {
+        proofApprovalFileUrl: {
           type: Sequelize.STRING,
         },
-        proofForAprovalDate: {
+        proofApprovalDate: {
           type: Sequelize.DATE,
         },
         invoice: {
@@ -116,7 +116,7 @@ module.exports = {
           type: Sequelize.ENUM(
             "quote",
             "order",
-            "isProduction",
+            "production",
             "shipped",
             "delivered"
           ),

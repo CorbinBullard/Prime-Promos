@@ -6,7 +6,7 @@ import ItemShippedForm from "../components/Forms/ItemForms/ItemShippedForm";
 export const ItemStatusColors = {
   quote: "blue",
   order: "red",
-  isProduction: "orange",
+  production: "orange",
   shipped: "yellow",
   delivered: "green",
 };
@@ -14,7 +14,7 @@ export const ItemStatusColors = {
 export const ItemStatusProgression = [
   "quote",
   "order",
-  "isProduction",
+  "production",
   "shipped",
   "delivered",
 ];
@@ -22,7 +22,7 @@ export const ItemStatusProgression = [
 export const ItemStatusLabels = {
   quote: "Quote",
   order: "Order",
-  isProduction: "In Production",
+  production: "In Production",
   shipped: "Shipped",
   delivered: "Delivered",
 };
@@ -30,7 +30,7 @@ export const ItemStatusLabels = {
 export const FORM_COMPONENTS = {
   quote: ItemQuoteForm,
   order: ItemOrderForm,
-  isProduction: ItemInProductionForm,
+  production: ItemInProductionForm,
   shipped: ItemShippedForm,
   delivered: <div>Delivered Form</div>,
 };
@@ -62,8 +62,8 @@ const orderItemList = [
 ];
 const isProductionItemList = [
   "recieveOrderAcknowledge",
-  "proofForAprovalFile",
-  "proofForAprovalDate",
+  "proofApprovalFileUrl",
+  "proofApprovalDate",
   "prepaymentConfirmed",
   "invoice",
   "tracking",

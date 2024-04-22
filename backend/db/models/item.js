@@ -97,13 +97,13 @@ module.exports = (sequelize, DataTypes) => {
       shipDate: DataTypes.DATE,
       tracking: DataTypes.STRING,
       delivered: DataTypes.DATE,
-      recieveOrderAcknowledge: DataTypes.DATE,
-      proofForAprovalFile: DataTypes.STRING,
-      proofForAprovalDate: DataTypes.DATE,
+      receivedOrder: DataTypes.DATE,
+      proofApprovalFileUrl: DataTypes.STRING,
+      proofApprovalDate: DataTypes.DATE,
       invoice: DataTypes.STRING,
       status: {
         type: DataTypes.ENUM,
-        values: ["quote", "order", "isProduction", "shipped", "delivered"],
+        values: ["quote", "order", "production", "shipped", "delivered"],
         defaultValue: "quote",
       },
       prepaymentConfirmed: {

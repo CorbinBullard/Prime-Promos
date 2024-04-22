@@ -15,23 +15,21 @@ export default function ItemInProductionForm({
   // Ensure shipDate is a moment object and preVirtual is a boolean
   const formattedInitialValues = {
     ...initialValues,
-    proofForAprovalDate: formatDateForForm(initialValues?.proofForAprovalDate),
+    proofApprovalDate: formatDateForForm(initialValues?.proofApprovalDate),
     delivered: formatDateForForm(initialValues?.delivered),
-    recieveOrderAcknowledge: formatDateForForm(
-      initialValues?.recieveOrderAcknowledge
-    ),
+    receivedOrder: formatDateForForm(initialValues?.receivedOrder),
   };
 
   const handleImageUpload = (url) => {
-    form.setFieldsValue({ proofForAprovalFile: url });
+    form.setFieldsValue({ proofApprovalFileUrl: url });
     onValuesChange &&
       onValuesChange(
         {
-          proofForAprovalFile: url,
-          proofForAprovalDate: moment(),
-          recieveOrderAcknowledge: moment(),
+          proofApprovalFileUrl: url,
+          proofApprovalDate: moment(),
+          receivedOrder: moment(),
         },
-        { ...form.getFieldsValue(), proofForAprovalFile: url }
+        { ...form.getFieldsValue(), proofApprovalFileUrl: url }
       );
   };
 
@@ -42,16 +40,16 @@ export default function ItemInProductionForm({
       onValuesChange={onValuesChange}
       initialValues={formattedInitialValues}
     >
-      <Item name="recieveOrderAcknowledge" label="Recieved Order Date">
+      <Item name="receivedOrder" label="Received Order Date">
         <DatePicker style={{ width: "100%" }} format={dateFormat} />
       </Item>
-      <Item name="proofForAprovalFile" label="Proof For Aproval">
+      <Item name="proofApprovalFileUrl" label="Proof Aproval File">
         <FileUploader
           callback={handleImageUpload}
-          initialUrl={initialValues?.proofForAprovalFile}
+          initialUrl={initialValues?.proofApprovalFileUrl}
         />
       </Item>
-      <Item name="proofForAprovalDate" label="Proof For Aproval">
+      <Item name="proofApprovalDate" label="Proof Aproval Date">
         <DatePicker style={{ width: "100%" }} format={dateFormat} />
       </Item>
       <Item name="tracking">

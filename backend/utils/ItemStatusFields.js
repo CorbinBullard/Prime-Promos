@@ -24,10 +24,10 @@ const orderItemList = [
   "shipDate",
   // "tracking",
 ];
-const isProductionItemList = [
-  "recieveOrderAcknowledge",
-  "proofForAprovalFile",
-  "proofForAprovalDate",
+const productionItemList = [
+  "receivedOrder",
+  "proofApprovalFileUrl",
+  "proofApprovalDate",
   "prepaymentConfirmed",
   "invoice",
   "tracking",
@@ -38,7 +38,7 @@ const shippedItemList = ["delivered"];
 const ItemStatusFields = {
   quote: quoteItemList,
   order: orderItemList,
-  isProduction: isProductionItemList,
+  production: productionItemList,
   shipped: shippedItemList,
 };
 

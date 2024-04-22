@@ -179,7 +179,7 @@ export function useProjects() {
       return response.json();
     },
     // onSuccess, onError similar to above
-    onSuccess: ({ userId }) => {
+    onSuccess: () => {
       queryClient.invalidateQueries(["projects"]);
       openNotification({
         message: "Success",
