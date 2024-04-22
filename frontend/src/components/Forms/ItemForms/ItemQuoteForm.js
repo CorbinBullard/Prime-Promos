@@ -18,6 +18,9 @@ export default function ItemQuoteForm({ form, onValuesChange, initialValues }) {
       onValuesChange={onValuesChange}
       initialValues={initialValues}
     >
+      <Item name="spcNumber">
+        <InputNumber addonBefore="SPC Number" style={{ width: "100%" }} />
+      </Item>
       <Item name="itemNumber">
         <InputNumber addonBefore="Item #" style={{ width: "100%" }} />
       </Item>

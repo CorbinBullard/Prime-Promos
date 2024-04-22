@@ -1,5 +1,6 @@
 const quoteItemList = [
   "itemNumber",
+  "spcNumber",
   "quantity",
   "sellUnitPrice",
   "itemColor",
@@ -14,6 +15,7 @@ const quoteItemList = [
   "numberOfImprintColors",
   "productionTime",
   "shippingEstimate",
+  "sellSetup",
 ];
 const orderItemList = [
   "factory",
