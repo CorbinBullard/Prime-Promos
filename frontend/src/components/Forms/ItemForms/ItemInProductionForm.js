@@ -17,7 +17,6 @@ export default function ItemInProductionForm({
     ...initialValues,
     proofApprovalDate: formatDateForForm(initialValues?.proofApprovalDate),
     receivedOrder: formatDateForForm(initialValues?.receivedOrder),
-    // delivered: formatDateForForm(initialValues?.delivered),
   };
 
   const handleImageUpload = (url) => {
@@ -33,7 +32,6 @@ export default function ItemInProductionForm({
         proofApprovalDate: null,
       });
     }
-    // onValuesChange();
     onValuesChange &&
       onValuesChange(
         {

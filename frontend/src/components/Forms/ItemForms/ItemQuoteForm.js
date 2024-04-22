@@ -9,9 +9,8 @@ import {
   Select,
   Flex,
 } from "antd";
-import React from "react";
-import { UploadOutlined, CalculatorOutlined } from "@ant-design/icons";
-import ImageUploader from "../../UI/FileHandling/ImageUploader";
+import React, { useEffect, useState } from "react";
+import { CalculatorOutlined } from "@ant-design/icons";
 import { formItemLayout, priceCodes } from "../../../utils/constants";
 import FileUploader from "../../UI/FileHandling/FileUploader";
 const { Item } = Form;
@@ -19,6 +18,11 @@ const { Option } = Select;
 const { Compact } = Space;
 
 export default function ItemQuoteForm({ form, onValuesChange, initialValues }) {
+  const [isSellUnitCalcButtonDisabled, setIsSellUnitCalcButtonDisabled] =
+    useState(initialValues?.netUnitPrice && initialValues?.priceCode);
+  const [isNetUnitCalcButtonDisabled, setIsNetUnitCalcButtonDisabled] =
+    useState(initialValues?.sellUnitPrice && initialValues?.priceCode);
+
   const handleImageUpload = (url) => {
     form.setFieldsValue({ preVirtual: url });
     onValuesChange &&
@@ -27,6 +31,16 @@ export default function ItemQuoteForm({ form, onValuesChange, initialValues }) {
         { ...form.getFieldsValue(), preVirtual: url }
       );
   };
+  // Checks Current Values of Net Unit Price and Sell Unit Price
+  // ADD WARNING: "Please enter a Net Unit Price and Price Code to calculate Sell Unit Price"
+  useEffect(() => {
+    setIsSellUnitCalcButtonDisabled(
+      !form.getFieldValue("netUnitPrice") || !form.getFieldValue("priceCode")
+    );
+    setIsNetUnitCalcButtonDisabled(
+      !form.getFieldValue("sellUnitPrice") || !form.getFieldValue("priceCode")
+    );
+  }, [form.getFieldValue("netUnitPrice"), form.getFieldValue("sellUnitPrice")]);
 
   const calculateSellUnitPrice = () => {
     const currentNetUnitPrice = form.getFieldValue("netUnitPrice");
@@ -35,7 +49,6 @@ export default function ItemQuoteForm({ form, onValuesChange, initialValues }) {
     if (currentNetUnitPrice) {
       const sellUnitPrice = currentNetUnitPrice / (1 - percent / 100);
       form.setFieldsValue({ sellUnitPrice });
-
       onValuesChange(
         { sellUnitPrice },
         { ...form.getFieldsValue(), sellUnitPrice }
@@ -48,7 +61,6 @@ export default function ItemQuoteForm({ form, onValuesChange, initialValues }) {
     if (currentSellUnitPrice) {
       const netUnitPrice = currentSellUnitPrice * (1 - percent / 100);
       form.setFieldsValue({ netUnitPrice });
-
       onValuesChange(
         { netUnitPrice },
         { ...form.getFieldsValue(), netUnitPrice }
@@ -115,12 +127,7 @@ export default function ItemQuoteForm({ form, onValuesChange, initialValues }) {
         <Button
           type="primary"
           icon={<CalculatorOutlined />}
-          disabled={
-            !(
-              form.getFieldValue("netUnitPrice") &&
-              form.getFieldValue("priceCode")
-            )
-          }
+          disabled={isSellUnitCalcButtonDisabled}
           onClick={calculateSellUnitPrice}
           tooltip="Calculate Sell Unit Price"
         />
@@ -138,12 +145,7 @@ export default function ItemQuoteForm({ form, onValuesChange, initialValues }) {
         <Button
           type="primary"
           icon={<CalculatorOutlined />}
-          disabled={
-            !(
-              form.getFieldValue("sellUnitPrice") &&
-              form.getFieldValue("priceCode")
-            )
-          }
+          disabled={isNetUnitCalcButtonDisabled}
           onClick={calculateNetUnitPrice}
           tooltip="Calculate Net Unit Price"
         />
