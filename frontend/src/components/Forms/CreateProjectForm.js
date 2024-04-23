@@ -35,14 +35,24 @@ export default function CreateProjectForm({ form, initialValues }) {
       >
         <Input placeholder="Enter Project Name" />
       </Item>
-      <Item name="collegeName" label="Organization Name">
-        <Input placeholder="Enter Organization Name" />
-      </Item>
-      <Item name="contactName" label="Contact Name">
-        <Input placeholder="Enter Contact Name" />
-      </Item>
+      <Flex justify="space-between" flex={1} gap={5}>
+        <Item name="collegeName" label="Organization Name" style={{ flex: 1 }}>
+          <Input placeholder="Enter Organization Name" />
+        </Item>
+        <Item name="contactName" label="Contact Name" style={{ flex: 1 }}>
+          <Input placeholder="Enter Contact Name" />
+        </Item>
+      </Flex>
+      <Flex justify="space-between" flex={1} gap={5}>
+        <Item name="contactEmail" label="Contact Email" style={{ flex: 1 }}>
+          <Input type="email" placeholder="user@example.com" />
+        </Item>
+        <Item label="Contact Phone" name="contactPhone" style={{ flex: 1 }}>
+          <Input addonBefore="+1" style={{ width: "100%" }} />
+        </Item>
+      </Flex>
       {/* Add with users only When Creating a project, not when editting! */}
-      {!initialValues && <UserDropdown options={teamMembers} />}
+
       <Flex justify="space-between" flex={1} gap={5}>
         <Item
           label="In Hands Date"
@@ -111,6 +121,12 @@ export default function CreateProjectForm({ form, initialValues }) {
           />
         </Item>
       </Flex>
+      {!initialValues && (
+        <>
+          <Divider>Add Team Members</Divider>
+          <UserDropdown options={teamMembers} />
+        </>
+      )}
       {initialValues && (
         <>
           <Item name="customerPO" label="Customer PO">

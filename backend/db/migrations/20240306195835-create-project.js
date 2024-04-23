@@ -25,6 +25,12 @@ module.exports = {
         contactName: {
           type: Sequelize.STRING,
         },
+        contactEmail: {
+          type: Sequelize.STRING,
+        },
+        contactPhone: {
+          type: Sequelize.STRING,
+        },
         inHandsDate: {
           type: Sequelize.DATE,
         },

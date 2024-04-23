@@ -74,6 +74,8 @@ router.post("/", requireAdminAuth, async (req, res) => {
     salesConfirmation,
     collegeName,
     contactName,
+    contactEmail,
+    contactPhone,
     items,
   } = req.body;
 
@@ -87,6 +89,8 @@ router.post("/", requireAdminAuth, async (req, res) => {
       salesConfirmation,
       collegeName,
       contactName,
+      contactEmail,
+      contactPhone,
     });
     // Add Users
     if (users && users.length) {
@@ -159,6 +163,8 @@ router.put("/:projectId", canUpdateProject, async (req, res) => {
     salesConfirmation,
     collegeName,
     contactName,
+    contactEmail,
+    contactPhone,
   } = req.body;
 
   const project = await Project.findByPk(projectId, {
@@ -183,6 +189,8 @@ router.put("/:projectId", canUpdateProject, async (req, res) => {
     salesConfirmation,
     collegeName,
     contactName,
+    contactEmail,
+    contactPhone,
   });
   return res.json(updatedProject);
 });

@@ -137,13 +137,12 @@ export default function ItemQuoteForm({ form, onValuesChange, initialValues }) {
           ))}
         </Select>
       </Item>
-      {unitPriceStatus === "error" && (
-        <Text type="danger">
-          Net Unit Price and Sell Unit Price Do not Align with Price Code
-        </Text>
-      )}
+
       <div style={{ height: "30px" }}>
-        <Typography.Text style={{ padding: "0 0 8px" }}>
+        <Typography.Text
+          style={{ padding: "0 0 8px" }}
+          type={unitPriceStatus === "error" ? "danger" : ""}
+        >
           Sell Unit Price
         </Typography.Text>
       </div>
@@ -171,7 +170,10 @@ export default function ItemQuoteForm({ form, onValuesChange, initialValues }) {
         />
       </Compact>
       <div style={{ height: "30px" }}>
-        <Typography.Text style={{ padding: "0 0 8px" }}>
+        <Typography.Text
+          style={{ padding: "0 0 8px" }}
+          type={unitPriceStatus === "error" ? "danger" : ""}
+        >
           Net Unit Price
         </Typography.Text>
       </div>
@@ -197,10 +199,14 @@ export default function ItemQuoteForm({ form, onValuesChange, initialValues }) {
           onClick={calculateNetUnitPrice}
         />
       </Compact>
+      {unitPriceStatus === "error" && (
+        <Text type="danger" style={{ margin: 0 }}>
+          Net Unit Price and Sell Unit Price Do not Align with Price Code
+        </Text>
+      )}
       <Divider>Additional Charges</Divider>
-      <Item name="sellSetup">
+      <Item name="sellSetup" label="Sell Setup">
         <InputNumber
-          addonBefore="Sell Setup"
           style={{ width: "100%" }}
           prefix="$"
           precision={2}
