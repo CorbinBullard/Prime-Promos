@@ -14,6 +14,7 @@ import React, { useEffect, useState } from "react";
 import { CalculatorOutlined } from "@ant-design/icons";
 import { formItemLayout, priceCodes } from "../../../utils/constants";
 import FileUploader from "../../UI/FileHandling/FileUploader";
+import Compact from "antd/es/space/Compact";
 const { Item } = Form;
 const { Option } = Select;
 const { Text } = Typography;
@@ -92,21 +93,22 @@ export default function ItemQuoteForm({ form, onValuesChange, initialValues }) {
   return (
     <Form
       form={form}
+      layout="vertical"
       {...formItemLayout}
       onValuesChange={onValuesChange}
       initialValues={initialValues}
     >
-      <Item name="spcNumber">
-        <InputNumber addonBefore="SPC Number" style={{ width: "100%" }} />
+      <Item name="spcNumber" label="SPC Number">
+        <InputNumber style={{ width: "100%" }} />
       </Item>
-      <Item name="itemNumber">
-        <InputNumber addonBefore="Item #" style={{ width: "100%" }} />
+      <Item name="itemNumber" label="Item #">
+        <InputNumber style={{ width: "100%" }} />
       </Item>
-      <Item name="quantity">
-        <InputNumber addonBefore="Quantity" style={{ width: "100%" }} />
+      <Item name="quantity" label="Quantity">
+        <InputNumber style={{ width: "100%" }} />
       </Item>
-      <Item name="itemColor">
-        <Input addonBefore="Item Color" style={{ width: "100%" }} />
+      <Item name="itemColor" label="Item Color">
+        <Input style={{ width: "100%" }} />
       </Item>
       <Item name="preVirtual" label="Pre Virtual (optional)">
         <FileUploader
@@ -114,10 +116,10 @@ export default function ItemQuoteForm({ form, onValuesChange, initialValues }) {
           initialUrl={initialValues?.preVirtual}
         />
       </Item>
-      <Item name="logoColor">
-        <Input addonBefore="Logo Color" style={{ width: "100%" }} />
+      <Item name="logoColor" label="Logo Color">
+        <Input style={{ width: "100%" }} />
       </Item>
-      <Item name="stockCheck" label="Stock Check" tooltip="CHECK">
+      <Item name="stockCheck" label="Stock Check">
         <Input.TextArea placeholder="Stock Check" />
       </Item>
       <Divider>Unit Price</Divider>
@@ -140,10 +142,17 @@ export default function ItemQuoteForm({ form, onValuesChange, initialValues }) {
           Net Unit Price and Sell Unit Price Do not Align with Price Code
         </Text>
       )}
-      <Flex justify="space-between" gap={10}>
+      <div style={{ height: "30px" }}>
+        <Typography.Text style={{ padding: "0 0 8px" }}>
+          Sell Unit Price
+        </Typography.Text>
+      </div>
+      <Compact style={{ width: "100%", marginBottom: "24px" }}>
         <Item
           name="sellUnitPrice"
-          style={{ width: "100%" }}
+          // style={{ width: "100%" }}
+          noStyle
+          label="Sell Unit Price"
           dependencies={["netUnitPrice", "priceCode", "sellUnitPrice"]}
         >
           <InputNumber
@@ -151,7 +160,6 @@ export default function ItemQuoteForm({ form, onValuesChange, initialValues }) {
             prefix="$"
             precision={2}
             controls={false}
-            addonBefore="Sell Unit Price"
             status={unitPriceStatus}
           />
         </Item>
@@ -161,15 +169,20 @@ export default function ItemQuoteForm({ form, onValuesChange, initialValues }) {
           disabled={isSellUnitCalcButtonDisabled}
           onClick={calculateSellUnitPrice}
         />
-      </Flex>
-      <Flex justify="space-between" gap={10}>
+      </Compact>
+      <div style={{ height: "30px" }}>
+        <Typography.Text style={{ padding: "0 0 8px" }}>
+          Net Unit Price
+        </Typography.Text>
+      </div>
+      <Compact style={{ width: "100%", marginBottom: "24px" }}>
         <Item
           name="netUnitPrice"
           style={{ width: "100%" }}
+          noStyle
           dependencies={["sellUnitPrice", "priceCode", "netUnitPrice"]}
         >
           <InputNumber
-            addonBefore="Net Unit Price"
             style={{ width: "100%" }}
             prefix="$"
             precision={2}
@@ -183,7 +196,7 @@ export default function ItemQuoteForm({ form, onValuesChange, initialValues }) {
           disabled={isNetUnitCalcButtonDisabled}
           onClick={calculateNetUnitPrice}
         />
-      </Flex>
+      </Compact>
       <Divider>Additional Charges</Divider>
       <Item name="sellSetup">
         <InputNumber
@@ -194,52 +207,41 @@ export default function ItemQuoteForm({ form, onValuesChange, initialValues }) {
           controls={false}
         />
       </Item>
-      <Item name="netSetup">
+      <Item name="netSetup" label="Net Setup">
         <InputNumber
-          addonBefore="Net Setup"
           style={{ width: "100%" }}
           prefix="$"
           precision={2}
           controls={false}
         />
       </Item>
-      <Item name="proofCharge">
+      <Item name="proofCharge" label="Proof Charge">
         <InputNumber
-          addonBefore="Proof Charge"
           style={{ width: "100%" }}
           prefix="$"
           precision={2}
           controls={false}
         />
       </Item>
-      <Item name="pmsCharge">
+      <Item name="pmsCharge" label="PMS Charge">
         <InputNumber
-          addonBefore="PMS Charge"
           style={{ width: "100%" }}
           prefix="$"
           precision={2}
           controls={false}
         />
       </Item>
-      <Item name="decorationMethod">
-        <Input addonBefore="Decoration Method" style={{ width: "100%" }} />
+      <Item name="decorationMethod" label="Decoration Method">
+        <Input style={{ width: "100%" }} />
       </Item>
-      <Item name="numberOfImprintColors">
-        <InputNumber
-          addonBefore="Number of Imprint Colors"
-          style={{ width: "100%" }}
-        />
+      <Item name="numberOfImprintColors" label="Number of Imprint Colors">
+        <InputNumber style={{ width: "100%" }} />
       </Item>
-      <Item name="productionTime">
-        <Input addonBefore="Production Time" style={{ width: "100%" }} />
+      <Item name="productionTime" label="Production Time">
+        <Input style={{ width: "100%" }} />
       </Item>
-      <Item name="shippingEstimate">
-        <InputNumber
-          addonBefore="Shipping Estimate"
-          style={{ width: "100%" }}
-          prefix="$"
-          precision={2}
-        />
+      <Item name="shippingEstimate" label="Shipping Estimate">
+        <InputNumber style={{ width: "100%" }} prefix="$" precision={2} />
       </Item>
     </Form>
   );

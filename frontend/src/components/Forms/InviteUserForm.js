@@ -3,7 +3,7 @@ import React from "react";
 const { Item } = Form;
 export default function NewMemberForm({ form, initialValues }) {
   return (
-    <Form form={form} initialValues={initialValues}>
+    <Form form={form} initialValues={initialValues} layout="vertical">
       <Item
         name="email"
         label="Email"
@@ -29,14 +29,14 @@ export default function NewMemberForm({ form, initialValues }) {
         label="First Name"
         rules={[{ required: true, message: "Please enter a First Name" }]}
       >
-        <Input />
+        <Input placeholder="John" />
       </Item>
       <Item
         name="lastName"
         label="Last Name"
         rules={[{ required: true, message: "Please enter a Last Name" }]}
       >
-        <Input />
+        <Input placeholder="Doe" />
       </Item>
     </Form>
   );

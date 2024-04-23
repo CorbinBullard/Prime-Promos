@@ -27,23 +27,25 @@ export default function CreateProjectForm({ form, initialValues }) {
     eventDate: formatDateForForm(initialValues?.eventDate),
   };
   return (
-    <Form form={form} initialValues={formattedInitialValues}>
+    <Form form={form} initialValues={formattedInitialValues} layout="vertical">
       <Item
         name="name"
+        label="Project Name"
         rules={[{ required: true, message: "Please Enter a Name" }]}
       >
         <Input placeholder="Enter Project Name" />
       </Item>
-      <Item name="collegeName">
-        <Input placeholder="Enter College Name" />
+      <Item name="collegeName" label="Organization Name">
+        <Input placeholder="Enter Organization Name" />
       </Item>
-      <Item name="contactName">
+      <Item name="contactName" label="Contact Name">
         <Input placeholder="Enter Contact Name" />
       </Item>
       {/* Add with users only When Creating a project, not when editting! */}
       {!initialValues && <UserDropdown options={teamMembers} />}
       <Flex justify="space-between" flex={1} gap={5}>
         <Item
+          label="In Hands Date"
           style={{ flex: 1 }}
           name="inHandsDate"
           rules={[
@@ -70,6 +72,7 @@ export default function CreateProjectForm({ form, initialValues }) {
           />
         </Item>
         <Item
+          label="Event Date"
           style={{ flex: 1 }}
           name="eventDate"
           dependencies={["inHandsDate"]} // Declare dependency to revalidate when inHandsDate changes

@@ -17,9 +17,10 @@ export default function CreateItemForm({
     >
       <Item
         name="name"
+        label="Item Name"
         rules={[{ required: true, message: "Please Enter an Item Name" }]}
       >
-        <Input addonBefore="Item Name" />
+        <Input />
       </Item>
     </Form>
   );
