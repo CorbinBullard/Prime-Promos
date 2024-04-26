@@ -46,7 +46,7 @@ export default function ProjectCard({ project, selectProject }) {
   ];
   return (
     <Card
-      title={project.name}
+      title={capitalize(project.name)}
       bordered={false}
       hoverable
       onClick={handleProjectSelect}

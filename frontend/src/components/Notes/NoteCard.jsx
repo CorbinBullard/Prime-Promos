@@ -8,6 +8,7 @@ import {
 } from "@ant-design/icons";
 import OptionsButton from "../UI/OptionsButton";
 import CreateNoteForm from "../Forms/CreateNoteForm";
+import { capitalize } from "../../utils/utilFunctions";
 
 export default function NoteCard({ note, updateNote, deleteNote }) {
   const [isEditting, setIsEditting] = useState(false);
@@ -47,7 +48,7 @@ export default function NoteCard({ note, updateNote, deleteNote }) {
   return (
     <>
       <Card
-        title={note.title}
+        title={capitalize(note.title)}
         extra={
           <Flex align="center" gap={2}>
             <Typography.Text italic>

@@ -5,7 +5,7 @@ import { csrfFetch } from "../../../utils/csrf";
 import PDFViewer from "./PDFViewer";
 import ModalHeader from "../ModalHeader";
 
-const FileUploader = ({ callback, initialUrl }) => {
+const FileUploader = ({ callback, initialUrl, style }) => {
   const [previewOpen, setPreviewOpen] = useState(false);
   const [previewImage, setPreviewImage] = useState("");
   const [previewTitle, setPreviewTitle] = useState("");
@@ -138,7 +138,12 @@ const FileUploader = ({ callback, initialUrl }) => {
         onRemove={handleDelete}
         progress={{ strokeColor: { "0%": "#108ee9", "100%": "#87d068" } }}
       >
-        <Button icon={<UploadOutlined />}>Click to Upload</Button>
+        <Button
+          icon={<UploadOutlined />}
+          addonBefore="Tracking #"
+        >
+          Click to Upload
+        </Button>
       </Upload>
       <Modal
         open={previewOpen}

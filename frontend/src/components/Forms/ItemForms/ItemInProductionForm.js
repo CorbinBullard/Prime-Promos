@@ -47,28 +47,29 @@ export default function ItemInProductionForm({
     <Form
       {...formItemLayout}
       form={form}
+      layout="vertical"
       onValuesChange={onValuesChange}
       initialValues={formattedInitialValues}
     >
       <Item name="receivedOrder" label="Received Order Date">
         <DatePicker style={{ width: "100%" }} format={dateFormat} />
       </Item>
-      <Flex gap={10}>
+      <Flex gap={10} flex={1}>
         <Item name="proofApprovalFileUrl" label="Proof Approval">
           <FileUploader
             callback={handleImageUpload}
             initialUrl={initialValues?.proofApprovalFileUrl}
           />
         </Item>
-        <Item name="proofApprovalDate" label="Date">
+        <Item name="proofApprovalDate" label="Date" style={{ flex: 1 }}>
           <DatePicker style={{ width: "100%" }} format={dateFormat} />
         </Item>
       </Flex>
-      <Item name="tracking">
-        <Input addonBefore="Tracking #" style={{ width: "100%" }} />
+      <Item name="tracking" label="Tracking #">
+        <Input style={{ width: "100%" }} />
       </Item>
-      <Item name="invoice">
-        <Input addonBefore="Invoice #" />
+      <Item name="invoice" label="Invoice #">
+        <Input />
       </Item>
     </Form>
   );

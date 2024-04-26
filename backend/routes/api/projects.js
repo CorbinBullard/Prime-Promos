@@ -201,7 +201,6 @@ router.patch(
   requireAdminAuth,
   async (req, res) => {
     const { projectId } = req.params;
-    const { status } = req.body;
 
     const project = await Project.findByPk(projectId);
     if (!project) {
@@ -215,6 +214,7 @@ router.patch(
     return res.json({ message: "Project status updated" });
   }
 );
+
 // Revert Project Status to active
 router.patch(
   "/:projectId/status/active",
@@ -276,6 +276,7 @@ router.delete("/archived/bulk", requireAdminAuth, async (req, res) => {
   });
   return res.json({ message: "Projects deleted" });
 });
+
 // Delete archived project
 router.delete("/:projectId/archived", requireAdminAuth, async (req, res) => {
   const { projectId } = req.params;

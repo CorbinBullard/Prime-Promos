@@ -48,7 +48,7 @@ export default function ItemCard({ item, setItem, setItemManager }) {
     <>
       <Card
         style={{ width: 300 }}
-        title={item.name}
+        title={capitalize(item.name)}
         hoverable
         onClick={handleClick}
         extra={

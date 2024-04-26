@@ -1,7 +1,10 @@
 import moment from "moment";
 
 export function capitalize(str) {
-  return str.charAt(0).toUpperCase() + str.slice(1);
+  const strArr = str.split(" ");
+  return strArr
+    .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+    .join(" ");
 }
 
 export function debounce(func, wait) {

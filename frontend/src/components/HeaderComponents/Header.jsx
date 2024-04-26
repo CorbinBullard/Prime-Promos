@@ -1,14 +1,13 @@
-import { Breadcrumb, Flex, Typography } from "antd";
+import {  Flex, Typography } from "antd";
 import React from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { capitalize } from "../../utils/utilFunctions";
 import UserIcon from "../Members/UserIcon";
 import { useSession } from "../../context/Session";
 import AccountDropdown from "./AccountDropdown";
-const { Title, Paragraph, Text } = Typography;
+const { Title } = Typography;
 
-export default function HeaderBreadcrumb() {
-  const { user } = useSession();
+export default function Header() {
   const location = useLocation();
   const path = location.pathname.split("/")[1] || "dashboard";
 
