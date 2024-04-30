@@ -1,8 +1,9 @@
 // Use Drawer Manager to manage the drawer in the ManageProjectDrawer component.
 import ManageUsersTab from "./Tabs/ManageUsersTab";
 import EditProject from "./Tabs/EditProjectTab";
-import ArchivedProjectPDF from "../Archived/ArchivedProjectPDF";
 import { PDFViewer } from "@react-pdf/renderer";
+import ProjectPDF from "./Tabs/ProjectPDF";
+
 export const projectManagerTabs = (project) => [
   {
     key: "details",
@@ -17,6 +18,6 @@ export const projectManagerTabs = (project) => [
   {
     key: "pdf",
     label: "PDF",
-    children: <ArchivedProjectPDF project={project} />,
+    children: <ProjectPDF project={project} />,
   },
 ];

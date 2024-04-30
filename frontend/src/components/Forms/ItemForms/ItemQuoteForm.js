@@ -87,8 +87,10 @@ export default function ItemQuoteForm({ form, onValuesChange, initialValues }) {
     const percent = priceCodes[form.getFieldValue("unitPriceCode")];
 
     if (currentNetUnitPrice) {
-      const sellUnitPrice = currentNetUnitPrice / (1 - percent / 100);
-      form.setFieldsValue({ sellUnitPrice });
+      const sellUnitPrice = (currentNetUnitPrice / (1 - percent / 100)).toFixed(
+        2
+      );
+      form.setFieldsValue({ sellUnitPrice: +sellUnitPrice });
       onValuesChange(
         { sellUnitPrice },
         { ...form.getFieldsValue(), sellUnitPrice }
@@ -100,8 +102,10 @@ export default function ItemQuoteForm({ form, onValuesChange, initialValues }) {
     const currentSellUnitPrice = form.getFieldValue("sellUnitPrice");
     const percent = priceCodes[form.getFieldValue("unitPriceCode")];
     if (currentSellUnitPrice) {
-      const netUnitPrice = currentSellUnitPrice * (1 - percent / 100);
-      form.setFieldsValue({ netUnitPrice });
+      const netUnitPrice = (currentSellUnitPrice * (1 - percent / 100)).toFixed(
+        2
+      );
+      form.setFieldsValue({ netUnitPrice: +netUnitPrice });
       onValuesChange(
         { netUnitPrice },
         { ...form.getFieldsValue(), netUnitPrice }
@@ -114,8 +118,8 @@ export default function ItemQuoteForm({ form, onValuesChange, initialValues }) {
     const percent = priceCodes[form.getFieldValue("setupPriceCode")];
 
     if (currentNetSetup) {
-      const sellSetup = currentNetSetup / (1 - percent / 100);
-      form.setFieldsValue({ sellSetup });
+      const sellSetup = (currentNetSetup / (1 - percent / 100)).toFixed(2);
+      form.setFieldsValue({ sellSetup: +sellSetup });
       onValuesChange({ sellSetup }, { ...form.getFieldsValue(), sellSetup });
     }
   };
@@ -124,8 +128,8 @@ export default function ItemQuoteForm({ form, onValuesChange, initialValues }) {
     const currentSellSetup = form.getFieldValue("sellSetup");
     const percent = priceCodes[form.getFieldValue("setupPriceCode")];
     if (currentSellSetup) {
-      const netSetup = currentSellSetup * (1 - percent / 100);
-      form.setFieldsValue({ netSetup });
+      const netSetup = (currentSellSetup * (1 - percent / 100)).toFixed(2);
+      form.setFieldsValue({ netSetup: +netSetup });
       onValuesChange({ netSetup }, { ...form.getFieldsValue(), netSetup });
     }
   };
@@ -139,12 +143,17 @@ export default function ItemQuoteForm({ form, onValuesChange, initialValues }) {
       initialValues={initialValues}
     >
       <Item name="spcNumber" label="SPC Number">
-        <InputNumber style={{ width: "100%" }} placeholder="Enter SPC Number" />
+        <InputNumber
+          style={{ width: "100%" }}
+          placeholder="Enter SPC Number"
+          controls={false}
+        />
       </Item>
       <Item name="itemNumber" label="Item #">
         <InputNumber
           style={{ width: "100%" }}
           placeholder="Enter Item Number"
+          controls={false}
         />
       </Item>
       <Item name="quantity" label="Quantity">

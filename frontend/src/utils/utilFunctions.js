@@ -32,8 +32,11 @@ export function validatePrices({ net, sell, code }) {
     return;
   }
 
-  const calculatedSellUnitPrice = net / (1 - percent / 100);
-  if (calculatedSellUnitPrice !== sell) {
+  const calculatedSellUnitPrice = +(net / (1 - percent / 100)).toFixed(2);
+  const calculatedNetUnitPrice = +(sell * (1 - percent / 100)).toFixed(2);
+  if (calculatedSellUnitPrice !== sell && calculatedNetUnitPrice !== net) {
     return "error";
   } else return "success";
 }
+
+export function flattenProject(project) {}

@@ -8,98 +8,40 @@ import {
   Image,
 } from "@react-pdf/renderer";
 import dayjs from "dayjs";
-import { Typography } from "antd";
 
 // Create styles
 const styles = StyleSheet.create({
   page: {
-    fontFamily: "Helvetica",
-    fontSize: 11,
-    paddingTop: 30,
-    paddingLeft: 60,
-    paddingRight: 60,
-    paddingBottom: 30,
+    flexDirection: "column",
+    backgroundColor: "#E4E4E4",
+    padding: 30,
   },
-  logo: {
-    width: 50,
-    height: 60,
-    marginBottom: 20,
-  },
-  titleContainer: {
-    flexDirection: "row",
-    marginTop: 24,
-  },
-  reportTitle: {
-    color: "#61dafb",
-    letterSpacing: 4,
-    fontSize: 25,
-    textAlign: "left",
-    textTransform: "uppercase",
-  },
-  invoiceNoContainer: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    marginTop: 36,
-  },
-  invoiceDate: {
-    marginTop: 5,
-    fontSize: 9,
-  },
-  headerContainer: {
-    marginTop: 24,
-  },
-  billTo: {
-    marginTop: 20,
-    paddingBottom: 3,
-    fontFamily: "Helvetica-Oblique",
-  },
-  tableContainer: {
-    flexDirection: "row",
-    flexWrap: "wrap",
-    marginTop: 24,
-    borderWidth: 1,
-    borderColor: "#bff0fd",
-  },
-  container: {
-    flexDirection: "row",
-    borderBottomColor: "#bff0fd",
-    backgroundColor: "#bff0fd",
-    borderBottomWidth: 1,
-    alignItems: "center",
-    height: 24,
-    textAlign: "center",
-    fontStyle: "bold",
+  section: {
+    margin: 10,
+    padding: 10,
     flexGrow: 1,
   },
-  description: {
-    width: "60%",
-    borderRightColor: "#bff0fd",
-    borderRightWidth: 1,
+  header: {
+    fontSize: 24,
+    textAlign: "center",
+    marginBottom: 20,
   },
-  qty: {
-    width: "10%",
-    borderRightColor: "#bff0fd",
-    borderRightWidth: 1,
+  text: {
+    margin: 10,
+    fontSize: 14,
+    textAlign: "left",
   },
-  rate: {
-    width: "15%",
-    borderRightColor: "#bff0fd",
-    borderRightWidth: 1,
-  },
-  amount: {
-    width: "15%",
+  boldText: {
+    fontWeight: "bold",
   },
   row: {
     flexDirection: "row",
-    borderBottomColor: "#bff0fd",
-    borderBottomWidth: 1,
-    alignItems: "center",
-    height: 24,
-    textAlign: "center",
+    justifyContent: "space-between",
   },
-  summaryContainer: {
-    marginTop: 24,
-    alignItems: "flex-end",
+  footer: {
+    fontSize: 12,
+    textAlign: "center",
+    marginTop: 25,
   },
 });
 
