@@ -48,7 +48,7 @@ export default function CreateProjectForm({ form, initialValues }) {
           <Input type="email" placeholder="user@example.com" />
         </Item>
         <Item label="Contact Phone" name="contactPhone" style={{ flex: 1 }}>
-          <Input addonBefore="+1" style={{ width: "100%" }} />
+          <Input addonBefore="+1" style={{ width: "100%" }} placeholder="Enter Phone Number" />
         </Item>
       </Flex>
       {/* Add with users only When Creating a project, not when editting! */}

@@ -1,6 +1,7 @@
 import { Flex, Typography } from "antd";
 import React from "react";
 import dayjs from "dayjs";
+import { capitalize } from "../../utils/utilFunctions";
 const { Title, Text } = Typography;
 
 export default function ProjectTitle({ project }) {
@@ -8,10 +9,11 @@ export default function ProjectTitle({ project }) {
     <Flex align="center" gap={10}>
       <Flex vertical justify="center" align="start">
         <Title level={3} style={{ margin: "0" }}>
-          {project?.name}
+          {capitalize(project?.name)}
         </Title>
         <Text italic strong style={{ margin: "0", color: "#8c8c8c" }}>
-          {project?.collegeName} - {project?.contactName}
+          {capitalize(project?.collegeName)} -{" "}
+          {capitalize(project?.contactName)}
         </Text>
       </Flex>
       <Flex vertical align="start">

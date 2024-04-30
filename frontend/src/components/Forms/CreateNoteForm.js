@@ -7,15 +7,16 @@ export default function CreateNoteForm({ form, initialValues }) {
       <Form.Item
         name="title"
         rules={[{ required: true, message: "Please Enter a Note Title" }]}
-        addonBefore="Note Title"
+        label="Note Title"
       >
-        <Input />
+        <Input placeholder="Enter Note Title"/>
       </Form.Item>
       <Form.Item
         name="message"
         rules={[{ required: true, message: "Please Enter Note Content" }]}
+        label="Note Content"
       >
-        <Input.TextArea rows={4} />
+        <Input.TextArea rows={4} placeholder="Enter Note Content"/>
       </Form.Item>
     </Form>
   );

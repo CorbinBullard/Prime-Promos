@@ -82,9 +82,15 @@ module.exports = (sequelize, DataTypes) => {
       logoColor: DataTypes.STRING,
       stockCheck: DataTypes.STRING,
       netUnitPrice: DataTypes.DECIMAL,
-      priceCode: {
+      unitPriceCode: {
         type: DataTypes.ENUM,
         values: ["A/P", "B/Q", "C/R", "D/S", "E/T", "F/U", "G/V"],
+        defaultValue: "C/R",
+      },
+      setupPriceCode: {
+        type: DataTypes.ENUM,
+        values: ["A/P", "B/Q", "C/R", "D/S", "E/T", "F/U", "G/V"],
+        defaultValue: "G/V",
       },
       sellSetup: DataTypes.DECIMAL,
       netSetup: DataTypes.DECIMAL,

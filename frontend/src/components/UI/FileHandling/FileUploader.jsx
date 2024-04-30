@@ -140,7 +140,6 @@ const FileUploader = ({ callback, initialUrl, style }) => {
       >
         <Button
           icon={<UploadOutlined />}
-          addonBefore="Tracking #"
         >
           Click to Upload
         </Button>

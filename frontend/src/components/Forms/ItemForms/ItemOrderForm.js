@@ -33,12 +33,13 @@ export default function ItemOrderForm({ form, onValuesChange, initialValues }) {
       onValuesChange={onValuesChange}
       initialValues={formattedInitialValues}
       {...formItemLayout}
+      layout="vertical"
     >
-      <Item name="factory">
-        <Input addonBefore="Factory" style={{ width: "100%" }} />
+      <Item name="factory" label="Factory">
+        <Input style={{ width: "100%" }} placeholder="Enter Factory Name" />
       </Item>
-      <Item name="primePO">
-        <Input addonBefore="Prime PO" style={{ width: "100%" }} />
+      <Item name="primePO" label="Prime PO">
+        <Input style={{ width: "100%" }} placeholder="Enter Prime PO" />
       </Item>
       <Item name="logo" label="Item Logo">
         <FileUploader

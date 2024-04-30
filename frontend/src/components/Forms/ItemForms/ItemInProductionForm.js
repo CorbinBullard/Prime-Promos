@@ -66,10 +66,10 @@ export default function ItemInProductionForm({
         </Item>
       </Flex>
       <Item name="tracking" label="Tracking #">
-        <Input style={{ width: "100%" }} />
+        <Input style={{ width: "100%" }} placeholder="Enter Tracking Number" />
       </Item>
       <Item name="invoice" label="Invoice #">
-        <Input />
+        <Input placeholder="Enter Invoice Number" />
       </Item>
     </Form>
   );

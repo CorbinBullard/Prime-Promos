@@ -3,11 +3,8 @@ import {
   Form,
   Input,
   InputNumber,
-  Upload,
-  Space,
   Divider,
   Select,
-  Flex,
   Typography,
 } from "antd";
 import React, { useEffect, useState } from "react";
@@ -15,17 +12,24 @@ import { CalculatorOutlined } from "@ant-design/icons";
 import { formItemLayout, priceCodes } from "../../../utils/constants";
 import FileUploader from "../../UI/FileHandling/FileUploader";
 import Compact from "antd/es/space/Compact";
+import CompactItemLabel from "../../UI/CompactItemLabel";
+import { validatePrices } from "../../../utils/utilFunctions";
 const { Item } = Form;
 const { Option } = Select;
 const { Text } = Typography;
 
 export default function ItemQuoteForm({ form, onValuesChange, initialValues }) {
   const [isSellUnitCalcButtonDisabled, setIsSellUnitCalcButtonDisabled] =
-    useState(initialValues?.netUnitPrice && initialValues?.priceCode);
+    useState(initialValues?.netUnitPrice && initialValues?.unitPriceCode);
   const [isNetUnitCalcButtonDisabled, setIsNetUnitCalcButtonDisabled] =
-    useState(initialValues?.sellUnitPrice && initialValues?.priceCode);
+    useState(initialValues?.sellUnitPrice && initialValues?.unitPriceCode);
+  const [isSellSetupCalcButtonDisabled, setIsSellSetupCalcButtonDisabled] =
+    useState(initialValues?.netUnitPrice && initialValues?.setupPriceCode);
+  const [isNetSetupCalcButtonDisabled, setIsNetSetupCalcButtonDisabled] =
+    useState(initialValues?.sellUnitPrice && initialValues?.setupPriceCode);
 
   const [unitPriceStatus, setUnitPriceStatus] = useState(null);
+  const [setupPriceStatus, setSetupPriceStatus] = useState(null);
 
   const handleImageUpload = (url) => {
     form.setFieldsValue({ preVirtual: url });
@@ -39,34 +43,48 @@ export default function ItemQuoteForm({ form, onValuesChange, initialValues }) {
   // ADD WARNING: "Please enter a Net Unit Price and Price Code to calculate Sell Unit Price"
   useEffect(() => {
     setIsSellUnitCalcButtonDisabled(
-      !form.getFieldValue("netUnitPrice") || !form.getFieldValue("priceCode")
+      !form.getFieldValue("netUnitPrice") ||
+        !form.getFieldValue("unitPriceCode")
     );
     setIsNetUnitCalcButtonDisabled(
-      !form.getFieldValue("sellUnitPrice") || !form.getFieldValue("priceCode")
+      !form.getFieldValue("sellUnitPrice") ||
+        !form.getFieldValue("unitPriceCode")
     );
-  }, [form.getFieldValue("netUnitPrice"), form.getFieldValue("sellUnitPrice")]);
+    setIsSellSetupCalcButtonDisabled(
+      !form.getFieldValue("netSetup") || !form.getFieldValue("setupPriceCode")
+    );
+    setIsNetSetupCalcButtonDisabled(
+      !form.getFieldValue("sellSetup") || !form.getFieldValue("setupPriceCode")
+    );
+  }, [
+    form.getFieldValue("netUnitPrice"),
+    form.getFieldValue("sellUnitPrice"),
+    form.getFieldValue("unitPriceCode"),
+    form.getFieldValue("netSetup"),
+    form.getFieldValue("sellSetup"),
+    form.getFieldValue("setupPriceCode"),
+  ]);
 
   useEffect(() => {
-    validateUnitPrices();
+    setUnitPriceStatus(
+      validatePrices({
+        net: form.getFieldValue("netUnitPrice"),
+        sell: form.getFieldValue("sellUnitPrice"),
+        code: form.getFieldValue("unitPriceCode"),
+      })
+    );
+    setSetupPriceStatus(
+      validatePrices({
+        net: form.getFieldValue("netSetup"),
+        sell: form.getFieldValue("sellSetup"),
+        code: form.getFieldValue("setupPriceCode"),
+      })
+    );
   });
-  const validateUnitPrices = async () => {
-    const netUnitPrice = form.getFieldValue("netUnitPrice");
-    const sellUnitPrice = form.getFieldValue("sellUnitPrice");
-    const percent = priceCodes[form.getFieldValue("priceCode")];
-
-    if (!netUnitPrice || !percent || !sellUnitPrice) {
-      return;
-    }
-
-    const calculatedSellUnitPrice = netUnitPrice / (1 - percent / 100);
-    if (calculatedSellUnitPrice !== sellUnitPrice) {
-      setUnitPriceStatus("error");
-    } else setUnitPriceStatus("success");
-  };
 
   const calculateSellUnitPrice = () => {
     const currentNetUnitPrice = form.getFieldValue("netUnitPrice");
-    const percent = priceCodes[form.getFieldValue("priceCode")];
+    const percent = priceCodes[form.getFieldValue("unitPriceCode")];
 
     if (currentNetUnitPrice) {
       const sellUnitPrice = currentNetUnitPrice / (1 - percent / 100);
@@ -77,9 +95,10 @@ export default function ItemQuoteForm({ form, onValuesChange, initialValues }) {
       );
     }
   };
+
   const calculateNetUnitPrice = () => {
     const currentSellUnitPrice = form.getFieldValue("sellUnitPrice");
-    const percent = priceCodes[form.getFieldValue("priceCode")];
+    const percent = priceCodes[form.getFieldValue("unitPriceCode")];
     if (currentSellUnitPrice) {
       const netUnitPrice = currentSellUnitPrice * (1 - percent / 100);
       form.setFieldsValue({ netUnitPrice });
@@ -87,6 +106,27 @@ export default function ItemQuoteForm({ form, onValuesChange, initialValues }) {
         { netUnitPrice },
         { ...form.getFieldsValue(), netUnitPrice }
       );
+    }
+  };
+
+  const calculateSellSetup = () => {
+    const currentNetSetup = form.getFieldValue("netSetup");
+    const percent = priceCodes[form.getFieldValue("setupPriceCode")];
+
+    if (currentNetSetup) {
+      const sellSetup = currentNetSetup / (1 - percent / 100);
+      form.setFieldsValue({ sellSetup });
+      onValuesChange({ sellSetup }, { ...form.getFieldsValue(), sellSetup });
+    }
+  };
+
+  const calculateNetSetup = () => {
+    const currentSellSetup = form.getFieldValue("sellSetup");
+    const percent = priceCodes[form.getFieldValue("setupPriceCode")];
+    if (currentSellSetup) {
+      const netSetup = currentSellSetup * (1 - percent / 100);
+      form.setFieldsValue({ netSetup });
+      onValuesChange({ netSetup }, { ...form.getFieldsValue(), netSetup });
     }
   };
 
@@ -99,16 +139,22 @@ export default function ItemQuoteForm({ form, onValuesChange, initialValues }) {
       initialValues={initialValues}
     >
       <Item name="spcNumber" label="SPC Number">
-        <InputNumber style={{ width: "100%" }} />
+        <InputNumber style={{ width: "100%" }} placeholder="Enter SPC Number" />
       </Item>
       <Item name="itemNumber" label="Item #">
-        <InputNumber style={{ width: "100%" }} />
+        <InputNumber
+          style={{ width: "100%" }}
+          placeholder="Enter Item Number"
+        />
       </Item>
       <Item name="quantity" label="Quantity">
-        <InputNumber style={{ width: "100%" }} />
+        <InputNumber
+          style={{ width: "100%" }}
+          placeholder="Enter Item Quantity"
+        />
       </Item>
       <Item name="itemColor" label="Item Color">
-        <Input style={{ width: "100%" }} />
+        <Input style={{ width: "100%" }} placeholder="Enter Item Color" />
       </Item>
       <Item name="preVirtual" label="Pre Virtual (optional)">
         <FileUploader
@@ -117,13 +163,31 @@ export default function ItemQuoteForm({ form, onValuesChange, initialValues }) {
         />
       </Item>
       <Item name="logoColor" label="Logo Color">
-        <Input style={{ width: "100%" }} />
+        <Input style={{ width: "100%" }} placeholder="Enter Logo Color" />
       </Item>
       <Item name="stockCheck" label="Stock Check">
-        <Input.TextArea placeholder="Stock Check" />
+        <Input.TextArea placeholder="Enter Stock Check" />
+      </Item>
+      <Item name="decorationMethod" label="Decoration Method">
+        <Input
+          style={{ width: "100%" }}
+          placeholder="Enter Decoration Method"
+        />
+      </Item>
+      <Item name="numberOfImprintColors" label="Number of Imprint Colors">
+        <InputNumber
+          style={{ width: "100%" }}
+          placeholder="Enter The Number of Imprint Colors"
+        />
+      </Item>
+      <Item name="productionTime" label="Production Time">
+        <Input
+          style={{ width: "100%" }}
+          placeholder="Enter The Production Time"
+        />
       </Item>
       <Divider>Unit Price</Divider>
-      <Item name="priceCode" label="Price Code">
+      <Item name="unitPriceCode" label="Price Code">
         <Select
           placeholder="Code"
           style={{
@@ -137,7 +201,6 @@ export default function ItemQuoteForm({ form, onValuesChange, initialValues }) {
           ))}
         </Select>
       </Item>
-
       <div style={{ height: "30px" }}>
         <Typography.Text
           style={{ padding: "0 0 8px" }}
@@ -149,7 +212,6 @@ export default function ItemQuoteForm({ form, onValuesChange, initialValues }) {
       <Compact style={{ width: "100%", marginBottom: "24px" }}>
         <Item
           name="sellUnitPrice"
-          // style={{ width: "100%" }}
           noStyle
           label="Sell Unit Price"
           dependencies={["netUnitPrice", "priceCode", "sellUnitPrice"]}
@@ -160,6 +222,7 @@ export default function ItemQuoteForm({ form, onValuesChange, initialValues }) {
             precision={2}
             controls={false}
             status={unitPriceStatus}
+            placeholder="Enter Sell Unit Price"
           />
         </Item>
         <Button
@@ -190,6 +253,7 @@ export default function ItemQuoteForm({ form, onValuesChange, initialValues }) {
             precision={2}
             controls={false}
             status={unitPriceStatus}
+            placeholder="Enter Net Unit Price"
           />
         </Item>
         <Button
@@ -204,29 +268,72 @@ export default function ItemQuoteForm({ form, onValuesChange, initialValues }) {
           Net Unit Price and Sell Unit Price Do not Align with Price Code
         </Text>
       )}
+      <Divider>Setup Price</Divider>
+      <Item name="setupPriceCode" label="Price Code">
+        <Select
+          placeholder="Code"
+          style={{
+            width: "5rem",
+          }}
+        >
+          {Object.entries(priceCodes).map(([key, value]) => (
+            <Option key={key} value={key}>
+              {key}
+            </Option>
+          ))}
+        </Select>
+      </Item>
+      <CompactItemLabel status={setupPriceStatus}>Sell Setup</CompactItemLabel>
+      <Compact style={{ width: "100%", marginBottom: "24px" }}>
+        <Item name="sellSetup" noStyle>
+          <InputNumber
+            style={{ width: "100%" }}
+            prefix="$"
+            precision={2}
+            controls={false}
+            placeholder="Enter Sell Setup"
+            status={setupPriceStatus}
+          />
+        </Item>
+        <Button
+          type="primary"
+          icon={<CalculatorOutlined />}
+          disabled={isNetUnitCalcButtonDisabled}
+          onClick={calculateSellSetup}
+        />
+      </Compact>
+      <CompactItemLabel status={setupPriceStatus}>Net Setup</CompactItemLabel>
+      <Compact style={{ width: "100%", marginBottom: "24px" }}>
+        <Item name="netSetup" noStyle>
+          <InputNumber
+            style={{ width: "100%" }}
+            prefix="$"
+            precision={2}
+            controls={false}
+            placeholder="Enter Net Setup"
+            status={setupPriceStatus}
+          />
+        </Item>
+        <Button
+          type="primary"
+          icon={<CalculatorOutlined />}
+          disabled={isNetUnitCalcButtonDisabled}
+          onClick={calculateNetSetup}
+        />
+      </Compact>
+      {setupPriceStatus === "error" && (
+        <Text type="danger" style={{ margin: 0 }}>
+          Net Setup Price and Sell Setup Price Do not Align with Price Code
+        </Text>
+      )}
       <Divider>Additional Charges</Divider>
-      <Item name="sellSetup" label="Sell Setup">
-        <InputNumber
-          style={{ width: "100%" }}
-          prefix="$"
-          precision={2}
-          controls={false}
-        />
-      </Item>
-      <Item name="netSetup" label="Net Setup">
-        <InputNumber
-          style={{ width: "100%" }}
-          prefix="$"
-          precision={2}
-          controls={false}
-        />
-      </Item>
       <Item name="proofCharge" label="Proof Charge">
         <InputNumber
           style={{ width: "100%" }}
           prefix="$"
           precision={2}
           controls={false}
+          placeholder="Enter Proof Charge"
         />
       </Item>
       <Item name="pmsCharge" label="PMS Charge">
@@ -235,19 +342,18 @@ export default function ItemQuoteForm({ form, onValuesChange, initialValues }) {
           prefix="$"
           precision={2}
           controls={false}
+          placeholder="Enter PMS Charge"
         />
       </Item>
-      <Item name="decorationMethod" label="Decoration Method">
-        <Input style={{ width: "100%" }} />
-      </Item>
-      <Item name="numberOfImprintColors" label="Number of Imprint Colors">
-        <InputNumber style={{ width: "100%" }} />
-      </Item>
-      <Item name="productionTime" label="Production Time">
-        <Input style={{ width: "100%" }} />
-      </Item>
+
       <Item name="shippingEstimate" label="Shipping Estimate">
-        <InputNumber style={{ width: "100%" }} prefix="$" precision={2} />
+        <InputNumber
+          style={{ width: "100%" }}
+          prefix="$"
+          precision={2}
+          placeholder="Enter Shipping Estimate"
+          controls={false}
+        />
       </Item>
     </Form>
   );

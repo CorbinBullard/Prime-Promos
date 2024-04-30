@@ -3,7 +3,6 @@ const quoteItemList = [
   "spcNumber",
   "quantity",
   "sellUnitPrice",
-  "priceCode",
   "itemColor",
   "preVirtual",
   "logoColor",

@@ -55,8 +55,13 @@ module.exports = {
         stockCheck: {
           type: Sequelize.STRING,
         },
-        priceCode: {
+        unitPriceCode: {
           type: Sequelize.ENUM("A/P", "B/Q", "C/R", "D/S", "E/T", "F/U", "G/V"),
+          defaultValue: "C/R",
+        },
+        setupPriceCode: {
+          type: Sequelize.ENUM("A/P", "B/Q", "C/R", "D/S", "E/T", "F/U", "G/V"),
+          defaultValue: "G/V",
         },
         netUnitPrice: {
           type: Sequelize.DECIMAL,
