@@ -19,6 +19,7 @@ import dayjs from "dayjs";
 import ItemStatusTag from "../components/UI/ItemStatusTag";
 import ProjectTitle from "../components/UI/ProjectTitle";
 const { Title, Text } = Typography;
+
 export default function ProjectDetailsPage() {
   const { projectId } = useParams();
   const { isAdmin } = useSession();

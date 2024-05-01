@@ -9,6 +9,7 @@ import {
 } from "../../../../utils/constants";
 import ProjectItemStatus from "../../ProjectItemStatus";
 import ProjectStatusSection from "./ProjectStatusSection";
+import Profits from "./Profits";
 
 export default function EditProjectTab({ project }) {
   const { updateProject } = useProjects();
@@ -25,7 +26,6 @@ export default function EditProjectTab({ project }) {
       // Handle validation errors from form.validateFields()
     }
   };
-
 
   return (
     <>

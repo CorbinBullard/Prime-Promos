@@ -6,6 +6,7 @@ import { csrfFetch } from "./utils/csrf";
 import { useSession } from "./context/Session";
 import Loader from "./components/UI/Loader";
 import Dashboard from "./pages/DashboardPage";
+import ProjectProfitsPage from "./pages/ProjectProfitsPage";
 
 const RegisterPage = lazy(() => import("./pages/SessionPages/RegisterPage"));
 const Layout = lazy(() => import("./layout/PageLayout"));
@@ -32,6 +33,10 @@ function App() {
             <Route
               path="projects/:projectId"
               element={<ProjectDetailsPage />}
+            />
+            <Route
+              path="projects/:projectId/profits"
+              element={<ProjectProfitsPage />}
             />
             <Route path="calendar" element={<CalendarPage />} />
           </Route>
