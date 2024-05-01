@@ -47,6 +47,7 @@ export default function ProjectDetailsPage() {
       return acc;
     }, {});
   }, [items]);
+  
 
   return (
     <Space direction="vertical" style={{ width: "100%" }}>

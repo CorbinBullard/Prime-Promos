@@ -31,7 +31,7 @@ const columns = [
   },
 ];
 
-export default function Profits({ project }) {
+export default function ProjectProfits({ project }) {
   const totalProfits = useMemo(
     () =>
       project.Items.reduce(

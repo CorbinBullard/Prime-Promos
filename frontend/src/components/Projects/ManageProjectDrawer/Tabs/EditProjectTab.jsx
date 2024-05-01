@@ -9,7 +9,7 @@ import {
 } from "../../../../utils/constants";
 import ProjectItemStatus from "../../ProjectItemStatus";
 import ProjectStatusSection from "./ProjectStatusSection";
-import Profits from "./Profits";
+import Profits from "../../ProjectProfits";
 
 export default function EditProjectTab({ project }) {
   const { updateProject } = useProjects();

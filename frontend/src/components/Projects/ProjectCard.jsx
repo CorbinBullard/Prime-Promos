@@ -1,5 +1,9 @@
 import { Avatar, Card, Flex, List, Modal, Progress, Tag } from "antd";
-import { EditOutlined, DeleteOutlined } from "@ant-design/icons";
+import {
+  EditOutlined,
+  DeleteOutlined,
+  MoneyCollectOutlined,
+} from "@ant-design/icons";
 import React from "react";
 import UserIcon from "../Members/UserIcon";
 import OptionsButton from "../UI/OptionsButton";
@@ -12,7 +16,7 @@ import ProjectItemStatus from "./ProjectItemStatus";
 
 export default function ProjectCard({ project, selectProject }) {
   const { deleteProject } = useProjects();
-  const { isAdmin } = useSession();
+  const { isAdmin, isOwner } = useSession();
   const navigate = useNavigate();
   const projectUsers = project.Users;
   const handleProjectSelect = () => {
@@ -31,6 +35,13 @@ export default function ProjectCard({ project, selectProject }) {
       label: "Edit Project",
       icon: <EditOutlined style={{ color: "skyblue" }} />,
       onClick: handleProjectOptionsSelect,
+    },
+    {
+      key: "profits",
+      label: "Profits",
+      icon: <MoneyCollectOutlined style={{ color: "lime" }} />,
+      onClick: () => navigate(`/projects/${project.id}/profits`),
+      disabled: !isOwner,
     },
     {
       key: "delete",
@@ -69,7 +80,11 @@ export default function ProjectCard({ project, selectProject }) {
         dataSource={project.Items}
         renderItem={(item) => (
           <List.Item style={{ display: "flex" }} key={item.name}>
-            <ProjectItemStatus item={item} key={item.id} style={{justifyContent: "space-between"}} />
+            <ProjectItemStatus
+              item={item}
+              key={item.id}
+              style={{ justifyContent: "space-between" }}
+            />
           </List.Item>
         )}
       />
