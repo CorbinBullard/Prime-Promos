@@ -1,15 +1,8 @@
 import React from "react";
 import CreateProjectForm from "../../../Forms/CreateProjectForm";
 import { useProjects } from "../../../../hooks/useProjects";
-import { Button, Divider, Flex, Form, Progress, Tag, message } from "antd"; // Import message for feedback
-import { capitalize } from "../../../../utils/utilFunctions";
-import {
-  ItemStatusColors,
-  ItemStatusProgression,
-} from "../../../../utils/constants";
-import ProjectItemStatus from "../../ProjectItemStatus";
+import { Button, Divider, Flex, Form } from "antd"; // Import message for feedback
 import ProjectStatusSection from "./ProjectStatusSection";
-import Profits from "../../ProjectProfits";
 
 export default function EditProjectTab({ project }) {
   const { updateProject } = useProjects();

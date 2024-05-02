@@ -280,7 +280,7 @@ export function useProjects() {
       return response.json();
     },
     onSuccess: () => {
-      queryClient.invalidateQueries(["projects"]);
+      queryClient.invalidateQueries(["projects", "archivedProjects"]);
       openNotification({
         message: "Success",
         description: "Project archived successfully",

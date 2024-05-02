@@ -18,7 +18,6 @@ const CalendarPage = lazy(() => import("./pages/CalendarPage"));
 
 function App() {
   const { isLoading } = useSession();
-  const navigate = useNavigate();
 
   return (
     <Suspense fallback={<Loader />}>
