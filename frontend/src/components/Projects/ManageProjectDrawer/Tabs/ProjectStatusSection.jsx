@@ -1,14 +1,9 @@
 import React from "react";
-import { Progress, Flex, Tag, Button, Modal } from "antd";
-import {
-  ItemStatusColors,
-  ItemStatusProgression,
-} from "../../../../utils/constants";
+import { Flex, Button, Modal } from "antd";
 import { useProjects } from "../../../../hooks/useProjects";
 import ProjectItemStatus from "../../ProjectItemStatus";
 import { pdf } from "@react-pdf/renderer";
 import ProjectPDF from "../../PDF/ProjectPDF";
-import moment from "moment";
 import dayjs from "dayjs";
 
 export default function ProjectStatusSection({ project }) {

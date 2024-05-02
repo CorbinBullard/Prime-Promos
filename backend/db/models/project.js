@@ -38,11 +38,11 @@ module.exports = (sequelize, DataTypes) => {
         throw new Error("Project must be completed before archiving");
       }
       console.log("Archiving project", project);
-      
+
       uploadFileToDropbox(buffer, fileName, "Archived")
         .then(() => {
           console.log("File uploaded to Dropbox");
-          // this.destroy();
+          this.destroy();
         })
         .catch((error) => {
           console.error("Error uploading file to Dropbox:", error);
