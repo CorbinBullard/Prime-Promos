@@ -7,13 +7,20 @@ import { getArchivedProjectsTableColumns } from "./ArchivedProjectOptions";
 import ArchivedProjectPDF from "./ArchivedProjectPDF";
 import { PDFViewer } from "@react-pdf/renderer";
 import useArchivedProjects from "../../../hooks/useArchivedProjects";
+import PDFViewerComponent from "../../UI/FileHandling/PDFViewerComponent";
+import { Document } from "react-pdf";
 
 export default function ArchivedProjectsTable() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedProject, setSelectedProject] = useState({});
   const [selectedRowKeys, setSelectedRowKeys] = useState([]);
-  const { projects, projectsLoading, deleteProjectsBulk, deleteProject } =
-    useArchivedProjects();
+  const {
+    projects,
+    projectsLoading,
+    deleteProjectsBulk,
+    deleteProject,
+    getArchivedProjectUrl,
+  } = useArchivedProjects();
 
   const handleBulkDelete = () => {
     Modal.confirm({
@@ -26,8 +33,11 @@ export default function ArchivedProjectsTable() {
     });
   };
 
-  const handleViewProject = (project) => {
-    setSelectedProject(project);
+  const handleViewProject = async ({ name }) => {
+    console.log("project", name);
+    const url = await getArchivedProjectUrl(name);
+
+    setSelectedProject(url);
     setIsModalOpen(true);
   };
 
@@ -64,7 +74,7 @@ export default function ArchivedProjectsTable() {
       }),
     []
   );
-
+  console.log("selectedProject", selectedProject);
   return (
     <Suspense fallback={<Loader />}>
       <Button
@@ -75,28 +85,21 @@ export default function ArchivedProjectsTable() {
         <DeleteOutlined />
       </Button>
 
-      {!projectsLoading && (
-        <>
-          <Table
-            rowSelection={rowSelection}
-            columns={columns}
-            dataSource={tableData}
-          />
-          <Modal
-            open={isModalOpen}
-            onCancel={handleDeselectProject}
-            footer={null}
-            width={800}
-            closable={false}
-          >
-            {selectedProject && (
-              <PDFViewer style={{ width: "100%", height: "45rem" }}>
-                <ArchivedProjectPDF project={selectedProject} />
-              </PDFViewer>
-            )}
-          </Modal>
-        </>
-      )}
+      <Table
+        rowSelection={rowSelection}
+        columns={columns}
+        dataSource={tableData}
+        loading={projectsLoading}
+      />
+      <Modal
+        open={isModalOpen}
+        onCancel={handleDeselectProject}
+        footer={null}
+        width={800}
+        closable={false}
+      >
+        {selectedProject && <PDFViewerComponent file={selectedProject} />}
+      </Modal>
     </Suspense>
   );
 }

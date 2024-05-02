@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { UploadOutlined } from "@ant-design/icons";
 import { Button, Modal, Upload } from "antd";
 import { csrfFetch } from "../../../utils/csrf";
-import PDFViewer from "./PDFViewer";
+import PDFViewerComponent from "./PDFViewerComponent";
 import ModalHeader from "../ModalHeader";
 
 const FileUploader = ({ callback, initialUrl, style }) => {
@@ -138,11 +138,7 @@ const FileUploader = ({ callback, initialUrl, style }) => {
         onRemove={handleDelete}
         progress={{ strokeColor: { "0%": "#108ee9", "100%": "#87d068" } }}
       >
-        <Button
-          icon={<UploadOutlined />}
-        >
-          Click to Upload
-        </Button>
+        <Button icon={<UploadOutlined />}>Click to Upload</Button>
       </Upload>
       <Modal
         open={previewOpen}
@@ -151,7 +147,7 @@ const FileUploader = ({ callback, initialUrl, style }) => {
         onCancel={handleCancel}
         width={700}
       >
-        <PDFViewer file={previewImage} />
+        <PDFViewerComponent file={previewImage} />
       </Modal>
     </>
   );

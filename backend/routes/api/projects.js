@@ -14,8 +14,11 @@ const {
   validateProjectUser,
   canUpdateProject,
 } = require("../../utils/auth");
+const multer = require("multer");
+const upload = multer();
 const { validateProject } = require("../../utils/modelValidators");
 const item = require("../../db/models/item");
+const { listFilesInFolder, getTemporaryLink } = require("../../utils/dropbox");
 
 // Get all projects
 router.get("/", requireAuth, async (req, res) => {
@@ -59,8 +62,17 @@ router.get("/", requireAuth, async (req, res) => {
 
 // Get archived projects
 router.get("/archived", requireAdminAuth, async (req, res) => {
-  const projects = await ArchivedProject.findAll();
+  // const projects = await ArchivedProject.findAll();
+  const projects = await listFilesInFolder("/Archived");
   res.json(projects);
+});
+// get temporary link for archived project file
+router.get("/archived/:filePath", requireAdminAuth, async (req, res) => {
+  const { filePath } = req.params;
+
+  const link = await getTemporaryLink(`/Archived/${filePath}`);
+  
+  res.json(link);
 });
 
 // Create Project
@@ -232,9 +244,10 @@ router.patch(
 );
 
 // Update Project Status archived
-router.patch(
+router.post(
   "/:projectId/status/archive",
   requireAdminAuth,
+  upload.single("file"),
   async (req, res) => {
     const { projectId } = req.params;
 
@@ -249,7 +262,12 @@ router.patch(
         message: "Project must be completed before archiving",
       });
     }
-    await project.archive();
+
+    if (!req.file) return res.status(500).json({ message: "No file uploaded" });
+    const fileBuffer = req.file.buffer;
+    const fileName = req.file.originalname;
+
+    await project.archive({ buffer: fileBuffer, fileName });
 
     return res.json({ message: "Project status updated" });
   }

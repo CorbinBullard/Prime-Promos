@@ -1,4 +1,4 @@
-import React from 'react'
+import React from "react";
 import { useQueryClient, useQuery, useMutation } from "@tanstack/react-query";
 import { csrfFetch } from "../utils/csrf"; // Consider making this injectable for easier testing
 import { useNotification } from "../context/Notification";
@@ -21,6 +21,7 @@ export default function useArchivedProjects() {
     },
     enabled: !!user && isAdmin,
   });
+
   // delete archived project
   const deleteProject = useMutation({
     mutationKey: ["deleteProject"],
@@ -49,7 +50,7 @@ export default function useArchivedProjects() {
         type: "error",
       });
     },
-  }).mutate;
+  });
 
   // delete bulk archived projects
   const deleteProjectsBulk = useMutation({
@@ -85,11 +86,23 @@ export default function useArchivedProjects() {
     },
   }).mutate;
 
+  const getArchivedProjectUrl = async (name) => {
+    const res = await csrfFetch(`/api/projects/archived/${name}`);
+    if (!res.ok) {
+      const errorResult = await res.json();
+      throw new Error(errorResult.error || "Failed to fetch project");
+    }
+    const url = await res.json();
+    
+    return url;
+  };
+
   return {
     projects,
     projectsError,
     projectsLoading,
     deleteProject,
     deleteProjectsBulk,
+    getArchivedProjectUrl,
   };
 }

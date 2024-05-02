@@ -6,7 +6,7 @@ import ProjectProfits from "../components/Projects/ProjectProfits";
 import { useSession } from "../context/Session";
 import useItems from "../hooks/useItems";
 import ProjectTitle from "../components/UI/ProjectTitle";
-import ProjectPDF from "../components/Projects/ManageProjectDrawer/Tabs/ProjectPDF";
+import ProjectPDFViewer from "../components/Projects/PDF/ProjectPDFViewer";
 
 export default function ProjectProfitsPage() {
   const { projectId } = useParams();
@@ -46,7 +46,7 @@ export default function ProjectProfitsPage() {
               <ProjectProfits project={pdfProjectObj} />
             </div>
             <div style={{ width: "50%" }}>
-              <ProjectPDF project={pdfProjectObj} />
+              <ProjectPDFViewer project={pdfProjectObj} />
             </div>
           </Flex>
         </Flex>

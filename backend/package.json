@@ -28,6 +28,7 @@
     "googleapis": "^133.0.0",
     "helmet": "^7.1.0",
     "http-errors": "~1.6.3",
+    "isomorphic-fetch": "^3.0.0",
     "jade": "~1.11.0",
     "jsonwebtoken": "^9.0.2",
     "morgan": "~1.9.1",

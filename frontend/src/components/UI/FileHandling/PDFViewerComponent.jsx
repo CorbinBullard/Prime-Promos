@@ -5,7 +5,7 @@ import { Document, Page, pdfjs } from "react-pdf";
 // Set the workerSrc property to ensure PDF.js worker is loaded
 pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.min.js`;
 
-const PDFViewer = ({ file }) => {
+const PDFViewerComponent = ({ file }) => {
   const [currentPage, setCurrentPage] = useState(1);
   const [numPages, setNumPages] = useState(0);
 
@@ -27,7 +27,7 @@ const PDFViewer = ({ file }) => {
         file={file}
         onLoadSuccess={onDocumentLoadSuccess}
         // Does not seem to be needed. Uncomment if you run into issues
-        // options={{ workerSrc: "/pdf.worker.min.js" }}
+        options={{ workerSrc: "/pdf.worker.min.js" }}
       >
         <Page
           pageNumber={currentPage}
@@ -39,4 +39,4 @@ const PDFViewer = ({ file }) => {
   );
 };
 
-export default PDFViewer;
+export default PDFViewerComponent;

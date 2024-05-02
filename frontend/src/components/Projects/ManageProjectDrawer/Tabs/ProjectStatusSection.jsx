@@ -6,9 +6,14 @@ import {
 } from "../../../../utils/constants";
 import { useProjects } from "../../../../hooks/useProjects";
 import ProjectItemStatus from "../../ProjectItemStatus";
+import { pdf } from "@react-pdf/renderer";
+import ProjectPDF from "../../PDF/ProjectPDF";
+import moment from "moment";
+import dayjs from "dayjs";
 
 export default function ProjectStatusSection({ project }) {
-  const { markProjectAsCompleted, archiveProject, revertProjectToActive } = useProjects();
+  const { markProjectAsCompleted, archiveProject, revertProjectToActive } =
+    useProjects();
 
   const handleUpdateProjectStatus = async () => {
     if (project.status === "active") {
@@ -34,9 +39,23 @@ export default function ProjectStatusSection({ project }) {
         content: "Are you sure you want to archive this project?",
         onOk: async () => {
           try {
-            await archiveProject(project.id);
+            const file = await pdf(<ProjectPDF project={project} />).toBlob();
+            console.log("blob", file); // Confirm the blob is created correctly.
+            const formData = new FormData();
+            await formData.append(
+              "file",
+              file,
+              `${project.eventDate || dayjs().format("YYYY-MM-DD")}` +
+                "_" +
+                project.name +
+                ".pdf"
+            );
+
+            // Ensure formData is ready and then call the archiveProject
+            console.log("formData", formData); // Confirm the formData is created correctly.
+            archiveProject(project.id, formData);
           } catch (error) {
-            console.error(error);
+            console.error("Error creating PDF or uploading file:", error);
           }
         },
       });
@@ -58,7 +77,7 @@ export default function ProjectStatusSection({ project }) {
     } catch (error) {
       console.error(error);
     }
-  }
+  };
   return (
     <Flex vertical gap={15}>
       {project.Items.map((item) => (
@@ -66,7 +85,12 @@ export default function ProjectStatusSection({ project }) {
       ))}
       <Flex style={{ width: "100%" }} gap={10}>
         {project.status === "completed" && (
-          <Button onClick={handleRevertProjectToActive} style={{ width: "100%" }}>Revert Project To Active</Button>
+          <Button
+            onClick={handleRevertProjectToActive}
+            style={{ width: "100%" }}
+          >
+            Revert Project To Active
+          </Button>
         )}
         <Button
           type="primary"

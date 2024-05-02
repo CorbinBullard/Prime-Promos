@@ -1,5 +1,6 @@
 "use strict";
 const { Model } = require("sequelize");
+const { uploadFileToDropbox } = require("../../utils/dropbox");
 module.exports = (sequelize, DataTypes) => {
   class Project extends Model {
     /**
@@ -31,23 +32,23 @@ module.exports = (sequelize, DataTypes) => {
       }
       return true; // If all items are delivered, return true
     }
-    async archive() {
+    async archive({ buffer, fileName }) {
       const project = await this.toJSON();
       if (project.status !== "completed") {
         throw new Error("Project must be completed before archiving");
       }
       console.log("Archiving project", project);
-      const NewArchivedProject = await this.sequelize.models.ArchivedProject.create(
-        {
-          name: project.name,
-          eventDate: project.eventDate,
-          customerPO: project.customerPO,
-          salesConfirmation: project.salesConfirmation,
-          itemData: JSON.stringify(project.Items),
-        }
-      );
+      
+      uploadFileToDropbox(buffer, fileName, "Archived")
+        .then(() => {
+          console.log("File uploaded to Dropbox");
+          // this.destroy();
+        })
+        .catch((error) => {
+          console.error("Error uploading file to Dropbox:", error);
+        });
+
       // delete project
-      await this.destroy();
     }
   }
   Project.init(

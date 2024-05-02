@@ -2,7 +2,7 @@
 import ManageUsersTab from "./Tabs/ManageUsersTab";
 import EditProject from "./Tabs/EditProjectTab";
 import { PDFViewer } from "@react-pdf/renderer";
-import ProjectPDF from "./Tabs/ProjectPDF";
+import ProjectPDFViewer from "../PDF/ProjectPDFViewer";
 
 export const projectManagerTabs = (project) => [
   {
@@ -18,6 +18,6 @@ export const projectManagerTabs = (project) => [
   {
     key: "pdf",
     label: "PDF",
-    children: <ProjectPDF project={project} />,
+    children: <ProjectPDFViewer project={project} />,
   },
 ];

@@ -264,11 +264,13 @@ export function useProjects() {
 
   const archiveProjectMutation = useMutation({
     mutationKey: ["archiveProject"],
-    mutationFn: async (projectId) => {
+    mutationFn: async ({ projectId, formData }) => {
+      console.log("Archiving project", projectId, formData);
       const response = await csrfFetch(
         `/api/projects/${projectId}/status/archive`,
         {
-          method: "PATCH",
+          method: "POST",
+          body: formData,
         }
       );
       if (!response.ok) {
@@ -310,9 +312,9 @@ export function useProjects() {
     removeUserFromProjectMutation.mutate({ projectId, userId });
   const markProjectAsCompleted = (projectId) =>
     projectCompleted.mutate(projectId);
-  const archiveProject = (projectId) =>
-    archiveProjectMutation.mutate(projectId);
   const revertProjectToActive = (projectId) => projectActive.mutate(projectId);
+  const archiveProject = (projectId, formData) =>
+    archiveProjectMutation.mutate({ projectId, formData });
 
   return {
     projects,
