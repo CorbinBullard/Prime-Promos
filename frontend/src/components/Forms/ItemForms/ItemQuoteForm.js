@@ -307,7 +307,7 @@ export default function ItemQuoteForm({ form, onValuesChange, initialValues }) {
         <Button
           type="primary"
           icon={<CalculatorOutlined />}
-          disabled={isNetUnitCalcButtonDisabled}
+          disabled={isSellSetupCalcButtonDisabled}
           onClick={calculateSellSetup}
         />
       </Compact>
@@ -326,7 +326,7 @@ export default function ItemQuoteForm({ form, onValuesChange, initialValues }) {
         <Button
           type="primary"
           icon={<CalculatorOutlined />}
-          disabled={isNetUnitCalcButtonDisabled}
+          disabled={isNetSetupCalcButtonDisabled}
           onClick={calculateNetSetup}
         />
       </Compact>

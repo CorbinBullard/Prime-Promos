@@ -8,7 +8,6 @@ import NotesList from "../../../Notes/NotesList";
 import { Flex } from "antd";
 
 export default function NotesTab({ item }) {
-
   const { createItemNote } = useItems({
     projectId: item.projectId,
     itemId: item.id,
@@ -19,14 +18,13 @@ export default function NotesTab({ item }) {
   };
 
   return (
-    <Flex vertical gap={15}>
+    <Flex vertical gap={15} style={{ width: "100%" }}>
       <FormModalButton
         icon={<FileAddOutlined />}
         form={CreateNoteForm}
         submitText="Create Note"
         onSubmit={handleCreateNote}
         title="Create Note"
-
       >
         Create Note
       </FormModalButton>

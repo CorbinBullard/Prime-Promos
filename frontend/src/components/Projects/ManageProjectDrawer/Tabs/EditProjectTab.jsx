@@ -32,7 +32,11 @@ export default function EditProjectTab({ project }) {
       <Divider>Project Details</Divider>
       <Flex vertical>
         <CreateProjectForm form={form} initialValues={project} />
-        <Button type="primary" onClick={handleUpdateProject}>
+        <Button
+          type="primary"
+          onClick={handleUpdateProject}
+          style={{ marginTop: "1rem" }}
+        >
           Update Project
         </Button>
       </Flex>

@@ -39,7 +39,11 @@ export default function ProjectProfits({ project }) {
           const sellTotal = item.sellUnitPrice * item.quantity;
           const netTotal = item.netUnitPrice * item.quantity;
           const unitProfit = sellTotal - netTotal;
-          const setupProfit = item.sellSetup - item.netSetup;
+
+          const sellSetupTotal = item.sellSetup * item.quantity;
+          const netSetupTotal = item.netSetup * item.quantity;
+          const setupProfit = sellSetupTotal - netSetupTotal;
+
           acc.totalUnitProfit += unitProfit;
           acc.totalSetupProfit += setupProfit;
           return acc;
@@ -48,7 +52,7 @@ export default function ProjectProfits({ project }) {
       ),
     [project]
   );
-  console.log(totalProfits);
+  
   return (
     <Table
       columns={columns}
@@ -63,7 +67,10 @@ export default function ProjectProfits({ project }) {
               Setup Profit: ${totalProfits.totalSetupProfit.toFixed(2)}
             </Text>
             <Text strong>
-              Total Profit: ${totalProfits.totalUnitProfit.toFixed(2)}
+              Total Profit: $
+              {(
+                totalProfits.totalUnitProfit + totalProfits.totalSetupProfit
+              ).toFixed(2)}
             </Text>
           </Flex>
         );

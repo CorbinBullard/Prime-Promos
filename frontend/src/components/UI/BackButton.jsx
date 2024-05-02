@@ -3,11 +3,11 @@ import { Button } from "antd";
 import { LeftCircleTwoTone } from "@ant-design/icons";
 import { useNavigate } from "react-router-dom";
 
-const BackButton = ({ text, ...props }) => {
+const BackButton = ({ text, link, ...props }) => {
   const navigate = useNavigate();
 
   function handleClick() {
-    navigate(-1);
+    navigate(link || -1);
   }
 
   return (

@@ -36,7 +36,7 @@ export default function ProjectProfitsPage() {
       {!itemsLoading && currentProject && (
         <Flex vertical style={{ width: "100%" }}>
           <Flex justify="space-between" align="center">
-            <BackButton text="Projects" type="text" />
+            <BackButton text="Projects" type="text" link="/projects" />
             <ProjectTitle project={currentProject} />
             <Typography.Title level={2}>Profits</Typography.Title>
           </Flex>

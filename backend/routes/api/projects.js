@@ -72,7 +72,7 @@ router.post("/", requireAdminAuth, async (req, res) => {
     eventDate,
     customerPO,
     salesConfirmation,
-    collegeName,
+    organizationName,
     contactName,
     contactEmail,
     contactPhone,
@@ -87,7 +87,7 @@ router.post("/", requireAdminAuth, async (req, res) => {
       eventDate,
       customerPO,
       salesConfirmation,
-      collegeName,
+      organizationName,
       contactName,
       contactEmail,
       contactPhone,
@@ -161,7 +161,7 @@ router.put("/:projectId", canUpdateProject, async (req, res) => {
     eventDate,
     customerPO,
     salesConfirmation,
-    collegeName,
+    organizationName,
     contactName,
     contactEmail,
     contactPhone,
@@ -182,15 +182,16 @@ router.put("/:projectId", canUpdateProject, async (req, res) => {
   }
 
   const updatedProject = await project.update({
-    name,
-    inHandsDate,
-    eventDate,
-    customerPO,
-    salesConfirmation,
-    collegeName,
-    contactName,
-    contactEmail,
-    contactPhone,
+    // name,
+    // inHandsDate,
+    // eventDate,
+    // customerPO,
+    // salesConfirmation,
+    // organizationName,
+    // contactName,
+    // contactEmail,
+    // contactPhone,
+    ...req.body,
   });
   return res.json(updatedProject);
 });

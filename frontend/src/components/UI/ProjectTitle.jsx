@@ -12,7 +12,7 @@ export default function ProjectTitle({ project }) {
           {capitalize(project?.name)}
         </Title>
         <Text italic strong style={{ margin: "0", color: "#8c8c8c" }}>
-          {capitalize(project?.collegeName)} -{" "}
+          {capitalize(project?.organizationName)} -{" "}
           {capitalize(project?.contactName)}
         </Text>
       </Flex>

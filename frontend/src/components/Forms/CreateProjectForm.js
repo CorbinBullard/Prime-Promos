@@ -16,6 +16,8 @@ import UserDropdown from "../UI/UserDropdown";
 import dayjs from "dayjs";
 import { formatDateForForm } from "../../utils/utilFunctions";
 import { dateFormat } from "../../utils/constants";
+import CompactItemLabel from "../UI/CompactItemLabel";
+const { Compact } = Space;
 const { Item } = Form;
 
 export default function CreateProjectForm({ form, initialValues }) {
@@ -36,7 +38,11 @@ export default function CreateProjectForm({ form, initialValues }) {
         <Input placeholder="Enter Project Name" />
       </Item>
       <Flex justify="space-between" flex={1} gap={5}>
-        <Item name="collegeName" label="Organization Name" style={{ flex: 1 }}>
+        <Item
+          name="organizationName"
+          label="Organization Name"
+          style={{ flex: 1 }}
+        >
           <Input placeholder="Enter Organization Name" />
         </Item>
         <Item name="contactName" label="Contact Name" style={{ flex: 1 }}>
@@ -134,20 +140,76 @@ export default function CreateProjectForm({ form, initialValues }) {
       )}
       {initialValues && (
         <>
-          <Item name="customerPO" label="Customer PO">
-            <InputNumber
-              placeholder="Enter Customer PO"
-              style={{ width: "100%" }}
-              controls={false}
-            />
-          </Item>
-          <Item name="salesConfirmation" label="Sales Confirmation">
-            <InputNumber
-              placeholder="Enter Sales Confirmation"
-              style={{ width: "100%" }}
-              controls={false}
-            />
-          </Item>
+          <Flex justify="space-between" flex={1} gap={5}>
+            <Item name="customerPO" label="Customer PO" style={{ flex: "1" }}>
+              <InputNumber
+                placeholder="Enter Customer PO"
+                style={{ width: "100%" }}
+                controls={false}
+              />
+            </Item>
+            <Item
+              name="salesConfirmation"
+              label="Sales Confirmation"
+              style={{ flex: "1" }}
+            >
+              <InputNumber
+                placeholder="Enter Sales Confirmation"
+                style={{ width: "100%" }}
+                controls={false}
+              />
+            </Item>
+          </Flex>
+          <Flex justify="space-between" flex={1} gap={5}>
+            <Flex gap={5} flex={1} vertical>
+              <CompactItemLabel>Ship To</CompactItemLabel>
+              <Item name="shipToName" noStyle>
+                <Input placeholder="Enter Organization Name" />
+              </Item>
+              <Item name="shipToAddress" noStyle>
+                <Input placeholder="Enter Address" />
+              </Item>
+              <Compact>
+                <Item name="shipToCity" noStyle>
+                  <Input placeholder="City" style={{ width: "40%" }} />
+                </Item>
+                <Item name="shipToState" noStyle>
+                  <Input placeholder="State" style={{ width: "20%" }} />
+                </Item>
+                <Item name="shipToZip" noStyle>
+                  <InputNumber
+                    placeholder="Zip"
+                    style={{ width: "40%" }}
+                    controls={false}
+                  />
+                </Item>
+              </Compact>
+            </Flex>
+            <Flex gap={5} flex={1} vertical>
+              <CompactItemLabel>Bill To</CompactItemLabel>
+              <Item name="billToName" noStyle>
+                <Input placeholder="Enter Organization Name" />
+              </Item>
+              <Item name="billToAddress" noStyle>
+                <Input placeholder="Enter Address" />
+              </Item>
+              <Compact>
+                <Item name="billToCity" noStyle>
+                  <Input placeholder="City" style={{ width: "40%" }} />
+                </Item>
+                <Item name="billToState" noStyle>
+                  <Input placeholder="State" style={{ width: "20%" }} />
+                </Item>
+                <Item name="billToZip" noStyle>
+                  <InputNumber
+                    placeholder="Zip"
+                    style={{ width: "40%" }}
+                    controls={false}
+                  />
+                </Item>
+              </Compact>
+            </Flex>
+          </Flex>
         </>
       )}
       {!initialValues && (

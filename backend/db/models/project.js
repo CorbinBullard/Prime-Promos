@@ -53,7 +53,7 @@ module.exports = (sequelize, DataTypes) => {
   Project.init(
     {
       name: DataTypes.STRING,
-      collegeName: DataTypes.STRING,
+      organizationName: DataTypes.STRING,
       contactName: DataTypes.STRING,
       contactEmail: DataTypes.STRING,
       contactPhone: DataTypes.STRING,
@@ -62,6 +62,16 @@ module.exports = (sequelize, DataTypes) => {
       customerPO: DataTypes.INTEGER,
       salesConfirmation: DataTypes.INTEGER,
       status: DataTypes.ENUM("active", "completed"),
+      billToName: DataTypes.STRING,
+      billToAddress: DataTypes.STRING,
+      billToCity: DataTypes.STRING,
+      billToState: DataTypes.STRING,
+      billToZip: DataTypes.STRING,
+      shipToName: DataTypes.STRING,
+      shipToAddress: DataTypes.STRING,
+      shipToCity: DataTypes.STRING,
+      shipToState: DataTypes.STRING,
+      shipToZip: DataTypes.STRING,
     },
     {
       sequelize,

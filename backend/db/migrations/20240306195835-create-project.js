@@ -19,7 +19,7 @@ module.exports = {
           type: Sequelize.STRING,
           allowNull: false,
         },
-        collegeName: {
+        organizationName: {
           type: Sequelize.STRING,
         },
         contactName: {
@@ -46,6 +46,36 @@ module.exports = {
         status: {
           type: Sequelize.ENUM("active", "completed"),
           defaultValue: "active",
+        },
+        billToName: {
+          type: Sequelize.STRING,
+        },
+        billToAddress: {
+          type: Sequelize.STRING,
+        },
+        billToCity: {
+          type: Sequelize.STRING,
+        },
+        billToState: {
+          type: Sequelize.STRING,
+        },
+        billToZip: {
+          type: Sequelize.STRING,
+        },
+        shipToName: {
+          type: Sequelize.STRING,
+        },
+        shipToAddress: {
+          type: Sequelize.STRING,
+        },
+        shipToCity: {
+          type: Sequelize.STRING,
+        },
+        shipToState: {
+          type: Sequelize.STRING,
+        },
+        shipToZip: {
+          type: Sequelize.STRING,
         },
         createdAt: {
           allowNull: false,

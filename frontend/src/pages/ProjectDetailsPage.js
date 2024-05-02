@@ -18,6 +18,7 @@ import CardsContainer from "../components/UI/CardsContainer";
 import dayjs from "dayjs";
 import ItemStatusTag from "../components/UI/ItemStatusTag";
 import ProjectTitle from "../components/UI/ProjectTitle";
+import NotesTab from "../components/Items/ManageItemsDrawer/Tabs/NotesTab";
 const { Title, Text } = Typography;
 
 export default function ProjectDetailsPage() {
@@ -47,14 +48,13 @@ export default function ProjectDetailsPage() {
       return acc;
     }, {});
   }, [items]);
-  
 
   return (
     <Space direction="vertical" style={{ width: "100%" }}>
       {!itemsLoading && (
         <>
           <Flex justify="space-between" align="center">
-            <BackButton text="Projects" type="text" />
+            <BackButton text="Projects" type="text" link="/projects" />
             <ProjectTitle project={currentProject} />
             {isAdmin && (
               <FormModalButton
@@ -107,7 +107,11 @@ export default function ProjectDetailsPage() {
                   item={selectedItem}
                   FormComponent={FORM_COMPONENTS[selectedItem?.status]}
                 />
-                <NotesList item={selectedItem} />
+                {!isAdmin ? (
+                  <NotesList item={selectedItem} />
+                ) : (
+                  <NotesTab item={itemsObj[selectedItem.id]} />
+                )}
               </Flex>
             )}
           </Modal>
