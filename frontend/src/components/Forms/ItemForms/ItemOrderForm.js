@@ -13,8 +13,8 @@ export default function ItemOrderForm({ form, onValuesChange, initialValues }) {
 
   const formattedInitialValues = {
     ...initialValues,
-    shipDate: formatDateForForm(initialValues.shipDate),
-    logo: !!initialValues.logo, // Converts truthy/falsy values to boolean
+    shipDate: formatDateForForm(initialValues?.shipDate),
+    logo: initialValues?.logo, // Converts truthy/falsy values to boolean
   };
 
   const handleImageUpload = (url) => {
@@ -45,7 +45,7 @@ export default function ItemOrderForm({ form, onValuesChange, initialValues }) {
         <FileUploader
           buttonText={"Upload Logo"}
           callback={handleImageUpload}
-          initialUrl={initialValues.logo}
+          initialUrl={initialValues?.logo}
         />
       </Item>
       <Item name="shipDate" label="Ship Date">

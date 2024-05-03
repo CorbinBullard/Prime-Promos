@@ -63,15 +63,21 @@ router.get("/", requireAuth, async (req, res) => {
 // Get archived projects
 router.get("/archived", requireAdminAuth, async (req, res) => {
   // const projects = await ArchivedProject.findAll();
-  const projects = await listFilesInFolder("/Archived");
-  res.json(projects);
+
+  try {
+    const projects = await listFilesInFolder("/Archived");
+    res.json(projects);
+  } catch (error) {
+    console.error("Failed to get archived projects", error);
+    return res.status(500).send("Internal Server Error");
+  }
 });
 // get temporary link for archived project file
 router.get("/archived/:filePath", requireAdminAuth, async (req, res) => {
   const { filePath } = req.params;
 
   const link = await getTemporaryLink(`/Archived/${filePath}`);
-  
+
   res.json(link);
 });
 

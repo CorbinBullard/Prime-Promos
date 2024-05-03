@@ -14,7 +14,7 @@ const FileUploader = ({ callback, initialUrl, style }) => {
       ? [
           {
             uid: "-1", // Ensure a unique ID
-            name: initialUrl.split("/uploads/")[1].split("%20").join(" "), // Optionally set a meaningful name
+            name: initialUrl?.split("/uploads/")[1].split("%20").join(" "), // Optionally set a meaningful name
             status: "done",
             url: initialUrl,
           },

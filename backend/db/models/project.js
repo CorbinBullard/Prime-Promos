@@ -51,6 +51,7 @@ module.exports = (sequelize, DataTypes) => {
       // delete project
     }
   }
+  
   Project.init(
     {
       name: DataTypes.STRING,
