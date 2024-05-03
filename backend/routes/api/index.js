@@ -9,5 +9,6 @@ router.use("/projects", require("./projects"));
 router.use("/items", require("./items"));
 router.use("/aws", require("./aws"));
 router.use("/notes", require("./notes"));
+router.use("/email", require("./email"));
 
 module.exports = router;

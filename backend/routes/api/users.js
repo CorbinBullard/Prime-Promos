@@ -70,7 +70,14 @@ router.post("/invite", requireOwnerAuth, async (req, res) => {
       lastName,
       role,
     });
-    await sendEmail(email, subject, text, link);
+
+    await sendEmail(
+      email,
+      subject,
+      text,
+      `<a href=${link}>Click here to register</a>`
+    );
+
     return res.json(user);
   } catch (error) {
     console.error(error);

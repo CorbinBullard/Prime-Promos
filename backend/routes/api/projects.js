@@ -173,17 +173,6 @@ router.delete("/:projectId", requireOwnerAuth, async (req, res) => {
 router.put("/:projectId", canUpdateProject, async (req, res) => {
   const { role } = req.user;
   const { projectId } = req.params;
-  const {
-    name,
-    inHandsDate,
-    eventDate,
-    customerPO,
-    salesConfirmation,
-    organizationName,
-    contactName,
-    contactEmail,
-    contactPhone,
-  } = req.body;
 
   const project = await Project.findByPk(projectId, {
     include: User,
@@ -200,15 +189,6 @@ router.put("/:projectId", canUpdateProject, async (req, res) => {
   }
 
   const updatedProject = await project.update({
-    // name,
-    // inHandsDate,
-    // eventDate,
-    // customerPO,
-    // salesConfirmation,
-    // organizationName,
-    // contactName,
-    // contactEmail,
-    // contactPhone,
     ...req.body,
   });
   return res.json(updatedProject);

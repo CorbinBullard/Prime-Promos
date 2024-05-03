@@ -137,8 +137,10 @@ module.exports = {
           type: Sequelize.BOOLEAN,
           defaultValue: false,
         },
-        // Change when adding functionality to save organizations
-        
+        sentEmail: {
+          type: Sequelize.BOOLEAN,
+          defaultValue: false,
+        },
         createdAt: {
           allowNull: false,
           type: Sequelize.DATE,

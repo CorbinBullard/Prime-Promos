@@ -41,6 +41,7 @@ router.put("/:id", requireAuth, async (req, res) => {
   return res.json(newItem);
 });
 
+
 router.post("/:id/image", requireAuth, async (req, res) => {
   const { id } = req.params;
   const item = await Item.findByPk(id);

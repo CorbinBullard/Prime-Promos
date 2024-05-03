@@ -17,7 +17,7 @@ const oauth2Client = new google.auth.OAuth2(
 
 oauth2Client.setCredentials({ refresh_token: REFRESH_TOKEN });
 
-async function sendEmail(to, subject, text, link) {
+async function sendEmail(to, subject, text, html) {
   const accessToken = await oauth2Client.getAccessToken();
 
   const transporter = nodemailer.createTransport({
@@ -32,12 +32,14 @@ async function sendEmail(to, subject, text, link) {
     },
   });
 
+  console.log("\n\n", to, subject, text, html, "\n\n");
+
   const mailOptions = {
     from: `Prime Promos <${SENDER_EMAIL}>`,
     to,
     subject,
     text,
-    html: `<a href=${link}>Click here to register</a>`,
+    html,
   };
 
   await transporter.sendMail(mailOptions);

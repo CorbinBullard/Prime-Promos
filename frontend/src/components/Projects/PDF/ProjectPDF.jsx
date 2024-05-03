@@ -12,6 +12,8 @@ import dayjs from "dayjs";
 import moment from "moment";
 import { useMemo } from "react";
 
+const fixedPrice = (price) => price.toFixed(2) || "-";
+
 // Define custom styles
 const styles = StyleSheet.create({
   page: {
@@ -107,6 +109,7 @@ const ProjectPDF = ({ project }) => {
     return itemCost + shippingCost;
   }, [project]);
 
+  if (!project) return null;
   return (
     <Document>
       <Page size="A4" style={styles.page}>
@@ -175,10 +178,10 @@ const ProjectPDF = ({ project }) => {
                 <Text style={styles.columnQuantity}> {item.quantity}</Text>
                 <Text style={styles.columnDescription}>{item.name}</Text>
                 <Text style={styles.columnUnitPrice}>
-                  ${item.sellUnitPrice.toFixed(2)}
+                  ${item.sellUnitPrice?.toFixed(2) || "-"}
                 </Text>
                 <Text style={styles.columnTotalPrice}>
-                  ${(item.sellUnitPrice * item.quantity).toFixed(2)}
+                  ${(item.sellUnitPrice * item.quantity)?.toFixed(2) || "-"}
                 </Text>
               </View>
               <View>
@@ -190,10 +193,10 @@ const ProjectPDF = ({ project }) => {
                 <Text style={styles.columnQuantity}></Text>
                 <Text style={styles.columnDescription}>Setup Charge</Text>
                 <Text style={styles.columnUnitPrice}>
-                  ${item.sellSetup.toFixed(2)}
+                  ${item.sellSetup?.toFixed(2) || "-"}
                 </Text>
                 <Text style={styles.columnTotalPrice}>
-                  ${(item.sellSetup * item.quantity).toFixed(2)}
+                  ${(item.sellSetup * item.quantity)?.toFixed(2) || "-"}
                 </Text>
               </View>
               <View style={styles.lineItem}>
@@ -245,7 +248,7 @@ const ProjectPDF = ({ project }) => {
             >
               Balance Due
             </Text>
-            <Text>${totalDue.toFixed(2)}</Text>
+            <Text>${totalDue?.toFixed(2) || "-"}</Text>
           </View>
         </View>
       </Page>
