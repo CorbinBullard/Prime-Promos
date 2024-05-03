@@ -1,6 +1,6 @@
 import { Button, DatePicker, Form, Input, Space, Typography } from "antd";
 import { SendOutlined } from "@ant-design/icons";
-import React from "react";
+import React, { useState } from "react";
 import { dateFormat, formItemLayout } from "../../../utils/constants";
 import { formatDateForForm } from "../../../utils/utilFunctions";
 import useItems from "../../../hooks/useItems";
@@ -15,9 +15,11 @@ export default function ItemShippedForm({
   onValuesChange,
   initialValues,
 }) {
+  const [sentEmail, setSentEmail] = useState(initialValues?.sentEmail || false);
   const { projectId } = useParams();
   const { isAdmin } = useSession();
   const { currentProject } = useItems({ projectId });
+  console.log("initialValues", initialValues);
   const formattedInitialValues = {
     ...initialValues,
     delivered: formatDateForForm(initialValues?.delivered),
@@ -38,7 +40,14 @@ export default function ItemShippedForm({
       },
     });
     if (res.ok) {
-      form.setFieldsValue({ sentEmail: true });
+      onValuesChange &&
+        onValuesChange(
+          {
+            sentEmail: true,
+          },
+          { ...form.getFieldsValue(), sentEmail: true }
+        );
+      setSentEmail(true);
     }
   };
 
@@ -51,7 +60,7 @@ export default function ItemShippedForm({
       layout="vertical"
     >
       <CompactItemLabel>
-        {initialValues?.sentEmail ? "Resend" : "Send"} Tracking Number to{" "}
+        {sentEmail ? "Resend" : "Send"} Tracking Number to{" "}
         <Typography.Text strong>
           {currentProject?.contactEmail || "Client"}
         </Typography.Text>
