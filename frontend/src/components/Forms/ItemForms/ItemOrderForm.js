@@ -1,10 +1,8 @@
-import { Checkbox, DatePicker, Form, Input } from "antd";
+import { DatePicker, Form, Input } from "antd";
 import React from "react";
-import moment from "moment";
 import { formatDateForForm } from "../../../utils/utilFunctions";
 import { dateFormat, formItemLayout } from "../../../utils/constants";
 import FileUploader from "../../UI/FileHandling/FileUploader";
-import ImageUploader from "../../UI/FileHandling/ImageUploader";
 
 const { Item } = Form;
 
