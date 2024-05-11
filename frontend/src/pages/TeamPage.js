@@ -1,5 +1,5 @@
-import React, { useState, useMemo } from "react";
-import { Button, Flex } from "antd";
+import React, { useState } from "react";
+import { Flex } from "antd";
 import { UserAddOutlined } from "@ant-design/icons";
 import MembersTable from "../components/Members/MembersTable";
 
