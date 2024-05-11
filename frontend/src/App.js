@@ -1,8 +1,7 @@
-import { Route, Routes, useNavigate } from "react-router-dom";
-import { Suspense, lazy, useEffect, useState } from "react";
+import { Route, Routes } from "react-router-dom";
+import { Suspense, lazy } from "react";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 
-import { csrfFetch } from "./utils/csrf";
 import { useSession } from "./context/Session";
 import Loader from "./components/UI/Loader";
 import Dashboard from "./pages/DashboardPage";
