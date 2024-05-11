@@ -1,7 +1,7 @@
 import React, { useMemo, useState } from "react";
 import { useParams } from "react-router-dom";
 import useItems from "../hooks/useItems";
-import { Divider, Flex, Modal, Space, Typography } from "antd";
+import { Divider, Flex, Modal, Space } from "antd";
 import ItemCard from "../components/Items/ItemCard";
 import FormModalButton from "../components/UI/FormModalButton";
 import { AppstoreAddOutlined, SaveOutlined } from "@ant-design/icons";
@@ -14,12 +14,9 @@ import NotesList from "../components/Notes/NotesList";
 import BackButton from "../components/UI/BackButton";
 import { useSession } from "../context/Session";
 import ModalHeader from "../components/UI/ModalHeader";
-import CardsContainer from "../components/UI/CardsContainer";
-import dayjs from "dayjs";
 import ItemStatusTag from "../components/UI/ItemStatusTag";
 import ProjectTitle from "../components/UI/ProjectTitle";
 import NotesTab from "../components/Items/ManageItemsDrawer/Tabs/NotesTab";
-const { Title, Text } = Typography;
 
 export default function ProjectDetailsPage() {
   const { projectId } = useParams();
