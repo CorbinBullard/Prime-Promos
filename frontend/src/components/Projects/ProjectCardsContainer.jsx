@@ -3,6 +3,7 @@ import React from "react";
 import ProjectCard from "./ProjectCard";
 
 export default function ProjectCardsContainer({ projects, selectProject }) {
+  console.log("Projects: ", projects);
   return (
     <Flex gap={8} wrap="wrap">
       {projects && !projects.length && (

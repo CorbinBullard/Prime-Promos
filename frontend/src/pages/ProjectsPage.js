@@ -70,7 +70,7 @@ export default function ProjectsPage() {
         ]
       : []),
   ];
-
+  console.log("Items: ", items);
   return (
     <>
       {!isLoading && (
