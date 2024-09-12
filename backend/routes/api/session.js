@@ -85,6 +85,9 @@ router.post("/", validateLogin, async (req, res, next) => {
 // LOGIN WITH GOOGLE
 router.post("/google-login", async (req, res, next) => {
   const { credential } = req.body;
+  console.log("GOOGLE CLIENT ID: ", process.env.GOOGLE_CLIENT_ID);
+  console.log(credential);
+  console.log(process.env.GOOGLE_CLIENT_SECRET);
   const ticket = await client.verifyIdToken({
     idToken: credential,
     audience: process.env.GOOGLE_CLIENT_ID, // Specify the CLIENT_ID of the app that accesses the backend
