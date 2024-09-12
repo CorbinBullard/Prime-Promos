@@ -27,6 +27,8 @@ module.exports = {
         hashedPassword: bcrypt.hashSync("password"),
         role: "owner",
         validated: true,
+        createdAt: new Date(),  // Add these fields
+        updatedAt: new Date()   // Add these fields
       },
     ]);
   },
