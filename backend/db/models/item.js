@@ -128,6 +128,7 @@ module.exports = (sequelize, DataTypes) => {
     {
       sequelize,
       modelName: "Item",
+      timestamps: true,
       hooks: {
         afterDestroy: async (item, options) => {
           const itemJSON = await item.toJSON();

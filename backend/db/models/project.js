@@ -51,7 +51,7 @@ module.exports = (sequelize, DataTypes) => {
       // delete project
     }
   }
-  
+
   Project.init(
     {
       name: DataTypes.STRING,
@@ -63,7 +63,10 @@ module.exports = (sequelize, DataTypes) => {
       eventDate: DataTypes.DATE,
       customerPO: DataTypes.INTEGER,
       salesConfirmation: DataTypes.INTEGER,
-      status: DataTypes.ENUM("active", "completed"),
+      status: {
+        type: DataTypes.ENUM("active", "completed"),
+        defaultValue: "active",
+      },
       billToName: DataTypes.STRING,
       billToAddress: DataTypes.STRING,
       billToCity: DataTypes.STRING,
@@ -78,6 +81,7 @@ module.exports = (sequelize, DataTypes) => {
     {
       sequelize,
       modelName: "Project",
+      timestamps: true,
     }
   );
   return Project;
