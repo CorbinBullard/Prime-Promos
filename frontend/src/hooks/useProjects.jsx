@@ -18,7 +18,9 @@ export function useProjects() {
   } = useQuery({
     queryKey: ["projects"],
     queryFn: async () => {
+      console.log("Fetching projects");
       const response = await csrfFetch("/api/projects");
+      console.log("Response", response);
       if (!response.ok) throw new Error("Failed to fetch projects");
       return response.json();
     },

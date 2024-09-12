@@ -28,7 +28,9 @@ export default function Dashboard() {
       projects: { active: [], completed: [], archived: [] },
       members: { active: [], pending: [] },
     };
+    console.log("Fetched Projects (DASHBOARD): ", projects);
     projects?.forEach((project) => {
+      console.log(project);
       if (dataObj?.projects[project.status])
         dataObj.projects[project.status].push(project);
     });
