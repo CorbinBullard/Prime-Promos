@@ -31,8 +31,7 @@ export default function Dashboard() {
     console.log("Fetched Projects (DASHBOARD): ", projects);
     projects?.forEach((project) => {
       console.log(project);
-      if (dataObj?.projects[project.status])
-        dataObj.projects[project.status].push(project);
+      if (project.status) dataObj.projects[project.status].push(project);
     });
     for (const key in dataObj.projects) {
       dataObj.projects[key] = dataObj.projects[key].sort(
