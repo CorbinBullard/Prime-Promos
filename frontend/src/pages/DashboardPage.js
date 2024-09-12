@@ -13,10 +13,7 @@ import {
 import { useProjects } from "../hooks/useProjects";
 import { useTeam } from "../context/useTeam";
 import dayjs from "dayjs";
-import {
-  CalendarOutlined,
-  UsergroupAddOutlined,
-} from "@ant-design/icons";
+import { CalendarOutlined, UsergroupAddOutlined } from "@ant-design/icons";
 import VerticalBlock from "../components/DashboardComponents/VerticalBlock";
 import { Link } from "react-router-dom";
 import UserIcon from "../components/Members/UserIcon";
@@ -32,7 +29,8 @@ export default function Dashboard() {
       members: { active: [], pending: [] },
     };
     projects?.forEach((project) => {
-      dataObj.projects[project.status].push(project);
+      if (dataObj?.projects[project.status])
+        dataObj.projects[project.status].push(project);
     });
     for (const key in dataObj.projects) {
       dataObj.projects[key] = dataObj.projects[key].sort(

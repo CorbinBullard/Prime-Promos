@@ -27,7 +27,7 @@ export default function LoginPage() {
   const handleGoogleSucess = async (response) => {
     loginGoogle(response);
     if (!isLoading && !error) {
-      navigate("/");
+      // navigate("/");
     }
   };
   const handleGoogleFailure = (response) => {
