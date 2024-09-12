@@ -10,6 +10,8 @@ export function useProjects() {
   const openNotification = useNotification();
   const [currentProjectId, setCurrentProjectId] = useState(null);
 
+  console.log("User", user);
+
   // Fetch projects
   const {
     data: projects,

@@ -21,6 +21,8 @@ export default function ProjectsPage() {
   } = useProjects();
   const { isAdmin } = useSession();
 
+  console.log("Projects Page : ", projects);
+
   const projectsObj = useMemo(() => {
     if (!projects) return {};
     return projects?.reduce((acc, project) => {
@@ -28,6 +30,8 @@ export default function ProjectsPage() {
       return acc;
     }, {});
   }, [projects]);
+
+  console.log("Projects Page Obj: ", projectsObj);
 
   const handleCreateProject = async (form) => {
     await createProject(form);
