@@ -21,10 +21,10 @@ module.exports = {
      */
     await queryInterface.bulkInsert(options, [
       {
-        email: "corbinbullarddev@gmail.com",
-        firstName: "Corbin",
-        lastName: "Bullard",
-        hashedPassword: bcrypt.hashSync("password"),
+        email: "orders@prime-promos.com",
+        firstName: "Vanessa",
+        lastName: "Mora",
+        hashedPassword: bcrypt.hashSync(""),
         role: "owner",
         validated: true,
         createdAt: new Date(),  // Add these fields

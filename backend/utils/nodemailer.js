@@ -32,8 +32,6 @@ async function sendEmail(to, subject, text, html) {
     },
   });
 
-  console.log("\n\n", to, subject, text, html, "\n\n");
-
   const mailOptions = {
     from: `Prime Promos <${SENDER_EMAIL}>`,
     to,

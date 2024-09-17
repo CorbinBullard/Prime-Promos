@@ -7,6 +7,7 @@ router.get("/generate-presigned-url", async (req, res) => {
   // Define bucket and key. You could use query parameters or a body payload to customize these values.
   const bucketName = process.env.AWS_BUCKET_NAME;
   const key = `uploads/${req.query.fileName}`; // Example key - customize as needed
+
   try {
     const command = new PutObjectCommand({
       Bucket: bucketName,

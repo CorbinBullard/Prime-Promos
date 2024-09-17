@@ -7,6 +7,7 @@ import { useSession } from "../context/Session";
 import useItems from "../hooks/useItems";
 import ProjectTitle from "../components/UI/ProjectTitle";
 import ProjectPDFViewer from "../components/Projects/PDF/ProjectPDFViewer";
+import Loader from "../components/UI/Loader";
 
 export default function ProjectProfitsPage() {
   const { projectId } = useParams();
@@ -30,6 +31,7 @@ export default function ProjectProfitsPage() {
   }, [currentProject, items]);
 
   console.log(pdfProjectObj);
+  if (itemsLoading) return <Loader />;
 
   return (
     <Space direction="vertical" style={{ width: "100%" }}>

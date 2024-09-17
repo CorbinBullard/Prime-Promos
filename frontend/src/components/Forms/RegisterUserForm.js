@@ -20,6 +20,7 @@ export default function RegisterUserForm({
         { ...form.getFieldsValue(), profileImageUrl: url }
       );
   };
+  console.log("USER ", user);
   return (
     <Form initialValues={initialValues} form={form}>
       <Divider>

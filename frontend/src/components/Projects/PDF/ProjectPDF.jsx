@@ -108,8 +108,10 @@ const ProjectPDF = ({ project }) => {
     );
     return itemCost + shippingCost;
   }, [project]);
+  console.log("PROJECT: ", project);
 
   if (!project) return null;
+
   return (
     <Document>
       <Page size="A4" style={styles.page}>

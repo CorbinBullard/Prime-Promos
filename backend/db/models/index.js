@@ -19,6 +19,9 @@ if (config.use_env_variable) {
 // sequelize.sync({ force: false }).then(() => {
 //   console.log("Database & tables created!");
 // });
+Sequelize.postgres.DECIMAL.parse = function(value) {
+  return parseFloat(value);
+};
 
 fs
   .readdirSync(__dirname)

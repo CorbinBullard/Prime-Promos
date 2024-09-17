@@ -52,7 +52,8 @@ export default function ProjectProfits({ project }) {
       ),
     [project]
   );
-  
+
+  if (!project) return null;
   return (
     <Table
       columns={columns}
@@ -61,10 +62,10 @@ export default function ProjectProfits({ project }) {
         return (
           <Flex vertical>
             <Text strong>
-              Unit Profit: ${totalProfits.totalUnitProfit.toFixed(2)}
+              Unit Profit: ${totalProfits?.totalUnitProfit?.toFixed(2)}
             </Text>
             <Text strong>
-              Setup Profit: ${totalProfits.totalSetupProfit.toFixed(2)}
+              Setup Profit: ${totalProfits?.totalSetupProfit?.toFixed(2)}
             </Text>
             <Text strong>
               Total Profit: $
