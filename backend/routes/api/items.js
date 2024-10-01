@@ -8,11 +8,7 @@ const {
   validateProjectUser,
 } = require("../../utils/auth");
 
-// Get all items TESTING ONLY
-router.get("/", requireAuth, async (req, res) => {
-  const items = await Item.findAll();
-  return res.json(items);
-});
+
 
 // delete item by id
 router.delete("/:id", requireAdminAuth, async (req, res) => {

@@ -143,18 +143,10 @@ export default function ItemQuoteForm({ form, onValuesChange, initialValues }) {
       initialValues={initialValues}
     >
       <Item name="spcNumber" label="SPC Number">
-        <InputNumber
-          style={{ width: "100%" }}
-          placeholder="Enter SPC Number"
-          controls={false}
-        />
+        <Input style={{ width: "100%" }} placeholder="Enter SPC Number" />
       </Item>
       <Item name="itemNumber" label="Item #">
-        <InputNumber
-          style={{ width: "100%" }}
-          placeholder="Enter Item Number"
-          controls={false}
-        />
+        <Input style={{ width: "100%" }} placeholder="Enter Item Number" />
       </Item>
       <Item name="quantity" label="Quantity">
         <InputNumber
@@ -215,37 +207,6 @@ export default function ItemQuoteForm({ form, onValuesChange, initialValues }) {
           style={{ padding: "0 0 8px" }}
           type={unitPriceStatus === "error" ? "danger" : ""}
         >
-          Sell Unit Price
-        </Typography.Text>
-      </div>
-      <Compact style={{ width: "100%", marginBottom: "24px" }}>
-        <Item
-          name="sellUnitPrice"
-          noStyle
-          label="Sell Unit Price"
-          dependencies={["netUnitPrice", "priceCode", "sellUnitPrice"]}
-        >
-          <InputNumber
-            style={{ width: "100%" }}
-            prefix="$"
-            precision={2}
-            controls={false}
-            status={unitPriceStatus}
-            placeholder="Enter Sell Unit Price"
-          />
-        </Item>
-        <Button
-          type="primary"
-          icon={<CalculatorOutlined />}
-          disabled={isSellUnitCalcButtonDisabled}
-          onClick={calculateSellUnitPrice}
-        />
-      </Compact>
-      <div style={{ height: "30px" }}>
-        <Typography.Text
-          style={{ padding: "0 0 8px" }}
-          type={unitPriceStatus === "error" ? "danger" : ""}
-        >
           Net Unit Price
         </Typography.Text>
       </div>
@@ -272,11 +233,43 @@ export default function ItemQuoteForm({ form, onValuesChange, initialValues }) {
           onClick={calculateNetUnitPrice}
         />
       </Compact>
+      <div style={{ height: "30px" }}>
+        <Typography.Text
+          style={{ padding: "0 0 8px" }}
+          type={unitPriceStatus === "error" ? "danger" : ""}
+        >
+          Sell Unit Price
+        </Typography.Text>
+      </div>
+      <Compact style={{ width: "100%", marginBottom: "24px" }}>
+        <Item
+          name="sellUnitPrice"
+          noStyle
+          label="Sell Unit Price"
+          dependencies={["netUnitPrice", "priceCode", "sellUnitPrice"]}
+        >
+          <InputNumber
+            style={{ width: "100%" }}
+            prefix="$"
+            precision={2}
+            controls={false}
+            status={unitPriceStatus}
+            placeholder="Enter Sell Unit Price"
+          />
+        </Item>
+        <Button
+          type="primary"
+          icon={<CalculatorOutlined />}
+          disabled={isSellUnitCalcButtonDisabled}
+          onClick={calculateSellUnitPrice}
+        />
+      </Compact>
       {unitPriceStatus === "error" && (
         <Text type="danger" style={{ margin: 0 }}>
           Net Unit Price and Sell Unit Price Do not Align with Price Code
         </Text>
       )}
+
       <Divider>Setup Price</Divider>
       <Item name="setupPriceCode" label="Price Code">
         <Select
@@ -292,25 +285,6 @@ export default function ItemQuoteForm({ form, onValuesChange, initialValues }) {
           ))}
         </Select>
       </Item>
-      <CompactItemLabel status={setupPriceStatus}>Sell Setup</CompactItemLabel>
-      <Compact style={{ width: "100%", marginBottom: "24px" }}>
-        <Item name="sellSetup" noStyle>
-          <InputNumber
-            style={{ width: "100%" }}
-            prefix="$"
-            precision={2}
-            controls={false}
-            placeholder="Enter Sell Setup"
-            status={setupPriceStatus}
-          />
-        </Item>
-        <Button
-          type="primary"
-          icon={<CalculatorOutlined />}
-          disabled={isSellSetupCalcButtonDisabled}
-          onClick={calculateSellSetup}
-        />
-      </Compact>
       <CompactItemLabel status={setupPriceStatus}>Net Setup</CompactItemLabel>
       <Compact style={{ width: "100%", marginBottom: "24px" }}>
         <Item name="netSetup" noStyle>
@@ -328,6 +302,25 @@ export default function ItemQuoteForm({ form, onValuesChange, initialValues }) {
           icon={<CalculatorOutlined />}
           disabled={isNetSetupCalcButtonDisabled}
           onClick={calculateNetSetup}
+        />
+      </Compact>
+      <CompactItemLabel status={setupPriceStatus}>Sell Setup</CompactItemLabel>
+      <Compact style={{ width: "100%", marginBottom: "24px" }}>
+        <Item name="sellSetup" noStyle>
+          <InputNumber
+            style={{ width: "100%" }}
+            prefix="$"
+            precision={2}
+            controls={false}
+            placeholder="Enter Sell Setup"
+            status={setupPriceStatus}
+          />
+        </Item>
+        <Button
+          type="primary"
+          icon={<CalculatorOutlined />}
+          disabled={isSellSetupCalcButtonDisabled}
+          onClick={calculateSellSetup}
         />
       </Compact>
       {setupPriceStatus === "error" && (
