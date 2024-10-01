@@ -11,6 +11,7 @@ import React, { useEffect, useState } from "react";
 import { CalculatorOutlined } from "@ant-design/icons";
 import { formItemLayout, priceCodes } from "../../../utils/constants";
 import FileUploader from "../../UI/FileHandling/FileUploader";
+import ImageUploader from "../../UI/FileHandling/ImageUploader";
 import Compact from "antd/es/space/Compact";
 import CompactItemLabel from "../../UI/CompactItemLabel";
 import { validatePrices } from "../../../utils/utilFunctions";
@@ -158,7 +159,7 @@ export default function ItemQuoteForm({ form, onValuesChange, initialValues }) {
         <Input style={{ width: "100%" }} placeholder="Enter Item Color" />
       </Item>
       <Item name="preVirtual" label="Pre Virtual (optional)">
-        <FileUploader
+        <ImageUploader
           callback={handleImageUpload}
           initialUrl={initialValues?.preVirtual}
         />
